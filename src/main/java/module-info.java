@@ -8,4 +8,6 @@ module com.group09.playit {
 
     opens com.group09.playit to javafx.fxml;
     exports com.group09.playit;
+    exports com.group09.playit.gui;
+    opens com.group09.playit.gui to javafx.fxml;
 }

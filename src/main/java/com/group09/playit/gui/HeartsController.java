@@ -1,4 +1,4 @@
-package com.group09.playit;
+package com.group09.playit.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
