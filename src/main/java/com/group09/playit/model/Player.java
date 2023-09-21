@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Player {
 
-    String name;
-    int currentScore;
+    public String name;
+    public int currentScore;
     ArrayList<Integer> scores;
 
     public Player(String name) {
@@ -18,7 +18,11 @@ public class Player {
         this.currentScore += score;
     }
 
-    Hand hand;
-    Card cardPlayed;
+    public Hand hand;
+    public Card cardPlayed;
+
+    public void playCard(Card card) {
+        cardPlayed = hand.playCard(card);
+    }
 
 }

@@ -36,10 +36,14 @@ public class Trick {
     
     public ArrayList<Card> legalCardsToPlay(Player player) {
         ArrayList<Card> legalCards = new ArrayList<>();
-        if (cards.get(0) == null) {
-            for (Card card : player.hand.cards) {
-                if (card.getSuit() != Card.Suit.HEARTS || round.heartsBroken) {
-                    legalCards.add(card);
+        if (cards.isEmpty()) {
+            if (player.hand.contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {
+                legalCards.add(new Card(Card.Suit.CLUBS, Card.Rank.TWO));
+            } else {
+                for (Card card : player.hand.cards) {
+                    if (card.getSuit() != Card.Suit.HEARTS || round.heartsBroken) {
+                        legalCards.add(card);
+                    }
                 }
             }
         } else {
@@ -58,7 +62,7 @@ public class Trick {
         return legalCards;
     }
 
-    void playCard(Player player, Card card) {
+    public void playCard(Player player, Card card) {
         cards.add(card);
         currentPlayer = round.players.get((round.players.indexOf(currentPlayer) + 1) % round.players.size());
     }
@@ -69,5 +73,14 @@ public class Trick {
 
     public boolean trickFull() {
         return cards.size() == round.players.size();
+    }
+
+    @Override
+    public String toString() {
+        String cards = "";
+        for (Card card : this.cards) {
+            cards += card.toString() + ", ";
+        }
+        return "[" + cards + "]";
     }
 }

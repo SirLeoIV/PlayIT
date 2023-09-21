@@ -9,7 +9,7 @@ public class Round {
 
     Player currentStartingPlayer;
 
-    ArrayList<Trick> tricks = new ArrayList<>();
+    public ArrayList<Trick> tricks = new ArrayList<>();
 
     boolean heartsBroken = false;
 
@@ -26,6 +26,7 @@ public class Round {
         }
 
         currentStartingPlayer = determineFirstStartingPlayer();
+        nextTrick();
     }
 
     private Player determineFirstStartingPlayer() {
@@ -42,7 +43,7 @@ public class Round {
         tricks.add(trick);
     }
 
-    void checkCurrentTrick() {
+    public boolean checkCurrentTrick() {
         Trick currentTrick = tricks.get(tricks.size()-1);
         if (currentTrick.trickFull()) {
             Card winningCard = currentTrick.winningCard();
@@ -50,7 +51,9 @@ public class Round {
             winningPlayer.addScore(currentTrick.getValue());
             currentStartingPlayer = winningPlayer;
             nextTrick();
+            return true;
         }
+        return false;
     }
 
 }

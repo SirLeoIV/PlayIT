@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Game {
 
-    ArrayList<Player> players = new ArrayList<>();
+    public ArrayList<Player> players = new ArrayList<>();
 
     int losingScore;
 
-    ArrayList<Round> rounds;
+    public ArrayList<Round> rounds;
 
     public Game(int losingScore, String... playerNames) {
         for (String playerName : playerNames) {

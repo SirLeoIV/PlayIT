@@ -22,4 +22,12 @@ public class Hand {
         return contains(new Card(suit, rank));
     }
 
+    @Override
+    public String toString() {
+        String cards = "";
+        for (Card card : this.cards) {
+            cards += card.toString() + ", ";
+        }
+        return "[" + cards + "]";
+    }
 }
