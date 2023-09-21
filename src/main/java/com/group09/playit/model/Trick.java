@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Trick {
     
     private Player currentPlayer;
-    private Round round;
+    private final Round round;
     
     public Trick(Player startingPlayer, Round round) {
         this.currentPlayer = startingPlayer;
@@ -54,9 +54,7 @@ public class Trick {
                 }
             }
             if (legalCards.isEmpty()) {
-                for (Card card : player.hand.cards) {
-                    legalCards.add(card);
-                }
+                legalCards.addAll(player.hand.cards);
             }
         }
         return legalCards;
@@ -77,9 +75,9 @@ public class Trick {
 
     @Override
     public String toString() {
-        String cards = "";
+        StringBuilder cards = new StringBuilder();
         for (Card card : this.cards) {
-            cards += card.toString() + ", ";
+            cards.append(card.toString()).append(", ");
         }
         return "[" + cards + "]";
     }
