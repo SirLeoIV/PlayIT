@@ -32,30 +32,4 @@ public class Game {
         return rounds.get(rounds.size() - 1);
     }
 
-    public static void main(String[] args) {
-        Game game = new Game(100, "Player 1", "Player 2", "Player 3", "Player 4");
-        System.out.println(game.players.get(0).getName());
-        System.out.println(game.players.get(1).getName());
-        System.out.println(game.players.get(2).getName());
-        System.out.println(game.players.get(3).getName());
-
-        Round round1 = new Round(game.players);
-
-        System.out.println("player 1 cards");
-        for (Card card : game.players.get(0).hand.cards) {
-            System.out.println(card);
-        }
-        System.out.println("-----------------");
-        System.out.println("player 2 cards");
-        for (Card card : game.players.get(1).hand.cards) {
-            System.out.println(card);
-        }
-
-        System.out.println("-----------------");
-        System.out.println("Starting player: " + round1.currentStartingPlayer.getName());
-        for (Card card : round1.currentStartingPlayer.hand.cards) {
-            System.out.println(card);
-        }
-
-    }
 }

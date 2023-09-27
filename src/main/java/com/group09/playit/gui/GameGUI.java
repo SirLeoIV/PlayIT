@@ -43,7 +43,7 @@ public class GameGUI extends Parent {
         AnchorPane.setLeftAnchor(currentPlayer, 45.0);
         AnchorPane.setRightAnchor(currentPlayer, 45.0);
 
-        currentPlayer.getChildren().add(new HandGUI(game.getCurrentRound().getCurrentTrick().getCurrentPlayer(), game.getCurrentRound().getCurrentTrick()));
+        currentPlayer.getChildren().add(new HandGUI(game.getCurrentRound().getCurrentTrick().getCurrentPlayer(), game.getCurrentRound().getCurrentTrick(), game.getCurrentRound()));
 
 
         updatePlayers();

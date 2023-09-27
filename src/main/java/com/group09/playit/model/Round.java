@@ -1,15 +1,17 @@
 package com.group09.playit.model;
 
+import com.group09.playit.logic.RoundService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Round {
 
-    ArrayList<Player> players;
+    private ArrayList<Player> players;
 
-    Player currentStartingPlayer;
+    private Player currentStartingPlayer;
 
-    public ArrayList<Trick> tricks = new ArrayList<>();
+    private ArrayList<Trick> tricks = new ArrayList<>();
 
     boolean heartsBroken = false;
 
@@ -26,7 +28,7 @@ public class Round {
         }
 
         currentStartingPlayer = determineFirstStartingPlayer();
-        nextTrick();
+        RoundService.nextTrick(this);
     }
 
     private Player determineFirstStartingPlayer() {
@@ -38,25 +40,31 @@ public class Round {
         return players.get(0);
     }
 
-    void nextTrick() {
-        Trick trick = new Trick(currentStartingPlayer, this);
-        tricks.add(trick);
-    }
-
-    public boolean checkCurrentTrick() {
-        Trick currentTrick = tricks.get(tricks.size()-1);
-        if (currentTrick.trickFull()) {
-            Card winningCard = currentTrick.winningCard();
-            Player winningPlayer = players.stream().filter(player -> player.cardPlayed == winningCard).findFirst().get();
-            winningPlayer.addScore(currentTrick.getValue());
-            currentStartingPlayer = winningPlayer;
-            nextTrick();
-            return true;
-        }
-        return false;
-    }
-
     public Trick getCurrentTrick() {
         return tricks.get(tricks.size()-1);
+    }
+
+    public boolean isHeartsBroken() {
+        return heartsBroken;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getCurrentStartingPlayer() {
+        return currentStartingPlayer;
+    }
+
+    public ArrayList<Trick> getTricks() {
+        return tricks;
+    }
+
+    public void setCurrentStartingPlayer(Player winningPlayer) {
+        currentStartingPlayer = winningPlayer;
+    }
+
+    public void setHeartsBroken(boolean b) {
+        heartsBroken = b;
     }
 }

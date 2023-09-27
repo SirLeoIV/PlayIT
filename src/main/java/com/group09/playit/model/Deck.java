@@ -31,19 +31,6 @@ public class Deck {
         Collections.shuffle(cards);
     }
 
-    public static void main(String[] args) {
-        Deck deck = new Deck(4);
-        for (Card card : deck.cards) {
-            System.out.println(card);
-        }
-        System.out.println("Shuffling...");
-        deck.shuffle();
-        for (Card card : deck.cards) {
-            System.out.println(card);
-        }
-
-    }
-
     public int size() {
         return cards.size();
     }

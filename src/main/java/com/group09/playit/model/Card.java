@@ -10,14 +10,14 @@ public class Card {
         this.rank = rank;
     }
     
-    enum Suit {
+    public enum Suit {
         HEARTS,
         DIAMONDS,
         CLUBS,
         SPADES
     }
     
-    enum Rank {
+    public enum Rank {
         ACE(14),
         KING(13),
         QUEEN(12),
@@ -36,6 +36,10 @@ public class Card {
         
         Rank(int points) {
             this.points = points;
+        }
+
+        public int getPoints() {
+            return points;
         }
     }
 

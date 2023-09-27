@@ -1,7 +1,9 @@
 package com.group09.playit.gui;
 
+import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.Card;
 import com.group09.playit.model.Player;
+import com.group09.playit.model.Round;
 import com.group09.playit.model.Trick;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -14,7 +16,7 @@ public class HandGUI extends Parent {
     private final HBox handBox;
 
 
-    public HandGUI(Player player, Trick trick) {
+    public HandGUI(Player player, Trick trick, Round round) {
         this.player = player;
 
         handBox = new HBox();
@@ -33,7 +35,7 @@ public class HandGUI extends Parent {
 
             cardButton.setGraphic(cardImage);
 
-            cardButton.setDisable(!trick.legalCardsToPlay(player).contains(card));
+            cardButton.setDisable(!TrickService.legalCardsToPlay(trick, round, player).contains(card));
 
             cardButton.setOnAction(event -> {
                 playCard(card);
