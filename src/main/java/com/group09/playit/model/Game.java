@@ -16,6 +16,7 @@ public class Game {
         }
         this.losingScore = losingScore;
         this.rounds = new ArrayList<>();
+        rounds.add(new Round(players));
     }
 
     public boolean isGameOver() {
@@ -27,12 +28,16 @@ public class Game {
         return false;
     }
 
+    public Round getCurrentRound() {
+        return rounds.get(rounds.size() - 1);
+    }
+
     public static void main(String[] args) {
         Game game = new Game(100, "Player 1", "Player 2", "Player 3", "Player 4");
-        System.out.println(game.players.get(0).name);
-        System.out.println(game.players.get(1).name);
-        System.out.println(game.players.get(2).name);
-        System.out.println(game.players.get(3).name);
+        System.out.println(game.players.get(0).getName());
+        System.out.println(game.players.get(1).getName());
+        System.out.println(game.players.get(2).getName());
+        System.out.println(game.players.get(3).getName());
 
         Round round1 = new Round(game.players);
 
@@ -47,7 +52,7 @@ public class Game {
         }
 
         System.out.println("-----------------");
-        System.out.println("Starting player: " + round1.currentStartingPlayer.name);
+        System.out.println("Starting player: " + round1.currentStartingPlayer.getName());
         for (Card card : round1.currentStartingPlayer.hand.cards) {
             System.out.println(card);
         }

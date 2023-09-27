@@ -30,4 +30,8 @@ public class Hand {
         }
         return "[" + cards + "]";
     }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
 }

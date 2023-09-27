@@ -56,4 +56,7 @@ public class Round {
         return false;
     }
 
+    public Trick getCurrentTrick() {
+        return tricks.get(tricks.size()-1);
+    }
 }

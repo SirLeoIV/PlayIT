@@ -9,9 +9,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HeartsApplication extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root= FXMLLoader.load(getClass().getResource("menu-view.fxml"));
+        Parent root= FXMLLoader.load(getClass().getResource("templates/menu-view.fxml"));
         Scene scene = new Scene(root, 600, 400);
         stage.setTitle("Hearts!");
         stage.setScene(scene);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
 
-    public String name;
+    private final String name;
     public int currentScore;
     ArrayList<Integer> scores;
 
@@ -25,4 +25,11 @@ public class Player {
         cardPlayed = hand.playCard(card);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Hand getHand() {
+        return hand;
+    }
 }
