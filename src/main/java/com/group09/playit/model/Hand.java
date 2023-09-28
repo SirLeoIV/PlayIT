@@ -8,6 +8,14 @@ public class Hand {
 
     public Hand(ArrayList<Card> cards) {
         this.cards = cards;
+
+        // sort cards by suit and rank ascending
+        cards.sort((card1, card2) -> {
+            if (card1.getSuit() == card2.getSuit()) {
+                return card2.getRank().compareTo(card1.getRank());
+            }
+            return card1.getSuit().compareTo(card2.getSuit());
+        });
     }
 
     public Card playCard(Card card) {
@@ -24,9 +32,9 @@ public class Hand {
 
     @Override
     public String toString() {
-        String cards = "";
+        StringBuilder cards = new StringBuilder();
         for (Card card : this.cards) {
-            cards += card.toString() + ", ";
+            cards.append(card.toString()).append(", ");
         }
         return "[" + cards + "]";
     }

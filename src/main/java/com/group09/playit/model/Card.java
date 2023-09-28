@@ -11,10 +11,10 @@ public class Card {
     }
     
     public enum Suit {
-        HEARTS,
-        DIAMONDS,
         CLUBS,
-        SPADES
+        DIAMONDS,
+        SPADES,
+        HEARTS
     }
     
     public enum Rank {
