@@ -9,18 +9,18 @@ import java.util.ArrayList;
 
 public class TrickService {
 
-    public static int getValue(Trick trick) {
+    public static int getValue(Trick trick, Round round) {
         int points = 0;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < round.getPlayers().size(); i++) {
             points += trick.getCards().get(i).getValue();
         }
         return points;
     }
 
-    public static Card winningCard(Trick trick) {
+    public static Card winningCard(Trick trick, Round round) {
         ArrayList<Card> cards = trick.getCards();
         Card winningCard = cards.get(0);
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < round.getPlayers().size(); i++) {
             if (cards.get(i).getSuit() == winningCard.getSuit()) {
                 if (cards.get(i).getRank().getPoints() > winningCard.getRank().getPoints()) {
                     winningCard = cards.get(i);

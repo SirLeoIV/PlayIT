@@ -5,22 +5,12 @@ import java.util.ArrayList;
 public class Trick {
     
     private Player currentPlayer;
-    private final Round round;
     
-    public Trick(Player startingPlayer, Round round) {
+    public Trick(Player startingPlayer) {
         this.currentPlayer = startingPlayer;
-        this.round = round;
     }
 
     ArrayList<Card> cards = new ArrayList<>();
-
-    public int getValue() {
-        int points = 0;
-        for (int i = 0; i < 4; i++) {
-            points += cards.get(i).getValue();
-        }
-        return points;
-    }
 
     public Player getCurrentPlayer() {
         return currentPlayer;

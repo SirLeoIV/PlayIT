@@ -6,9 +6,8 @@ import com.group09.playit.model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
-public class GameController_OLD {
+public class CommandLineGameController {
 
     Game game = new Game(100, "Player 1", "Player 2", "Player 3", "Player 4");
 
@@ -44,17 +43,17 @@ public class GameController_OLD {
     }
 
     public static void main(String[] args) {
-        GameController_OLD gameController = new GameController_OLD();
+        CommandLineGameController gameController = new CommandLineGameController();
         gameController.startGame();
         while (!gameController.game.isGameOver()) {
             gameController.makeTurn();
             Round currentRound = gameController.game.rounds.get(gameController.game.rounds.size() - 1);
             Trick currentTrick = currentRound.getTricks().get(currentRound.getTricks().size() - 1);
             if (RoundService.checkCurrentTrick(currentRound)) {
-                Card winningCard = TrickService.winningCard(currentTrick);
-                Player winningPlayer = gameController.game.players.stream().filter(player -> player.cardPlayed == winningCard).findFirst().get();
+                Card winningCard = TrickService.winningCard(currentTrick, currentRound);
+                Player winningPlayer = gameController.game.players.stream().filter(player -> player.getCardPlayed() == winningCard).findFirst().get();
                 System.out.println("Trick is over. " + winningPlayer.getName() + " won the trick with " + winningCard);
-                System.out.println("They get " + currentTrick.getValue() + " points.");
+                System.out.println("They get " + TrickService.getValue(currentTrick, currentRound) + " points.");
                 System.out.println("Scores: ");
                 for (Player player : gameController.game.players) {
                     System.out.println(player.getName() + ": " + player.currentScore);
@@ -62,17 +61,14 @@ public class GameController_OLD {
                 System.out.println("-----------------");
             }
         }
+        System.out.println("Game over!");
+        System.out.println("Scores: ");
+        for (Player player : gameController.game.players) {
+            System.out.println(player.getName() + ": " + player.currentScore);
+        }
     }
-
-
-
-
 
     private static final Scanner scanner = new Scanner(System.in);
-
-    public static String readString() {
-        return readInput();
-    }
 
     public static Integer readInt() {
         try {
@@ -82,28 +78,8 @@ public class GameController_OLD {
         }
     }
 
-
-    // tries to get input 3 times
-    private static String readInput() {
-        for (int i = 0; i < 2; i++) {
-            System.out.print("> ");
-            String input = scanner.nextLine();
-            if (!input.isBlank()) return input;
-        }
-        System.out.print("> ");
-        return scanner.nextLine();
-    }
-
     public static String readAnyInput() {
         System.out.print("> ");
         return scanner.nextLine();
-    }
-
-    public static String readInputOptions(String[] options) {
-        String result = "";
-        while(!Stream.of(options).toList().contains(result)) {
-            result = readAnyInput();
-        }
-        return result;
     }
 }

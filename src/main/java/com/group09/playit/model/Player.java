@@ -19,7 +19,7 @@ public class Player {
     }
 
     public Hand hand;
-    public Card cardPlayed;
+    private Card cardPlayed;
 
     public void playCard(Card card) {
         cardPlayed = hand.playCard(card);
@@ -31,5 +31,13 @@ public class Player {
 
     public Hand getHand() {
         return hand;
+    }
+
+    public Card getCardPlayed() {
+        return cardPlayed;
+    }
+
+    public void setCardPlayed(Card card) {
+        cardPlayed = card;
     }
 }

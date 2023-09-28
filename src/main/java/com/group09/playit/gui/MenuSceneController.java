@@ -44,7 +44,9 @@ public class MenuSceneController {
 
     @FXML
     void addPlayer(ActionEvent event) {
-        listOfPlayers.getItems().add(playerName.getText());
+        String name = playerName.getText();
+        if (name.isBlank()) name = "Player " + (listOfPlayers.getItems().size() + 1);
+        listOfPlayers.getItems().add(name);
         System.out.println("addPlayer");
         if (listOfPlayers.getItems().size() >= 5) {
             addPlayer.setDisable(true);
@@ -90,6 +92,7 @@ public class MenuSceneController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

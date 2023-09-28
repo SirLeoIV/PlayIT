@@ -10,8 +10,12 @@ public class CardImage extends ImageView {
 
     public CardImage(Card card) {
         this.fileName = card.getRank() + "_" + card.getSuit();
-        setImage(new Image(
-                "cards_pngs/" + fileName + ".png"));
+        try {
+            setImage(new Image(
+                    "cards_pngs/" + fileName + ".png"));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Card image not found: " + fileName);
+        }
         setFitHeight(73);
         setFitWidth(50);
     }

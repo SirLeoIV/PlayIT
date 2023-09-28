@@ -1,62 +1,59 @@
 package com.group09.playit.gui;
 
 import com.group09.playit.model.Player;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+
+import static javafx.scene.text.Font.font;
 
 public class OpponentGUI extends Parent {
 
-    private Player player;
+    private final Player player;
 
-    private Label playerCard;
+    private final ImageView card;
 
-    private Label playerName;
-
-    private AnchorPane playerPane;
-
-    private AnchorPane card;
-
-    private Label playerPoints;
-
-    public OpponentGUI(Player player) {
+    public OpponentGUI(Player player, int x, int y) {
         this.player = player;
 
-        playerName = new Label();
-        playerCard = new Label();
-        playerPoints = new Label();
-        card = new AnchorPane();
-        playerPane = new AnchorPane();
-        getChildren().add(playerPane);
-        playerPane.getChildren().add(playerName);
-        playerPane.getChildren().add(playerPoints);
-        playerPane.getChildren().add(card);
-        card.getChildren().add(playerCard);
+        Label playerName = new Label();
+        Label playerPoints = new Label();
+        card = new ImageView();
+        VBox vBox = new VBox();
+        vBox.setMinHeight(210);
+        vBox.setMaxHeight(210);
+        vBox.setPrefHeight(210);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setSpacing(5);
+        getChildren().add(vBox);
+        vBox.getChildren().add(playerName);
+        vBox.getChildren().add(playerPoints);
+        vBox.getChildren().add(card);
 
-        playerName.setLayoutX(38.0);
-        playerName.setLayoutY(22.0);
+        vBox.setLayoutX(x);
+        vBox.setLayoutY(y);
+
         playerName.setPrefHeight(17.0);
-
-        playerPoints.setLayoutX(38.0);
-        playerPoints.setLayoutY(50.0);
         playerPoints.setPrefHeight(17.0);
 
-        card.setLayoutX(14.0);
-        card.setLayoutY(77.0);
-        card.setPrefHeight(130.0);
-        card.setPrefWidth(100.0);
+        playerName.setFont(font(20));
+        playerPoints.setFont(font(20));
 
-        playerCard.setLayoutX(14);
-        playerCard.setLayoutY(14);
+        card.setFitHeight(110.0);
+        card.setFitWidth(75.0);
 
         playerName.setText(player.getName());
+        playerPoints.setText("Points: " + player.currentScore);
         updatePlayerCard();
     }
 
     public void updatePlayerCard() {
-        if (player.cardPlayed != null) {
-            playerCard.setText(player.cardPlayed.toString());
+        if (player.getCardPlayed() != null) {
+            CardImage cardImage = new CardImage(player.getCardPlayed());
+            card.setPreserveRatio(true);
+            card.setImage(cardImage.getImage());
         }
-        playerPoints.setText("Points: " + player.currentScore);
     }
 }
