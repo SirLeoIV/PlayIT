@@ -63,6 +63,7 @@ public class MenuSceneController {
         if (listOfPlayers.getItems().size() >= 3) {
             startGame.setDisable(false);
         }
+        playerName.requestFocus();
     }
 
     @FXML
@@ -78,6 +79,7 @@ public class MenuSceneController {
         if (listOfPlayers.getItems().size() <= 0) {
             removePlayer.setDisable(true);
         }
+        playerName.requestFocus();
     }
 
     @FXML
