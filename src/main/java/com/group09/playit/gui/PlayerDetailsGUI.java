@@ -9,7 +9,7 @@ public class PlayerDetailsGUI extends Parent {
     public PlayerDetailsGUI(Player player) {
 
         Text playerName = new Text(player.getName());
-        Text playerPoints = new Text("Points: " + player.currentScore);
+        Text playerPoints = new Text("Points: " + player.getCurrentScore());
 
         playerName.setLayoutY(0);
         playerPoints.setLayoutY(20);

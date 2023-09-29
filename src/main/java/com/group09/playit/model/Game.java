@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Game {
 
-    public ArrayList<Player> players = new ArrayList<>();
+    private final ArrayList<Player> players = new ArrayList<>();
 
     private final int losingScore;
 
@@ -16,6 +16,10 @@ public class Game {
         }
         this.losingScore = losingScore;
         this.rounds = new ArrayList<>();
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public Round getCurrentRound() {

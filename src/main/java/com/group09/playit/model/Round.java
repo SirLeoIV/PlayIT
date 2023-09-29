@@ -7,14 +7,13 @@ import java.util.List;
 
 public class Round {
 
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
     private Player currentStartingPlayer;
 
-    private ArrayList<Trick> tricks = new ArrayList<>();
+    private final ArrayList<Trick> tricks = new ArrayList<>();
 
-    boolean heartsBroken = false;
-
+    private boolean heartsBroken = false;
 
     public Round(ArrayList<Player> players) {
         this.players = players;
@@ -23,8 +22,8 @@ public class Round {
 
         for (int i = 0; i < players.size(); i++) {
             int numberOfCards = deck.size() / players.size();
-            List<Card> cards = deck.cards.subList(i * numberOfCards, (i + 1) * numberOfCards);
-            players.get(i).hand = new Hand(new ArrayList<>(cards));
+            List<Card> cards = deck.getCards().subList(i * numberOfCards, (i + 1) * numberOfCards);
+            players.get(i).setHand(new Hand(new ArrayList<>(cards)));
         }
 
         currentStartingPlayer = determineFirstStartingPlayer();
@@ -33,7 +32,7 @@ public class Round {
 
     private Player determineFirstStartingPlayer() {
         for (Player player : players) {
-            if (player.hand.contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {
+            if (player.getHand().contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {
                 return player;
             }
         }

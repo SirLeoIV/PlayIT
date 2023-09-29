@@ -34,10 +34,10 @@ public class TrickService {
         ArrayList<Card> cards = trick.getCards();
         ArrayList<Card> legalCards = new ArrayList<>();
         if (cards.isEmpty()) {
-            if (player.hand.contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {
+            if (player.getHand().contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {
                 legalCards.add(new Card(Card.Suit.CLUBS, Card.Rank.TWO));
             } else {
-                for (Card card : player.hand.getCards()) {
+                for (Card card : player.getHand().getCards()) {
                     if (card.getSuit() != Card.Suit.HEARTS || round.isHeartsBroken()) {
                         legalCards.add(card);
                     }
@@ -45,13 +45,13 @@ public class TrickService {
             }
         } else {
             Card.Suit suit = cards.get(0).getSuit();
-            for (Card card : player.hand.getCards()) {
+            for (Card card : player.getHand().getCards()) {
                 if (card.getSuit() == suit) {
                     legalCards.add(card);
                 }
             }
             if (legalCards.isEmpty()) {
-                legalCards.addAll(player.hand.getCards());
+                legalCards.addAll(player.getHand().getCards());
             }
         }
         return legalCards;

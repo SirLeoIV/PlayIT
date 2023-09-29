@@ -13,7 +13,7 @@ public class CommandLineGameController {
     Game game = new Game(100, "Player 1", "Player 2", "Player 3", "Player 4");
 
     public void startGame() {
-        game.getRounds().add(new Round(game.players));
+        game.getRounds().add(new Round(game.getPlayers()));
     }
 
     public void makeTurn() {
@@ -22,7 +22,7 @@ public class CommandLineGameController {
         Player currentPlayer = currentTrick.getCurrentPlayer();
         System.out.println("Current player: " + currentPlayer.getName());
         System.out.println("Current trick: " + currentTrick);
-        System.out.println("Player hand: " + currentPlayer.hand);
+        System.out.println("Player hand: " + currentPlayer.getHand());
         ArrayList<Card> legalCards = TrickService.legalCardsToPlay(currentTrick, currentRound, currentPlayer);
         StringBuilder legalCardsString = new StringBuilder();
         for (int i = 0; i < legalCards.size(); i++) {
@@ -50,22 +50,24 @@ public class CommandLineGameController {
             gameController.makeTurn();
             Round currentRound = gameController.game.getRounds().get(gameController.game.getRounds().size() - 1);
             Trick currentTrick = currentRound.getTricks().get(currentRound.getTricks().size() - 1);
-            if (RoundService.checkCurrentTrick(currentRound)) {
+            if (TrickService.trickFull(currentTrick, currentRound)) {
+                TrickService.endTrick(currentTrick, currentRound);
+                RoundService.nextTrick(currentRound);
                 Card winningCard = TrickService.winningCard(currentTrick, currentRound);
-                Player winningPlayer = gameController.game.players.stream().filter(player -> player.getCardPlayed() == winningCard).findFirst().get();
+                Player winningPlayer = gameController.game.getPlayers().stream().filter(player -> player.getCardPlayed() == winningCard).findFirst().get();
                 System.out.println("Trick is over. " + winningPlayer.getName() + " won the trick with " + winningCard);
                 System.out.println("They get " + TrickService.getValue(currentTrick, currentRound) + " points.");
                 System.out.println("Scores: ");
-                for (Player player : gameController.game.players) {
-                    System.out.println(player.getName() + ": " + player.currentScore);
+                for (Player player : gameController.game.getPlayers()) {
+                    System.out.println(player.getName() + ": " + player.getCurrentScore());
                 }
                 System.out.println("-----------------");
             }
         }
         System.out.println("Game over!");
         System.out.println("Scores: ");
-        for (Player player : gameController.game.players) {
-            System.out.println(player.getName() + ": " + player.currentScore);
+        for (Player player : gameController.game.getPlayers()) {
+            System.out.println(player.getName() + ": " + player.getCurrentScore());
         }
     }
 

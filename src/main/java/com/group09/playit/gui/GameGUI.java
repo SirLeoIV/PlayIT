@@ -84,12 +84,12 @@ public class GameGUI extends Parent implements GameController.GameObserver {
 
     public void updateTable() {
         table.getChildren().clear();
-        int numberOpponents = game.players.size() - 1;
+        int numberOpponents = game.getPlayers().size() - 1;
 
         for (int i = 0; i < numberOpponents; i++) {
-            int currentPlayer = game.players.indexOf(game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
-            int playerIndex = (currentPlayer + i + 1) % game.players.size();
-            Player player = game.players.get(playerIndex);
+            int currentPlayer = game.getPlayers().indexOf(game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
+            int playerIndex = (currentPlayer + i + 1) % game.getPlayers().size();
+            Player player = game.getPlayers().get(playerIndex);
 
             double angle = 90.0 / (numberOpponents - 1);
             double currentAngle = Math.toRadians(-225 + angle * (i));
@@ -156,8 +156,8 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         });
 
         content.getChildren().add(new Text("The round is over. These are the current scores:"));
-        for (Player player : game.players) {
-            content.getChildren().add(new Text(player.getName() + ": " + player.currentScore));
+        for (Player player : game.getPlayers()) {
+            content.getChildren().add(new Text(player.getName() + ": " + player.getCurrentScore()));
         }
 
         roundOver.getDialogPane().setContent(content);
@@ -171,16 +171,14 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
 
-        gameOver.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> {
-            gameOver.close();
-        });
+        gameOver.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> gameOver.close());
 
-        game.players.sort(Comparator.comparingInt(Player::getCurrentScore));
-        Player winner = game.players.get(0);
+        game.getPlayers().sort(Comparator.comparingInt(Player::getCurrentScore));
+        Player winner = game.getPlayers().get(0);
 
         content.getChildren().add(new Text("The game is over. These are the final scores:"));
-        for (Player player : game.players) {
-            content.getChildren().add(new Text(player.getName() + ": " + player.currentScore));
+        for (Player player : game.getPlayers()) {
+            content.getChildren().add(new Text(player.getName() + ": " + player.getCurrentScore()));
         }
         content.getChildren().add(new Text("The winner is: " + winner.getName()));
 

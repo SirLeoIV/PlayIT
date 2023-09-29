@@ -5,12 +5,11 @@ import java.util.ArrayList;
 public class Trick {
     
     private Player currentPlayer;
-    
+    private final ArrayList<Card> cards = new ArrayList<>();
+
     public Trick(Player startingPlayer) {
         this.currentPlayer = startingPlayer;
     }
-
-    ArrayList<Card> cards = new ArrayList<>();
 
     public Player getCurrentPlayer() {
         return currentPlayer;

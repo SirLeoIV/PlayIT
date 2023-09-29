@@ -45,7 +45,7 @@ public class OpponentGUI extends Parent {
         card.setFitWidth(75.0);
 
         playerName.setText(player.getName());
-        playerPoints.setText("Points: " + player.currentScore);
+        playerPoints.setText("Points: " + player.getCurrentScore());
         updatePlayerCard();
     }
 

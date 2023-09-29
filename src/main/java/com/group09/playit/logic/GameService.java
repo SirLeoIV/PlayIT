@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class GameService {
 
     public static boolean isGameOver(Game game) {
-        ArrayList<Player> players = game.players;
+        ArrayList<Player> players = game.getPlayers();
         for (Player player : players) {
-            if (player.currentScore >= game.getLosingScore()) {
+            if (player.getCurrentScore() >= game.getLosingScore()) {
                 return true;
             }
         }
@@ -19,6 +19,6 @@ public class GameService {
     }
 
     public static void newRound(Game game) {
-        game.getRounds().add(new Round(game.players));
+        game.getRounds().add(new Round(game.getPlayers()));
     }
 }
