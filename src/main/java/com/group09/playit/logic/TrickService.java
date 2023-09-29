@@ -70,4 +70,14 @@ public class TrickService {
     public static boolean trickFull(Trick trick, Round round) {
         return trick.getCards().size() == round.getPlayers().size();
     }
+
+    public static void endTrick(Trick trick, Round round) {
+        Card winningCard = winningCard(trick, round);
+        Player winningPlayer = round.getPlayers().stream().filter(player -> player.getCardPlayed() == winningCard).findFirst().get();
+        winningPlayer.addScore(getValue(trick, round));
+        round.setCurrentStartingPlayer(winningPlayer);
+        for (Player player : round.getPlayers()) {
+            player.setCardPlayed(null);
+        }
+    }
 }

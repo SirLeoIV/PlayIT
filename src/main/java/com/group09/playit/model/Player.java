@@ -40,4 +40,8 @@ public class Player {
     public void setCardPlayed(Card card) {
         cardPlayed = card;
     }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
 }

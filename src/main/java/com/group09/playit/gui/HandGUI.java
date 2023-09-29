@@ -8,15 +8,10 @@ import javafx.scene.control.Button;
 
 public class HandGUI extends Parent {
 
-    private Player player;
-
-
     private final GameController controller;
 
     public HandGUI(Player player, GameController controller) {
         this.controller = controller;
-
-        this.player = player;
 
 
         int i = 0;

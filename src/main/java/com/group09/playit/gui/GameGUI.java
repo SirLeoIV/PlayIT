@@ -5,10 +5,14 @@ import com.group09.playit.model.Game;
 import com.group09.playit.model.Player;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.util.Comparator;
 
 import static javafx.scene.text.Font.font;
 
@@ -36,7 +40,6 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         vBox.getChildren().add(currentPlayer);
         gamePane.getChildren().add(vBox);
 
-        // gamepane to full width of window
         gamePane.setPrefWidth(1200);
 
         // center elements in anchor pane
@@ -69,12 +72,14 @@ public class GameGUI extends Parent implements GameController.GameObserver {
 
     private void updateCurrentPlayer() {
         currentPlayer.getChildren().clear();
-        PlayerDetailsGUI playerDetailsGUI = new PlayerDetailsGUI(
-                game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
-        HandGUI handGUI = new HandGUI(
-                game.getCurrentRound().getCurrentTrick().getCurrentPlayer(),
-                controller);
-        currentPlayer.getChildren().addAll(playerDetailsGUI, handGUI);
+        if (controller.getGameStatus().equals(GameController.GameStatus.ACTIVE_TURN)) {
+            PlayerDetailsGUI playerDetailsGUI = new PlayerDetailsGUI(
+                    game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
+            HandGUI handGUI = new HandGUI(
+                    game.getCurrentRound().getCurrentTrick().getCurrentPlayer(),
+                    controller);
+            currentPlayer.getChildren().addAll(playerDetailsGUI, handGUI);
+        }
     }
 
     public void updateTable() {
@@ -110,5 +115,76 @@ public class GameGUI extends Parent implements GameController.GameObserver {
     public void update() {
         updateCurrentPlayer();
         updateTable();
+        switch (controller.getGameStatus()){
+            case WAITING_FOR_PLAYER -> showWaitingForPlayerDialog();
+            case ROUND_OVER -> showRoundOverDialog();
+            case GAME_OVER -> showGameOverDialog();
+        }
+    }
+
+    private void showWaitingForPlayerDialog() {
+        Player player = game.getCurrentRound().getCurrentTrick().getCurrentPlayer();
+        Dialog<Object> waitingForPlayer = new Dialog<>();
+        waitingForPlayer.setTitle("Waiting for player: " + player.getName());
+        VBox content = new VBox();
+        content.setAlignment(Pos.CENTER);
+        content.setSpacing(10);
+        Button confirm = new Button("Confirm");
+
+        confirm.setOnAction(event -> {
+            controller.confirmActivePlayer(player);
+            waitingForPlayer.setResult(true);
+            waitingForPlayer.close();
+        });
+        content.getChildren().add(new Text("Please confirm that you are " + player.getName() + " by clicking the button below."));
+        content.getChildren().add(confirm);
+        waitingForPlayer.getDialogPane().setContent(content);
+
+        waitingForPlayer.show();
+    }
+
+    private void showRoundOverDialog() {
+        Dialog<Object> roundOver = new Dialog<>();
+        roundOver.setTitle("Round over");
+        VBox content = new VBox();
+        content.setAlignment(Pos.CENTER);
+        content.setSpacing(10);
+
+        roundOver.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> {
+            controller.startRound();
+            roundOver.close();
+        });
+
+        content.getChildren().add(new Text("The round is over. These are the current scores:"));
+        for (Player player : game.players) {
+            content.getChildren().add(new Text(player.getName() + ": " + player.currentScore));
+        }
+
+        roundOver.getDialogPane().setContent(content);
+        roundOver.show();
+    }
+
+    private void showGameOverDialog() {
+        Dialog<Object> gameOver = new Dialog<>();
+        gameOver.setTitle("Game over");
+        VBox content = new VBox();
+        content.setAlignment(Pos.CENTER);
+        content.setSpacing(10);
+
+        gameOver.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> {
+            gameOver.close();
+        });
+
+        game.players.sort(Comparator.comparingInt(Player::getCurrentScore));
+        Player winner = game.players.get(0);
+
+        content.getChildren().add(new Text("The game is over. These are the final scores:"));
+        for (Player player : game.players) {
+            content.getChildren().add(new Text(player.getName() + ": " + player.currentScore));
+        }
+        content.getChildren().add(new Text("The winner is: " + winner.getName()));
+
+        gameOver.getDialogPane().setContent(content);
+        gameOver.show();
     }
 }

@@ -6,9 +6,9 @@ public class Game {
 
     public ArrayList<Player> players = new ArrayList<>();
 
-    int losingScore;
+    private final int losingScore;
 
-    public ArrayList<Round> rounds;
+    private final ArrayList<Round> rounds;
 
     public Game(int losingScore, String... playerNames) {
         for (String playerName : playerNames) {
@@ -16,20 +16,17 @@ public class Game {
         }
         this.losingScore = losingScore;
         this.rounds = new ArrayList<>();
-        rounds.add(new Round(players));
-    }
-
-    public boolean isGameOver() {
-        for (Player player : players) {
-            if (player.currentScore >= losingScore) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Round getCurrentRound() {
         return rounds.get(rounds.size() - 1);
     }
 
+    public int getLosingScore() {
+        return losingScore;
+    }
+
+    public ArrayList<Round> getRounds() {
+        return rounds;
+    }
 }

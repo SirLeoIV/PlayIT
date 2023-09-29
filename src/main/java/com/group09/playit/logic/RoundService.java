@@ -25,4 +25,7 @@ public class RoundService {
         return false;
     }
 
+    public static boolean isRoundOver(Round currentRound) {
+        return currentRound.getPlayers().stream().allMatch(player -> player.hand.getCards().isEmpty());
+    }
 }

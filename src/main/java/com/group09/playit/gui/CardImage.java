@@ -6,10 +6,8 @@ import javafx.scene.image.ImageView;
 
 public class CardImage extends ImageView {
 
-    private final String fileName;
-
     public CardImage(Card card) {
-        this.fileName = card.getRank() + "_" + card.getSuit();
+        String fileName = card.getRank() + "_" + card.getSuit();
         try {
             setImage(new Image(
                     "cards_pngs/" + fileName + ".png"));

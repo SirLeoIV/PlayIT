@@ -1,5 +1,6 @@
 package com.group09.playit.controller;
 
+import com.group09.playit.logic.GameService;
 import com.group09.playit.logic.RoundService;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.*;
@@ -12,11 +13,11 @@ public class CommandLineGameController {
     Game game = new Game(100, "Player 1", "Player 2", "Player 3", "Player 4");
 
     public void startGame() {
-        game.rounds.add(new Round(game.players));
+        game.getRounds().add(new Round(game.players));
     }
 
     public void makeTurn() {
-        Round currentRound = game.rounds.get(game.rounds.size() - 1);
+        Round currentRound = game.getRounds().get(game.getRounds().size() - 1);
         Trick currentTrick = currentRound.getTricks().get(currentRound.getTricks().size() - 1);
         Player currentPlayer = currentTrick.getCurrentPlayer();
         System.out.println("Current player: " + currentPlayer.getName());
@@ -45,9 +46,9 @@ public class CommandLineGameController {
     public static void main(String[] args) {
         CommandLineGameController gameController = new CommandLineGameController();
         gameController.startGame();
-        while (!gameController.game.isGameOver()) {
+        while (!GameService.isGameOver(gameController.game)) {
             gameController.makeTurn();
-            Round currentRound = gameController.game.rounds.get(gameController.game.rounds.size() - 1);
+            Round currentRound = gameController.game.getRounds().get(gameController.game.getRounds().size() - 1);
             Trick currentTrick = currentRound.getTricks().get(currentRound.getTricks().size() - 1);
             if (RoundService.checkCurrentTrick(currentRound)) {
                 Card winningCard = TrickService.winningCard(currentTrick, currentRound);

@@ -12,8 +12,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class MenuSceneController {
 
     @FXML
@@ -87,7 +85,7 @@ public class MenuSceneController {
     }
 
     @FXML
-    void switchToGame(ActionEvent event) throws IOException {
+    void switchToGame(ActionEvent event) {
         Parent root = new GameGUI(new Game(100, listOfPlayers.getItems().toArray(new String[0])));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

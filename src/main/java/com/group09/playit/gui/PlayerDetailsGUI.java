@@ -6,11 +6,7 @@ import javafx.scene.text.Text;
 
 public class PlayerDetailsGUI extends Parent {
 
-    private Player player;
-
     public PlayerDetailsGUI(Player player) {
-
-        this.player = player;
 
         Text playerName = new Text(player.getName());
         Text playerPoints = new Text("Points: " + player.currentScore);

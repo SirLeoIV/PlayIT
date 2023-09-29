@@ -1,22 +1,29 @@
 package com.group09.playit.controller;
 
+import com.group09.playit.logic.GameService;
 import com.group09.playit.logic.RoundService;
 import com.group09.playit.logic.TrickService;
-import com.group09.playit.model.Card;
-import com.group09.playit.model.Game;
-import com.group09.playit.model.Player;
+import com.group09.playit.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
 
+    public interface GameObserver {
+        void update();
+    }
+
     private final List<GameObserver> observers = new ArrayList<>();
 
     private Game game;
 
+    private GameStatus gameStatus;
+
     public GameController(Game game) {
         this.game = game;
+        GameService.newRound(game);
+        gameStatus = GameStatus.WAITING_FOR_PLAYER;
     }
 
     public void attach(GameObserver observer) {
@@ -28,13 +35,23 @@ public class GameController {
     }
 
     public void playCard(Card card) {
-        game.getCurrentRound().getCurrentTrick().getCurrentPlayer().playCard(card);
-        TrickService.playCard(game.getCurrentRound().getCurrentTrick(), game.getCurrentRound(), card);
+        Round round = game.getCurrentRound();
+        Trick trick = round.getCurrentTrick();
+
+        trick.getCurrentPlayer().playCard(card);
+        TrickService.playCard(trick, round, card);
         System.out.println("Played card: " + card.toString());
-        if (RoundService.checkCurrentTrick(game.getCurrentRound())) {
-            for (Player player : game.getCurrentRound().getPlayers()) {
-                player.setCardPlayed(null);
-            }
+
+        if (TrickService.trickFull(trick, round)) {
+            TrickService.endTrick(trick, round);
+            RoundService.nextTrick(round);
+        }
+        if (GameService.isGameOver(game)) {
+            gameStatus = GameStatus.GAME_OVER;
+        } else if (RoundService.isRoundOver(round)) {
+            gameStatus = GameStatus.ROUND_OVER;
+        } else {
+            gameStatus = GameStatus.WAITING_FOR_PLAYER;
         }
         notifyAllObservers();
     }
@@ -46,8 +63,28 @@ public class GameController {
                 game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
     }
 
-    public interface GameObserver {
-        void update();
+    public void confirmActivePlayer(Player player) {
+        if (game.getCurrentRound().getCurrentTrick().getCurrentPlayer().equals(player)) {
+            gameStatus = GameStatus.ACTIVE_TURN;
+        }
+        notifyAllObservers();
+    }
+
+    public void startRound() {
+        GameService.newRound(game);
+        gameStatus = GameStatus.WAITING_FOR_PLAYER;
+        notifyAllObservers();
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
+    public enum GameStatus {
+        ACTIVE_TURN,
+        WAITING_FOR_PLAYER,
+        ROUND_OVER,
+        GAME_OVER
     }
 
 }
