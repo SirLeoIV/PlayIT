@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class MenuSceneController {
@@ -27,6 +24,12 @@ public class MenuSceneController {
     private Button removePlayer;
 
     @FXML
+    private Label pointsToLose;
+
+    @FXML
+    private Slider pointsSlider;
+
+    @FXML
     private Button rules;
 
     @FXML
@@ -39,6 +42,11 @@ public class MenuSceneController {
     @FXML
     private Scene scene;
 
+    public void initialize() {
+        pointsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            pointsToLose.setText("Points to lose: " + (int) pointsSlider.getValue());
+        });
+    }
 
     @FXML
     void addPlayer(ActionEvent event) {
@@ -86,7 +94,7 @@ public class MenuSceneController {
 
     @FXML
     void switchToGame(ActionEvent event) {
-        Parent root = new GameGUI(new Game(100, listOfPlayers.getItems().toArray(new String[0])));
+        Parent root = new GameGUI(new Game((int) pointsSlider.getValue(), listOfPlayers.getItems().toArray(new String[0])));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

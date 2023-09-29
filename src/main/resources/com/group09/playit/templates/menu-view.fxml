@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group09.playit.gui.MenuSceneController">
    <children>
-      <VBox alignment="CENTER" layoutY="145.0" prefHeight="247.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutY="145.0" prefHeight="247.0" prefWidth="600.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="HEARTS" textAlignment="CENTER">
                <font>
@@ -24,6 +24,8 @@
                   </VBox>
                </children>
             </HBox>
+            <Label fx:id="pointsToLose" text="Points to lose: 50" />
+            <Slider fx:id="pointsSlider" max="150.0" maxWidth="-Infinity" min="10.0" prefHeight="14.0" prefWidth="213.0" value="50.0" />
             <Button fx:id="startGame" disable="true" mnemonicParsing="false" onAction="#switchToGame" prefHeight="26.0" prefWidth="213.0" text="Start Game" />
             <Button fx:id="rules" mnemonicParsing="false" onAction="#openRules" prefHeight="26.0" prefWidth="213.0" text="Rules" />
          </children>

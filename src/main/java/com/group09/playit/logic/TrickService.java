@@ -38,7 +38,9 @@ public class TrickService {
                 legalCards.add(new Card(Card.Suit.CLUBS, Card.Rank.TWO));
             } else {
                 for (Card card : player.getHand().getCards()) {
-                    if (card.getSuit() != Card.Suit.HEARTS || round.isHeartsBroken()) {
+                    if (card.getSuit() != Card.Suit.HEARTS
+                            || round.isHeartsBroken()
+                            || player.getHand().getCards().stream().noneMatch(c -> c.getSuit() != Card.Suit.HEARTS)) {
                         legalCards.add(card);
                     }
                 }
