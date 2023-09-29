@@ -157,7 +157,10 @@ public class GameGUI extends Parent implements GameController.GameObserver {
 
         content.getChildren().add(new Text("The round is over. These are the current scores:"));
         for (Player player : game.getPlayers()) {
-            content.getChildren().add(new Text(player.getName() + ": " + player.getCurrentScore()));
+            content.getChildren().add(
+                    new Text(player.getName()
+                            + ": " + player.getTotalScore()
+                            + " (+" + player.getScores().get(player.getScores().size()-1) + ")"));
         }
 
         roundOver.getDialogPane().setContent(content);
@@ -173,12 +176,12 @@ public class GameGUI extends Parent implements GameController.GameObserver {
 
         gameOver.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> gameOver.close());
 
-        game.getPlayers().sort(Comparator.comparingInt(Player::getCurrentScore));
+        game.getPlayers().sort(Comparator.comparingInt(Player::getTotalScore));
         Player winner = game.getPlayers().get(0);
 
         content.getChildren().add(new Text("The game is over. These are the final scores:"));
         for (Player player : game.getPlayers()) {
-            content.getChildren().add(new Text(player.getName() + ": " + player.getCurrentScore()));
+            content.getChildren().add(new Text(player.getName() + ": " + player.getTotalScore()));
         }
         content.getChildren().add(new Text("The winner is: " + winner.getName()));
 

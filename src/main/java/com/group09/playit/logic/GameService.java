@@ -11,7 +11,7 @@ public class GameService {
     public static boolean isGameOver(Game game) {
         ArrayList<Player> players = game.getPlayers();
         for (Player player : players) {
-            if (player.getCurrentScore() >= game.getLosingScore()) {
+            if (player.getTotalScore() >= game.getLosingScore()) {
                 return true;
             }
         }

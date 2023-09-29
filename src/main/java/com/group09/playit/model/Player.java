@@ -1,13 +1,17 @@
 package com.group09.playit.model;
 
+import java.util.ArrayList;
+
 public class Player {
 
     private final String name;
     private int currentScore;
+    private ArrayList<Integer> scores;
 
     public Player(String name) {
         this.name = name;
         this.currentScore = 0;
+        this.scores = new ArrayList<>();
     }
 
     public void addScore(int score) {
@@ -43,5 +47,17 @@ public class Player {
 
     public int getCurrentScore() {
         return currentScore;
+    }
+
+    public int getTotalScore() {
+        return scores.stream().mapToInt(i -> i).sum();
+    }
+
+    public ArrayList<Integer> getScores() {
+        return scores;
+    }
+
+    public void setCurrentScore(int score) {
+        currentScore = score;
     }
 }

@@ -50,6 +50,7 @@ public class GameController {
             gameStatus = GameStatus.GAME_OVER;
         } else if (RoundService.isRoundOver(round)) {
             gameStatus = GameStatus.ROUND_OVER;
+            RoundService.endRound(round);
         } else {
             gameStatus = GameStatus.WAITING_FOR_PLAYER;
         }

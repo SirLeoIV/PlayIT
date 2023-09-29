@@ -31,9 +31,9 @@ public class TrickService {
     }
 
     public static ArrayList<Card> legalCardsToPlay(Trick trick, Round round, Player player) {
-        ArrayList<Card> cards = trick.getCards();
+        ArrayList<Card> cardsInTrick = trick.getCards();
         ArrayList<Card> legalCards = new ArrayList<>();
-        if (cards.isEmpty()) {
+        if (cardsInTrick.isEmpty()) {
             if (player.getHand().contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {
                 legalCards.add(new Card(Card.Suit.CLUBS, Card.Rank.TWO));
             } else {
@@ -46,7 +46,7 @@ public class TrickService {
                 }
             }
         } else {
-            Card.Suit suit = cards.get(0).getSuit();
+            Card.Suit suit = cardsInTrick.get(0).getSuit();
             for (Card card : player.getHand().getCards()) {
                 if (card.getSuit() == suit) {
                     legalCards.add(card);

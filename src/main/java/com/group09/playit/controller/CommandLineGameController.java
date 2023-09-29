@@ -67,7 +67,7 @@ public class CommandLineGameController {
         System.out.println("Game over!");
         System.out.println("Scores: ");
         for (Player player : gameController.game.getPlayers()) {
-            System.out.println(player.getName() + ": " + player.getCurrentScore());
+            System.out.println(player.getName() + ": " + player.getTotalScore());
         }
     }
 

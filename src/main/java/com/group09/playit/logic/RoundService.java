@@ -13,4 +13,11 @@ public class RoundService {
     public static boolean isRoundOver(Round currentRound) {
         return currentRound.getPlayers().stream().allMatch(player -> player.getHand().getCards().isEmpty());
     }
+
+    public static void endRound(Round round) {
+        round.getPlayers().forEach(player -> {
+            player.getScores().add(player.getCurrentScore());
+            player.setCurrentScore(0);
+        });
+    }
 }
