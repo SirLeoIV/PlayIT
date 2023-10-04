@@ -15,6 +15,14 @@ public class OpponentGUI extends Parent {
 
     private final ImageView card;
 
+    /**
+     * Instantiates a new Opponent GUI.
+     * The opponent GUI shows the name, points and card of the opponent.
+     *
+     * @param player the player
+     * @param x      the x position
+     * @param y      the y position
+     */
     public OpponentGUI(Player player, int x, int y) {
         this.player = player;
 
@@ -49,6 +57,10 @@ public class OpponentGUI extends Parent {
         updatePlayerCard();
     }
 
+    /**
+     * Update player card.
+     * Updates the card of the player.
+     */
     public void updatePlayerCard() {
         if (player.getCardPlayed() != null) {
             CardImage cardImage = new CardImage(player.getCardPlayed());

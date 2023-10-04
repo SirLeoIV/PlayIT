@@ -11,6 +11,14 @@ public class HandGUI extends Parent {
 
     private final GameController controller;
 
+    /**
+     * Instantiates a new Hand GUI.
+     * The hand GUI shows the cards of the player.
+     * The cards are clickable and can be played.
+     *
+     * @param player     the current player
+     * @param controller the game controller
+     */
     public HandGUI(Player player, GameController controller) {
         this.controller = controller;
 
@@ -41,6 +49,12 @@ public class HandGUI extends Parent {
         }
     }
 
+    /**
+     * Play card.
+     * Plays the card that was clicked.
+     *
+     * @param card the card
+     */
     public void playCard(Card card) {
         controller.playCard(card);
     }

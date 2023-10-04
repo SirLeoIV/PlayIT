@@ -28,6 +28,15 @@ public class GameGUI extends Parent implements GameController.GameObserver {
 
     private final Text heartsBroken = new Text("Hearts broken: no");
 
+    /**
+     * Instantiates a new Game GUI.
+     * The game GUI is the main GUI of the game.
+     * It shows the current player and the table.
+     * The table shows the opponents in a half-circle around the current player.
+     * The table also shows whether hearts are broken.
+     *
+     * @param game the game
+     */
     public GameGUI(Game game) {
         this.game = game;
         controller = new GameController(game);
@@ -70,6 +79,11 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         System.out.println("GameSceneController");
     }
 
+    /**
+     * Update the current player.
+     * Update the current player pane with the current player's details and hand.
+     * Current player is only shown when the game status is ACTIVE_TURN.
+     */
     private void updateCurrentPlayer() {
         currentPlayer.getChildren().clear();
         if (controller.getGameStatus().equals(GameController.GameStatus.ACTIVE_TURN)) {
@@ -82,6 +96,12 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         }
     }
 
+    /**
+     * Update the table.
+     * Update the table pane with the current players and their cards.
+     * Also show whether hearts are broken.
+     * Displays the opponents on the table in a half-circle around the current player.
+     */
     public void updateTable() {
         table.getChildren().clear();
         int numberOpponents = game.getPlayers().size() - 1;
@@ -111,6 +131,11 @@ public class GameGUI extends Parent implements GameController.GameObserver {
 
     }
 
+    /**
+     * Update the game when called from the controller.
+     * Update the current player and the table.
+     * Show a dialogs when the game status is WAITING_FOR_PLAYER, ROUND_OVER or GAME_OVER.
+     */
     @Override
     public void update() {
         updateCurrentPlayer();
@@ -122,6 +147,11 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         }
     }
 
+    /**
+     * Show a dialog when the game status is WAITING_FOR_PLAYER.
+     * The dialog asks the player to confirm that they are the active player.
+     * When the player confirms, the game status is updated accordingly.
+     */
     private void showWaitingForPlayerDialog() {
         Player player = game.getCurrentRound().getCurrentTrick().getCurrentPlayer();
         Dialog<Object> waitingForPlayer = new Dialog<>();
@@ -143,6 +173,11 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         waitingForPlayer.show();
     }
 
+    /**
+     * Show a dialog when the game status is ROUND_OVER.
+     * The dialog shows the current scores and asks the player to start a new round.
+     * When the player starts a new round, the game status is updated accordingly.
+     */
     private void showRoundOverDialog() {
         Dialog<Object> roundOver = new Dialog<>();
         roundOver.setTitle("Round over");
@@ -167,6 +202,10 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         roundOver.show();
     }
 
+    /**
+     * Show a dialog when the game status is GAME_OVER.
+     * The dialog shows the final scores and the losing player.
+     */
     private void showGameOverDialog() {
         Dialog<Object> gameOver = new Dialog<>();
         gameOver.setTitle("Game over");

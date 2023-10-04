@@ -12,10 +12,16 @@ public class CommandLineGameController {
 
     Game game = new Game(100, "Player 1", "Player 2", "Player 3", "Player 4");
 
+    /**
+     * Start a new game.
+     */
     public void startGame() {
         game.getRounds().add(new Round(game.getPlayers()));
     }
 
+    /**
+     * Make a turn in the game.
+     */
     public void makeTurn() {
         Round currentRound = game.getRounds().get(game.getRounds().size() - 1);
         Trick currentTrick = currentRound.getTricks().get(currentRound.getTricks().size() - 1);
@@ -73,7 +79,11 @@ public class CommandLineGameController {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static Integer readInt() {
+    /**
+     * Reads an integer from the command line.
+     * @return the integer, or null if the input was not an integer
+     */
+    private static Integer readInt() {
         try {
             return Integer.parseInt(readAnyInput());
         } catch (NumberFormatException e) {
@@ -81,7 +91,11 @@ public class CommandLineGameController {
         }
     }
 
-    public static String readAnyInput() {
+    /**
+     * Reads a line from the command line.
+     * @return the line
+     */
+    private static String readAnyInput() {
         System.out.print("> ");
         return scanner.nextLine();
     }
