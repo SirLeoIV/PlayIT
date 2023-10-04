@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 public class GameService {
 
+    /**
+     * Check if the game is over.
+     * @param game current game
+     * @return
+     */
     public static boolean isGameOver(Game game) {
         ArrayList<Player> players = game.getPlayers();
         for (Player player : players) {
@@ -18,6 +23,10 @@ public class GameService {
         return false;
     }
 
+    /**
+     * Start a new round.
+     * @param game current game
+     */
     public static void newRound(Game game) {
         game.getRounds().add(new Round(game.getPlayers()));
     }

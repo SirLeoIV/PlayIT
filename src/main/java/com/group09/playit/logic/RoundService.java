@@ -5,15 +5,28 @@ import com.group09.playit.model.Trick;
 
 public class RoundService {
 
+    /**
+     * Start a new trick.
+     * @param round
+     */
     public static void nextTrick(Round round) {
         Trick trick = new Trick(round.getCurrentStartingPlayer());
         round.getTricks().add(trick);
     }
 
+    /**
+     * Check if the round is over.
+     * @param currentRound
+     * @return true if the round is over, false otherwise
+     */
     public static boolean isRoundOver(Round currentRound) {
         return currentRound.getPlayers().stream().allMatch(player -> player.getHand().getCards().isEmpty());
     }
 
+    /**
+     * End the round.
+     * @param round current round
+     */
     public static void endRound(Round round) {
         round.getPlayers().forEach(player -> {
             player.getScores().add(player.getCurrentScore());

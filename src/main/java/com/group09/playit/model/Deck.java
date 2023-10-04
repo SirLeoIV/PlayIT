@@ -7,6 +7,14 @@ public class Deck {
 
     private final ArrayList<Card> cards;
 
+    /**
+     * Create a new deck of cards.
+     * The deck contains 52 cards.
+     * If there are 3 players, the deck does not contain the 2 of spades.
+     * If there are 5 players, the deck does not contain the 2 of spades and the 2 of diamonds.
+     *
+     * @param numberOfPlayers number of players in the game
+     */
     public Deck(int numberOfPlayers) {
         cards = new ArrayList<>();
         for (Card.Suit suit : Card.Suit.values()) {

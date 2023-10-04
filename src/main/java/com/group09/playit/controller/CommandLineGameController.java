@@ -59,10 +59,10 @@ public class CommandLineGameController {
             if (TrickService.trickFull(currentTrick, currentRound)) {
                 TrickService.endTrick(currentTrick, currentRound);
                 RoundService.nextTrick(currentRound);
-                Card winningCard = TrickService.winningCard(currentTrick, currentRound);
+                Card winningCard = TrickService.winningCard(currentTrick);
                 Player winningPlayer = gameController.game.getPlayers().stream().filter(player -> player.getCardPlayed() == winningCard).findFirst().get();
                 System.out.println("Trick is over. " + winningPlayer.getName() + " won the trick with " + winningCard);
-                System.out.println("They get " + TrickService.getValue(currentTrick, currentRound) + " points.");
+                System.out.println("They get " + TrickService.getValue(currentTrick) + " points.");
                 System.out.println("Scores: ");
                 for (Player player : gameController.game.getPlayers()) {
                     System.out.println(player.getName() + ": " + player.getCurrentScore());

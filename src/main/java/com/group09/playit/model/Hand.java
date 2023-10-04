@@ -6,6 +6,12 @@ public class Hand {
 
     private final ArrayList<Card> cards;
 
+    /**
+     * Create a new hand of cards.
+     * Sort the cards by suit and rank ascending.
+     *
+     * @param cards cards in the hand
+     */
     public Hand(ArrayList<Card> cards) {
         this.cards = cards;
 

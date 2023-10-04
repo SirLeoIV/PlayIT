@@ -15,6 +15,14 @@ public class Round {
 
     private boolean heartsBroken = false;
 
+    /**
+     * Create a new round.
+     * Shuffle the deck and deal the cards to the players.
+     * Determine the first starting player.
+     * Start the first trick.
+     *
+     * @param players players in the round
+     */
     public Round(ArrayList<Player> players) {
         this.players = players;
         Deck deck = new Deck(players.size());
@@ -30,6 +38,11 @@ public class Round {
         RoundService.nextTrick(this);
     }
 
+    /**
+     * Determine the first starting player.
+     * The player with the 2 of clubs starts.
+     * @return first starting player
+     */
     private Player determineFirstStartingPlayer() {
         for (Player player : players) {
             if (player.getHand().contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {

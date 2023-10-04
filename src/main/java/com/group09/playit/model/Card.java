@@ -9,14 +9,20 @@ public class Card {
         this.suit = suit;
         this.rank = rank;
     }
-    
+
+    /**
+     * The possible suits of the cards.
+     */
     public enum Suit {
         CLUBS,
         DIAMONDS,
         SPADES,
         HEARTS
     }
-    
+
+    /**
+     * The possible ranks of the cards.
+     */
     public enum Rank {
         ACE(14),
         KING(13),
@@ -43,6 +49,14 @@ public class Card {
         }
     }
 
+    /**
+     * Get the value of the card.
+     * The value of a heart is 1 point.
+     * The value of the queen of spades is 13 points.
+     * All other cards are worth 0 points.
+     *
+     * @return value of the card
+     */
     public int getValue() {
         if (suit == Suit.HEARTS) return 1;
         if (suit == Suit.SPADES && rank == Rank.QUEEN) return 13;
@@ -65,12 +79,17 @@ public class Card {
         this.rank = rank;
     }
 
-    // to String method
     @Override
     public String toString() {
         return rank + " of " + suit;
     }
 
+    /**
+     * Check if two cards are equal.
+     * Two cards are equal if they have the same suit and rank.
+     * @param o other card
+     * @return true if the cards are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

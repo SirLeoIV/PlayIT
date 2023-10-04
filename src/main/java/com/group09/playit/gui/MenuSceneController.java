@@ -42,12 +42,20 @@ public class MenuSceneController {
     @FXML
     private Scene scene;
 
+    /**
+     * Initializes the menu scene.
+     * Sets the points to lose label to the value of the slider.
+     */
     public void initialize() {
         pointsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             pointsToLose.setText("Points to lose: " + (int) pointsSlider.getValue());
         });
     }
 
+    /**
+     * Adds a player to the list of players.
+     * @param event
+     */
     @FXML
     void addPlayer(ActionEvent event) {
         String name = playerName.getText();
@@ -66,6 +74,10 @@ public class MenuSceneController {
         playerName.requestFocus();
     }
 
+    /**
+     * Removes a player from the list of players.
+     * @param event
+     */
     @FXML
     void removePlayer(ActionEvent event) {
         listOfPlayers.getItems().remove(listOfPlayers.getItems().size()-1);
@@ -82,6 +94,10 @@ public class MenuSceneController {
         playerName.requestFocus();
     }
 
+    /**
+     * Opens a dialog with the rules of the game.
+     * @param event
+     */
     @FXML
     void openRules(ActionEvent event) {
         rulesDialog = new Dialog<>();
@@ -94,6 +110,10 @@ public class MenuSceneController {
         rulesDialog.show();
     }
 
+    /**
+     * Switches to the game scene.
+     * @param event
+     */
     @FXML
     void switchToGame(ActionEvent event) {
         Parent root = new GameGUI(new Game((int) pointsSlider.getValue(), listOfPlayers.getItems().toArray(new String[0])));
