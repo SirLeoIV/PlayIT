@@ -5,6 +5,7 @@ import com.group09.playit.model.Card;
 import com.group09.playit.model.Player;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 
 public class HandGUI extends Parent {
 
@@ -30,6 +31,7 @@ public class HandGUI extends Parent {
             cardImage.setPreserveRatio(true);
 
             cardButton.setGraphic(cardImage);
+            cardButton.setTooltip(new Tooltip(card.toString()));
 
             cardButton.setDisable(!controller.legalCardsToPlay().contains(card));
 

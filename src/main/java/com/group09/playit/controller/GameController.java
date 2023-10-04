@@ -46,11 +46,10 @@ public class GameController {
             TrickService.endTrick(trick, round);
             RoundService.nextTrick(round);
         }
-        if (GameService.isGameOver(game)) {
-            gameStatus = GameStatus.GAME_OVER;
-        } else if (RoundService.isRoundOver(round)) {
+        if (RoundService.isRoundOver(round)) {
             gameStatus = GameStatus.ROUND_OVER;
             RoundService.endRound(round);
+            if (GameService.isGameOver(game)) gameStatus = GameStatus.GAME_OVER;
         } else {
             gameStatus = GameStatus.WAITING_FOR_PLAYER;
         }
