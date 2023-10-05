@@ -7,7 +7,7 @@ public class RoundService {
 
     /**
      * Start a new trick.
-     * @param round
+     * @param round current round
      */
     public static void nextTrick(Round round) {
         Trick trick = new Trick(round.getCurrentStartingPlayer());
@@ -16,7 +16,7 @@ public class RoundService {
 
     /**
      * Check if the round is over.
-     * @param currentRound
+     * @param currentRound current round
      * @return true if the round is over, false otherwise
      */
     public static boolean isRoundOver(Round currentRound) {
@@ -25,6 +25,8 @@ public class RoundService {
 
     /**
      * End the round.
+     * Add the current score to the total score of each player.
+     * Set the current score of each player to 0.
      * @param round current round
      */
     public static void endRound(Round round) {
