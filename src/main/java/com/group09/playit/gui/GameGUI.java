@@ -1,18 +1,24 @@
 package com.group09.playit.gui;
 
+import com.group09.playit.HeartsApplication;
 import com.group09.playit.controller.GameController;
 import com.group09.playit.model.Game;
 import com.group09.playit.model.Player;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Comparator;
+import java.util.Objects;
 
 import static javafx.scene.text.Font.font;
 
@@ -205,6 +211,7 @@ public class GameGUI extends Parent implements GameController.GameObserver {
     /**
      * Show a dialog when the game status is GAME_OVER.
      * The dialog shows the final scores and the losing player.
+     * When the player closes the dialog, the game closes and the menu is shown.
      */
     private void showGameOverDialog() {
         Dialog<Object> gameOver = new Dialog<>();
@@ -213,7 +220,18 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         content.setAlignment(Pos.CENTER);
         content.setSpacing(10);
 
-        gameOver.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> gameOver.close());
+        gameOver.getDialogPane().getScene().getWindow().setOnCloseRequest(e -> {
+            gameOver.close();
+            try {
+                Parent root = FXMLLoader.load(Objects.requireNonNull(HeartsApplication.class.getResource("templates/menu-view.fxml")));
+                Scene scene = new Scene(root, 600, 400);
+                Stage stage = (Stage) table.getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         game.getPlayers().sort(Comparator.comparingInt(Player::getTotalScore));
         Player losingPlayer = game.getPlayers().get(game.getPlayers().size() -1);
