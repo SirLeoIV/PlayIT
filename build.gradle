@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'org.openjfx.javafxplugin' version '0.0.12'
     id 'org.beryx.jlink' version '2.24.1'
 }
 
@@ -27,7 +27,7 @@ application {
     mainModule = 'com.group09.playit'
     mainClass = 'com.group09.playit.PlayIT'
 }
-
+/** uncomment if you want to build a jar file
 jar {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
@@ -38,6 +38,7 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+*/
 
 javafx {
     version = '17.0.1'
