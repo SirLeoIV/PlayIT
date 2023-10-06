@@ -73,7 +73,7 @@ public class GameController {
 
         trick.getCurrentPlayer().playCard(card);
         TrickService.playCard(trick, round, card);
-        System.out.println("Played card: " + card.toString());
+        // System.out.println("Played card: " + card.toString());
 
         if (TrickService.trickFull(trick, round)) {
             TrickService.endTrick(trick, round);

@@ -61,11 +61,10 @@ public class MenuSceneController {
         String name = playerName.getText();
         if (name.isBlank()) name = "Player " + (listOfPlayers.getItems().size() + 1);
         listOfPlayers.getItems().add(name);
-        System.out.println("addPlayer");
         if (listOfPlayers.getItems().size() >= 5) {
             addPlayer.setDisable(true);
         }
-        if (listOfPlayers.getItems().size() > 0) {
+        if (!listOfPlayers.getItems().isEmpty()) {
             removePlayer.setDisable(false);
         }
         if (listOfPlayers.getItems().size() >= 3) {

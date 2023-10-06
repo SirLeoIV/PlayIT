@@ -81,8 +81,6 @@ public class GameGUI extends Parent implements GameController.GameObserver {
         currentPlayer.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
 
         update();
-
-        System.out.println("GameSceneController");
     }
 
     /**

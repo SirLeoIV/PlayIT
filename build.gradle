@@ -25,7 +25,18 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'com.group09.playit'
-    mainClass = 'com.group09.playit.HelloApplication'
+    mainClass = 'com.group09.playit.PlayIT'
+}
+
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes('Main-Class': 'com.group09.playit.PlayIT')
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 javafx {
