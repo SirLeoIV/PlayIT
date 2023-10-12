@@ -9,6 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+/**
+ * The type Menu scene controller.
+ */
 public class MenuSceneController {
 
     @FXML
@@ -54,7 +57,8 @@ public class MenuSceneController {
 
     /**
      * Adds a player to the list of players.
-     * @param event
+     *
+     * @param event the event
      */
     @FXML
     void addPlayer(ActionEvent event) {
@@ -75,7 +79,8 @@ public class MenuSceneController {
 
     /**
      * Removes a player from the list of players.
-     * @param event
+     *
+     * @param event the event
      */
     @FXML
     void removePlayer(ActionEvent event) {
@@ -95,7 +100,8 @@ public class MenuSceneController {
 
     /**
      * Opens a dialog with the rules of the game.
-     * @param event
+     *
+     * @param event the event
      */
     @FXML
     void openRules(ActionEvent event) {
@@ -121,7 +127,8 @@ public class MenuSceneController {
 
     /**
      * Switches to the game scene.
-     * @param event
+     *
+     * @param event the event
      */
     @FXML
     void switchToGame(ActionEvent event) {

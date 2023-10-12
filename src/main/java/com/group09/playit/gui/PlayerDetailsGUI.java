@@ -4,6 +4,9 @@ import com.group09.playit.model.Player;
 import javafx.scene.Parent;
 import javafx.scene.text.Text;
 
+/**
+ * The type Player details gui.
+ */
 public class PlayerDetailsGUI extends Parent {
 
     /**

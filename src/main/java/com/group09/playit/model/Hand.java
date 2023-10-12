@@ -2,6 +2,9 @@ package com.group09.playit.model;
 
 import java.util.ArrayList;
 
+/**
+ * The type Hand.
+ */
 public class Hand {
 
     private final ArrayList<Card> cards;
@@ -24,14 +27,33 @@ public class Hand {
         });
     }
 
+    /**
+     * Play card card.
+     *
+     * @param card the card
+     * @return the card
+     */
     public Card playCard(Card card) {
         return cards.remove(cards.indexOf(card));
     }
 
+    /**
+     * Contains boolean.
+     *
+     * @param card the card
+     * @return the boolean
+     */
     public boolean contains(Card card) {
         return cards.contains(card);
     }
 
+    /**
+     * Contains boolean.
+     *
+     * @param rank the rank
+     * @param suit the suit
+     * @return the boolean
+     */
     public boolean contains(Card.Rank rank, Card.Suit suit) {
         return contains(new Card(suit, rank));
     }
@@ -45,6 +67,11 @@ public class Hand {
         return "[" + cards + "]";
     }
 
+    /**
+     * Gets cards.
+     *
+     * @return the cards
+     */
     public ArrayList<Card> getCards() {
         return cards;
     }

@@ -22,10 +22,19 @@ import java.util.Objects;
 
 import static javafx.scene.text.Font.font;
 
+/**
+ * The type Game gui.
+ */
 public class GameGUI extends Parent implements GameController.GameObserver {
 
+    /**
+     * The Game.
+     */
     Game game;
 
+    /**
+     * The Controller.
+     */
     GameController controller;
 
     private final Pane table = new Pane();

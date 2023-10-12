@@ -9,6 +9,9 @@ import javafx.scene.layout.VBox;
 
 import static javafx.scene.text.Font.font;
 
+/**
+ * The type Opponent gui.
+ */
 public class OpponentGUI extends Parent {
 
     private final Player player;

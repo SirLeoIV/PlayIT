@@ -1,10 +1,19 @@
 package com.group09.playit.model;
 
+/**
+ * The type Card.
+ */
 public class Card {
 
     private Suit suit;
     private Rank rank;
 
+    /**
+     * Instantiates a new Card.
+     *
+     * @param suit the suit
+     * @param rank the rank
+     */
     public Card(Suit suit, Rank rank) {
         this.suit = suit;
         this.rank = rank;
@@ -14,9 +23,21 @@ public class Card {
      * The possible suits of the cards.
      */
     public enum Suit {
+        /**
+         * Clubs suit.
+         */
         CLUBS,
+        /**
+         * Diamonds suit.
+         */
         DIAMONDS,
+        /**
+         * Spades suit.
+         */
         SPADES,
+        /**
+         * Hearts suit.
+         */
         HEARTS
     }
 
@@ -24,26 +45,73 @@ public class Card {
      * The possible ranks of the cards.
      */
     public enum Rank {
+        /**
+         * Ace rank.
+         */
         ACE(14),
+        /**
+         * King rank.
+         */
         KING(13),
+        /**
+         * Queen rank.
+         */
         QUEEN(12),
+        /**
+         * Jack rank.
+         */
         JACK(11),
+        /**
+         * Ten rank.
+         */
         TEN(10),
+        /**
+         * Nine rank.
+         */
         NINE(9),
+        /**
+         * Eight rank.
+         */
         EIGHT(8),
+        /**
+         * Seven rank.
+         */
         SEVEN(7),
+        /**
+         * Six rank.
+         */
         SIX(6),
+        /**
+         * Five rank.
+         */
         FIVE(5),
+        /**
+         * Four rank.
+         */
         FOUR(4),
+        /**
+         * Three rank.
+         */
         THREE(3),
+        /**
+         * Two rank.
+         */
         TWO(2);
 
+        /**
+         * The Points.
+         */
         final int points;
         
         Rank(int points) {
             this.points = points;
         }
 
+        /**
+         * Gets points.
+         *
+         * @return the points
+         */
         public int getPoints() {
             return points;
         }
@@ -63,18 +131,38 @@ public class Card {
         return 0;
     }
 
+    /**
+     * Gets suit.
+     *
+     * @return the suit
+     */
     public Suit getSuit() {
         return suit;
     }
 
+    /**
+     * Sets suit.
+     *
+     * @param suit the suit
+     */
     public void setSuit(Suit suit) {
         this.suit = suit;
     }
 
+    /**
+     * Gets rank.
+     *
+     * @return the rank
+     */
     public Rank getRank() {
         return rank;
     }
 
+    /**
+     * Sets rank.
+     *
+     * @param rank the rank
+     */
     public void setRank(Rank rank) {
         this.rank = rank;
     }

@@ -3,10 +3,14 @@ package com.group09.playit.logic;
 import com.group09.playit.model.Round;
 import com.group09.playit.model.Trick;
 
+/**
+ * The type Round service.
+ */
 public class RoundService {
 
     /**
      * Start a new trick.
+     *
      * @param round current round
      */
     public static void nextTrick(Round round) {
@@ -16,6 +20,7 @@ public class RoundService {
 
     /**
      * Check if the round is over.
+     *
      * @param currentRound current round
      * @return true if the round is over, false otherwise
      */
@@ -27,6 +32,7 @@ public class RoundService {
      * End the round.
      * Add the current score to the total score of each player.
      * Set the current score of each player to 0.
+     *
      * @param round current round
      */
     public static void endRound(Round round) {

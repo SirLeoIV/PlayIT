@@ -7,6 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 
+/**
+ * The type Hand gui.
+ */
 public class HandGUI extends Parent {
 
     private final GameController controller;

@@ -20,6 +20,9 @@ public class GameController {
      * This interface is used to notify observers that the game state has changed.
      */
     public interface GameObserver {
+        /**
+         * Update.
+         */
         void update();
     }
 
@@ -123,6 +126,11 @@ public class GameController {
         notifyAllObservers();
     }
 
+    /**
+     * Gets game status.
+     *
+     * @return the game status
+     */
     public GameStatus getGameStatus() {
         return gameStatus;
     }
@@ -135,9 +143,21 @@ public class GameController {
      * GAME_OVER: the game is over. <br>
      */
     public enum GameStatus {
+        /**
+         * Active turn game status.
+         */
         ACTIVE_TURN,
+        /**
+         * Waiting for player game status.
+         */
         WAITING_FOR_PLAYER,
+        /**
+         * Round over game status.
+         */
         ROUND_OVER,
+        /**
+         * Game over game status.
+         */
         GAME_OVER
     }
 

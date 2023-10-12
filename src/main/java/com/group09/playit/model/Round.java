@@ -5,6 +5,9 @@ import com.group09.playit.logic.RoundService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Round.
+ */
 public class Round {
 
     private final ArrayList<Player> players;
@@ -52,30 +55,65 @@ public class Round {
         return players.get(0);
     }
 
+    /**
+     * Gets current trick.
+     *
+     * @return the current trick
+     */
     public Trick getCurrentTrick() {
         return tricks.get(tricks.size()-1);
     }
 
+    /**
+     * Is hearts broken boolean.
+     *
+     * @return the boolean
+     */
     public boolean isHeartsBroken() {
         return heartsBroken;
     }
 
+    /**
+     * Gets players.
+     *
+     * @return the players
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * Gets current starting player.
+     *
+     * @return the current starting player
+     */
     public Player getCurrentStartingPlayer() {
         return currentStartingPlayer;
     }
 
+    /**
+     * Gets tricks.
+     *
+     * @return the tricks
+     */
     public ArrayList<Trick> getTricks() {
         return tricks;
     }
 
+    /**
+     * Sets current starting player.
+     *
+     * @param winningPlayer the winning player
+     */
     public void setCurrentStartingPlayer(Player winningPlayer) {
         currentStartingPlayer = winningPlayer;
     }
 
+    /**
+     * Sets hearts broken.
+     *
+     * @param b the b
+     */
     public void setHeartsBroken(boolean b) {
         heartsBroken = b;
     }

@@ -7,10 +7,14 @@ import com.group09.playit.model.Trick;
 
 import java.util.ArrayList;
 
+/**
+ * The type Trick service.
+ */
 public class TrickService {
 
     /**
      * Get the value of the cards in the current trick.
+     *
      * @param trick current trick
      * @return value of the cards
      */
@@ -44,8 +48,8 @@ public class TrickService {
      * If the trick is not empty, the legal cards are all cards of the same suit as the first card in the trick.
      * If the player does not have any cards of the same suit, the legal cards are all cards.
      *
-     * @param trick current trick
-     * @param round current round
+     * @param trick  current trick
+     * @param round  current round
      * @param player current player
      * @return list of legal cards to play
      */
@@ -82,9 +86,10 @@ public class TrickService {
      * Play a card in the current trick.
      * The current player is the next player in the round.
      * The hearts are broken if a heart is played.
+     *
      * @param trick current trick
      * @param round current round
-     * @param card card to play
+     * @param card  card to play
      */
     public static void playCard(Trick trick, Round round, Card card) {
         trick.getCards().add(card);
@@ -98,6 +103,7 @@ public class TrickService {
 
     /**
      * Check if the trick is full.
+     *
      * @param trick current trick
      * @param round current round
      * @return true if the trick is full, false otherwise

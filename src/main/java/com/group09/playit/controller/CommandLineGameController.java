@@ -8,8 +8,14 @@ import com.group09.playit.model.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The type Command line game controller.
+ */
 public class CommandLineGameController {
 
+    /**
+     * The Game.
+     */
     Game game = new Game(100, "Player 1", "Player 2", "Player 3", "Player 4");
 
     /**
@@ -49,6 +55,11 @@ public class CommandLineGameController {
         System.out.println("-----------------");
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         CommandLineGameController gameController = new CommandLineGameController();
         gameController.startGame();

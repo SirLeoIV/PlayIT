@@ -6,12 +6,16 @@ import com.group09.playit.model.Round;
 
 import java.util.ArrayList;
 
+/**
+ * The type Game service.
+ */
 public class GameService {
 
     /**
      * Check if the game is over.
+     *
      * @param game current game
-     * @return
+     * @return boolean
      */
     public static boolean isGameOver(Game game) {
         ArrayList<Player> players = game.getPlayers();
@@ -25,6 +29,7 @@ public class GameService {
 
     /**
      * Start a new round.
+     *
      * @param game current game
      */
     public static void newRound(Game game) {

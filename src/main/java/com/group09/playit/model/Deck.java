@@ -3,6 +3,9 @@ package com.group09.playit.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * The type Deck.
+ */
 public class Deck {
 
     private final ArrayList<Card> cards;
@@ -35,14 +38,27 @@ public class Deck {
         }
     }
 
+    /**
+     * Gets cards.
+     *
+     * @return the cards
+     */
     public ArrayList<Card> getCards() {
         return cards;
     }
 
+    /**
+     * Shuffle.
+     */
     public void shuffle() {
         Collections.shuffle(cards);
     }
 
+    /**
+     * Size int.
+     *
+     * @return the int
+     */
     public int size() {
         return cards.size();
     }
