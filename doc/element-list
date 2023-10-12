@@ -1,0 +1,6 @@
+module:com.group09.playit
+com.group09.playit
+com.group09.playit.controller
+com.group09.playit.gui
+com.group09.playit.logic
+com.group09.playit.model
