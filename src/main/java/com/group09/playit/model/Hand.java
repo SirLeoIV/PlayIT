@@ -28,7 +28,7 @@ public class Hand {
     }
 
     /**
-     * Play card card.
+     * Play card.
      *
      * @param card the card
      * @return the card

@@ -4,6 +4,7 @@ import com.group09.playit.logic.GameService;
 import com.group09.playit.logic.RoundService;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.*;
+import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,12 @@ import java.util.List;
  * This class functions as the interface between the UI and the game logic.
  */
 public class GameController {
+
+    boolean debug = true;
+
+    private void log(String message) {
+        if (debug) System.out.println(message);
+    }
 
     /**
      * The interface Game observer.
@@ -30,6 +37,8 @@ public class GameController {
 
     private final Game game;
 
+    private RoundState roundState;
+
     private GameStatus gameStatus;
 
     /**
@@ -40,6 +49,10 @@ public class GameController {
     public GameController(Game game) {
         this.game = game;
         GameService.newRound(game);
+        roundState = new RoundState(
+                game.getPlayers(),
+                game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
+        roundState.setPlayableCards(legalCardsToPlay());
         gameStatus = GameStatus.WAITING_FOR_PLAYER;
     }
 
@@ -74,8 +87,13 @@ public class GameController {
         Round round = game.getCurrentRound();
         Trick trick = round.getCurrentTrick();
 
+        log("player " + trick.getCurrentPlayer().getName() + " plays card " + card.toString());
+
         trick.getCurrentPlayer().playCard(card);
         TrickService.playCard(trick, round, card);
+        roundState.addCardToPlayedCardsForCurrentPlayer(card);
+        roundState.setPlayableCards(legalCardsToPlay());
+        roundState.setCurrentPlayer(trick.getCurrentPlayer());
         // System.out.println("Played card: " + card.toString());
 
         if (TrickService.trickFull(trick, round)) {
@@ -84,6 +102,7 @@ public class GameController {
         }
         if (RoundService.isRoundOver(round)) {
             gameStatus = GameStatus.ROUND_OVER;
+            log("round over");
             RoundService.endRound(round);
             if (GameService.isGameOver(game)) gameStatus = GameStatus.GAME_OVER;
         } else {
@@ -105,6 +124,14 @@ public class GameController {
     }
 
     /**
+     * Gets the current player.
+     * @return the current player
+     */
+    public Player getCurrentPlayer() {
+        return game.getCurrentRound().getCurrentTrick().getCurrentPlayer();
+    }
+
+    /**
      * The current player confirms that they are the active player.
      * The game status is updated accordingly.
      *
@@ -123,7 +150,16 @@ public class GameController {
     public void startRound() {
         GameService.newRound(game);
         gameStatus = GameStatus.WAITING_FOR_PLAYER;
+        roundState = new RoundState(
+                game.getPlayers(),
+                game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
+        roundState.setPlayableCards(legalCardsToPlay());
+        log("new round started");
         notifyAllObservers();
+    }
+
+    public RoundState getRoundState() {
+        return roundState.clone();
     }
 
     /**
