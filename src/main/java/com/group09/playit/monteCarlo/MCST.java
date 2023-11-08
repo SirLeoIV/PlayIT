@@ -5,4 +5,8 @@ public class MCST {
     //constructer that takes in a state for the root node
     //initialize children based on legal moves
 
+    //traversal
+    //selection
+    //rollout --> type of agent
+    //backpropagation
 }
