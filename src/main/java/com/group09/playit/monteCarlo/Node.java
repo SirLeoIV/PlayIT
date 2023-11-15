@@ -22,6 +22,8 @@ public class Node {
 
     private final ArrayList<Node> children = new ArrayList<>();
 
+    private final double EXPLORATION_CONSTANT = 2.0;
+
     public Node(RoundState state, Card cardPlayed, Agent agentType) {
         this.state = state;
         this.cardPlayed = cardPlayed;
@@ -106,10 +108,31 @@ public class Node {
         initializeChildren(state);
     }
 
+    /**
+     * Selects a child node based on the MINIMUM UCB1 score, or if their number of visits is = 0
+     * @return minimum UCB1 score child
+     */
     public Node select() {
-        return children.get(0); // TODO formula
+        Node minChild = children.get(0);
+        for(Node child : children)
+        {
+            if(child.getNumberVisits() == 0)
+            {
+                return child;
+            }
+            else if(UCB1formula(child) < UCB1formula(minChild)){
+                minChild = child;
+            }
+        }
+        return minChild;
     }
 
+    private double UCB1formula(Node node){
+        double averageScore = node.averageScore();
+        double explorationTerm = EXPLORATION_CONSTANT *
+                Math.sqrt(Math.log(node.getParent().getNumberVisits()) / node.getNumberVisits());
+        return averageScore + explorationTerm;
+    }
     @Override
     public String toString() {
         return "Node{" +
