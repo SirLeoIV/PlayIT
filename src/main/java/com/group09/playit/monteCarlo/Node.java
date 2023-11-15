@@ -130,7 +130,7 @@ public class Node {
     private double UCB1formula(Node node){
         double averageScore = node.averageScore();
         double explorationTerm = EXPLORATION_CONSTANT *
-                Math.sqrt(Math.log(node.getParent().getNumberVisits()) / node.getNumberVisits());
+                Math.sqrt(Math.log(node.getParent().getNumberVisits()) / (double) node.getNumberVisits());
         return averageScore + explorationTerm;
     }
     @Override
