@@ -11,6 +11,14 @@ import java.util.ArrayList;
 
 public class Node {
 
+    boolean debug = false;
+
+    private void log(String message) {
+        if (debug) {
+            System.out.println(message);
+        }
+    }
+
     private RoundState state;
     private int totalScore = 0;
     private int numberVisits = 0;
@@ -41,10 +49,15 @@ public class Node {
 
     private void initializeChildren(RoundState state) {
         for (Card card : TrickService.legalCardsToPlay(state)) {
+            log("Initializing child for card " + card.toString());
             RoundState childState = state.clone();
 
             RoundController childController = new RoundController(childState);
             childController.playCard(card);
+
+            if (TrickService.trickFull(childState, childState.getCurrentTrickId())) {
+                TrickService.endTrick(childState);
+            }
 
             Node child = new Node(childState, this, card, agentType);
             children.add(child);
@@ -86,8 +99,12 @@ public class Node {
         totalScore = simulation.getRoundState().getPlayerScores().get(0);
 
         RoundState newState = simulation.getRoundState();
-        Card nextCard = newState.getPlayedCards().get(0).get(newState.trickIdOfCard(cardPlayed) + 1);
-        state = newState.getRoundStateUpToGivenCardPlayed(nextCard, false);
+        try {
+            Card nextCard = newState.getPlayedCards().get(0).get(newState.trickIdOfCard(cardPlayed) + 1);
+            state = newState.getRoundStateUpToGivenCardPlayed(nextCard, false);
+        } catch (IndexOutOfBoundsException ignored) {
+            state = newState;
+        }
         return totalScore;
     }
 
@@ -120,7 +137,7 @@ public class Node {
             {
                 return child;
             }
-            else if(UCB1formula(child) < UCB1formula(minChild)){
+            else if(UCB1formula(child) > UCB1formula(minChild)){
                 minChild = child;
             }
         }
@@ -128,11 +145,14 @@ public class Node {
     }
 
     private double UCB1formula(Node node){
-        double averageScore = node.averageScore();
+        if (node == null) return Double.MIN_VALUE;
+        double averageScore = 26 - node.averageScore();
         double explorationTerm = EXPLORATION_CONSTANT *
                 Math.sqrt(Math.log(node.getParent().getNumberVisits()) / (double) node.getNumberVisits());
         return averageScore + explorationTerm;
     }
+
+
     @Override
     public String toString() {
         return "Node{" +
@@ -146,5 +166,9 @@ public class Node {
 
     public RoundState getState() {
         return state;
+    }
+
+    public void setParent(Node root) {
+        this.parent = root;
     }
 }

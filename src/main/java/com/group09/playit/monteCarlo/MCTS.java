@@ -2,6 +2,7 @@ package com.group09.playit.monteCarlo;
 
 import com.group09.playit.logic.DeckService;
 import com.group09.playit.model.Card;
+import com.group09.playit.simulation.RandomAgent;
 import com.group09.playit.simulation.SimpleAgent;
 import com.group09.playit.simulation.Simulation;
 import com.group09.playit.state.RoundState;
@@ -33,20 +34,17 @@ public class MCTS {
         this.root.expand();
     }
 
-    public Card traverse() {
+    public Card traverse(int seconds) {
+        nodeIds = 0;
         Node tree = root;
         long startTime = System.currentTimeMillis();
-        long runtime = 100000 * 1000;
+        long runtime = seconds * 1000;
+        if (root.getChildren().size() == 1) return root.getChildren().get(0).getCardPlayed();
 
-        for (int i = 0; i < 100; i++) {
-            log("iteration: " + i);
+        int iterations = 0;
+        while(System.currentTimeMillis() < startTime + runtime || root.getChildren().isEmpty()) {
             Node current = getNextLeaf(tree);
-            log("current node: " + current);
-            log("\tall tricks: ");
-            for (int j = 0; j <= current.getState().getWinningPlayerIds().size(); j++) {
-                log("\t\ttrick " + j + ": " + current.getState().trickToString(j));
-            }
-            if (current.getNumberVisits() == 0) {
+            if (current.getNumberVisits() == 0 || current.getState().getPlayerHands().get(0).isEmpty()) {
                 int score = current.rollout();
                 current.backpropagate(score);
             } else {
@@ -54,10 +52,11 @@ public class MCTS {
                 int score = current.getChildren().get(0).rollout();
                 current.getChildren().get(0).backpropagate(score);
             }
-        }
-        while(System.currentTimeMillis() < startTime + runtime || root.getChildren().isEmpty()) {
+            iterations++;
         }
 
+        log("iterations: " + iterations);
+        log("number of nodes: " + nodeIds);
         root.getChildren().sort(Comparator.comparingDouble(Node::averageScore));
 
         return root.getChildren().get(0).getCardPlayed();
@@ -74,7 +73,7 @@ public class MCTS {
     public static void main(String[] args) {
         String[] playerNames = {"player0", "player1", "player2", "player3"};
         RoundState roundState = new RoundState(DeckService.dealCards(playerNames.length), playerNames);
-        Simulation simulation = new Simulation(roundState, new SimpleAgent(0, null));
+        Simulation simulation = new Simulation(roundState, new RandomAgent(0, null));
         simulation.simulate();
 
         // get round state up to the first card of player 0
@@ -82,8 +81,26 @@ public class MCTS {
         System.out.println("Full hand: " + roundState.getPlayerHands().get(0));
         Node root = new Node(roundState, null, new SimpleAgent(0, null));
         // root.rollout();
+
+        System.out.println("Run for 10 seconds: ");
         MCTS mcst = new MCTS(root);
-        Card card = mcst.traverse();
+        Card card = mcst.traverse(10);
+        for (Node child : root.getChildren()) {
+            System.out.println(child.getCardPlayed() + " " + child.averageScore());
+        }
+        System.out.println("Card to play:");
         System.out.println(card);
+        System.out.println("--------------------");
+
+        System.out.println("Run for 2 second: ");
+        Node root2 = new Node(roundState.clone(), null, new SimpleAgent(0, null));
+        MCTS mcst2 = new MCTS(root2);
+        Card card2 = mcst2.traverse(2);
+        for (Node child : root.getChildren()) {
+            System.out.println(child.getCardPlayed() + " " + child.averageScore());
+        }
+        System.out.println("Card to play:");
+        System.out.println(card2);
+        System.out.println("--------------------");
     }
 }

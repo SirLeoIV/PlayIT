@@ -25,6 +25,10 @@ public class Simulation {
                 roundController.addAgent(new SimpleAgent(i, roundController));
             } else if (agentType instanceof RandomAgent) {
                 roundController.addAgent(new RandomAgent(i, roundController));
+            } else if (agentType instanceof HighestAgent) {
+                roundController.addAgent(new HighestAgent(i, roundController));
+            } else if (agentType instanceof LowestAgent) {
+                roundController.addAgent(new LowestAgent(i, roundController));
             } else {
                 throw new IllegalArgumentException("Agent type not supported");
             }

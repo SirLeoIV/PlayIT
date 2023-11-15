@@ -43,6 +43,7 @@ public class RoundController {
     }
 
     public RoundState nextAction() {
+        log("Next action started");
         log("Player " + getCurrentPlayerId() + " is playing");
         agents.stream().filter(a -> a.getAgentId() == getCurrentPlayerId()).findFirst().orElseThrow().playCard();
         if (TrickService.trickFull(roundState, roundState.getCurrentTrickId())) {

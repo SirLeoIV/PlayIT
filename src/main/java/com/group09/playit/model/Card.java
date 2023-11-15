@@ -157,4 +157,8 @@ public record Card(Suit suit, Rank rank) {
         return suit == card.suit && rank == card.rank;
     }
 
+    public boolean higherThen(Card minCard) {
+        return this.rank.getPoints() > minCard.rank.getPoints();
+    }
+
 }
