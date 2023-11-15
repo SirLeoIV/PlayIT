@@ -1,30 +1,36 @@
 package com.group09.playit.simulation;
 
-import com.group09.playit.controller.GameController;
-import com.group09.playit.model.Game;
-import com.group09.playit.model.Player;
-
-import java.util.Comparator;
+import com.group09.playit.controller.RoundController;
+import com.group09.playit.logic.RoundService;
+import com.group09.playit.state.RoundState;
 
 public class Simulation {
 
-    public static void main(String[] args) {
-        Game game = new Game(1, "player1", "player2", "player3", "player4");
-        GameController gameController = new GameController(game);
+    private final RoundState roundState;
+    Agent agentType;
 
-        for (Player player : game.getPlayers()) {
-            new SimpleAgent(gameController, player);
+    public Simulation(RoundState roundState, Agent agentType) {
+        this.roundState = roundState;
+        this.agentType = agentType;
+    }
+
+    public RoundState getRoundState() {
+        return roundState;
+    }
+
+    public void simulate() {
+        RoundController roundController = new RoundController(roundState);
+        for (int i = 0; i < roundState.getPlayerNames().size(); i++) {
+            if (agentType instanceof SimpleAgent) {
+                roundController.addAgent(new SimpleAgent(i, roundController));
+            } else if (agentType instanceof RandomAgent) {
+                roundController.addAgent(new RandomAgent(i, roundController));
+            } else {
+                throw new IllegalArgumentException("Agent type not supported");
+            }
         }
-
-        gameController.startRound();
-
-        game.getPlayers().sort(Comparator.comparingInt(Player::getTotalScore));
-        Player losingPlayer = game.getPlayers().get(game.getPlayers().size() -1);
-
-        System.out.println("The losing player is " + losingPlayer.getName() + " with a score of " + losingPlayer.getTotalScore());
-
-        for (Player player : game.getPlayers()) {
-            System.out.println(player.getName() + " has a score of " + player.getTotalScore());
+        while (!RoundService.isRoundOver(roundState)) {
+            roundController.nextAction();
         }
     }
 }

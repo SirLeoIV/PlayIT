@@ -17,7 +17,7 @@ public class CardImage extends ImageView {
      * @param card the card
      */
     public CardImage(Card card) {
-        String fileName = card.getRank() + "_" + card.getSuit();
+        String fileName = card.rank() + "_" + card.suit();
         try {
             setImage(new Image(
                     "cards_pngs/" + fileName + ".png"));

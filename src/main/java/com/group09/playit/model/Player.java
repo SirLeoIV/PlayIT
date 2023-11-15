@@ -22,6 +22,13 @@ public class Player {
         this.scores = new ArrayList<>();
     }
 
+    public Player(String name, Integer integer, Hand hand) {
+        this.name = name;
+        this.currentScore = integer;
+        this.hand = hand;
+        this.scores = new ArrayList<>();
+    }
+
     /**
      * Add score.
      *

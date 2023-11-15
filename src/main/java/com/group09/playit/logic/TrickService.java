@@ -4,8 +4,14 @@ import com.group09.playit.model.Card;
 import com.group09.playit.model.Player;
 import com.group09.playit.model.Round;
 import com.group09.playit.model.Trick;
+import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Objects;
+
+import static com.group09.playit.model.Card.Rank;
+import static com.group09.playit.model.Card.Suit;
 
 /**
  * The type Trick service.
@@ -33,13 +39,40 @@ public class TrickService {
         ArrayList<Card> cards = trick.getCards();
         Card winningCard = cards.get(0);
         for (Card card : cards) {
-            if (card.getSuit() == winningCard.getSuit()) {
-                if (card.getRank().getPoints() > winningCard.getRank().getPoints()) {
+            if (card.suit() == winningCard.suit()) {
+                if (card.rank().getPoints() > winningCard.rank().getPoints()) {
                     winningCard = card;
                 }
             }
         }
         return winningCard;
+    }
+
+    private static Card winningCard(RoundState roundState, int trickId) {
+
+        Suit suit = roundState.getTrickModel(trickId).getSuit();
+
+        ArrayList<Card> cardsOfSuit = new ArrayList<>();
+        for (Card card : roundState.getTrickById(trickId)) {
+            if (card.suit() == roundState.getTrickModel(trickId).getSuit()) {
+                cardsOfSuit.add(card);
+            }
+        }
+
+        return cardsOfSuit.stream()
+                .max(Comparator.comparingInt(c -> {
+                    return c.rank().getPoints();
+                }))
+                .orElseThrow();
+
+        // return roundStateV2.getTrickById(trickId).stream()
+        //         .filter(card -> {
+        //             return card.getSuit() == roundStateV2.getTrickModel(trickId).getSuit();
+        //         })
+        //         .max(Comparator.comparingInt(c -> {
+        //             return c.getRank().getPoints();
+        //         }))
+        //         .orElseThrow();
     }
 
     /**
@@ -57,26 +90,57 @@ public class TrickService {
         ArrayList<Card> cardsInTrick = trick.getCards();
         ArrayList<Card> legalCards = new ArrayList<>();
         if (cardsInTrick.isEmpty()) {
-            if (player.getHand().contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))) {
-                legalCards.add(new Card(Card.Suit.CLUBS, Card.Rank.TWO));
+            if (player.getHand().contains(new Card(Suit.CLUBS, Rank.TWO))) {
+                legalCards.add(new Card(Suit.CLUBS, Rank.TWO));
             } else {
                 for (Card card : player.getHand().getCards()) {
-                    if (card.getSuit() != Card.Suit.HEARTS
+                    if (card.suit() != Suit.HEARTS
                             || round.isHeartsBroken()
-                            || player.getHand().getCards().stream().noneMatch(c -> c.getSuit() != Card.Suit.HEARTS)) {
+                            || player.getHand().getCards().stream().allMatch(c -> c.suit() == Suit.HEARTS)) {
                         legalCards.add(card);
                     }
                 }
             }
         } else {
-            Card.Suit suit = cardsInTrick.get(0).getSuit();
+            Suit suit = cardsInTrick.get(0).suit();
             for (Card card : player.getHand().getCards()) {
-                if (card.getSuit() == suit) {
+                if (card.suit() == suit) {
                     legalCards.add(card);
                 }
             }
             if (legalCards.isEmpty()) {
                 legalCards.addAll(player.getHand().getCards());
+            }
+        }
+        return legalCards;
+    }
+
+    public static ArrayList<Card> legalCardsToPlay(RoundState roundState) {
+        int playerId = roundState.getCurrentPlayerId();
+        ArrayList<Card> cardsInTrick = roundState.getTrickById(roundState.getCurrentTrickId());
+        ArrayList<Card> legalCards = new ArrayList<>();
+        if (cardsInTrick.isEmpty() || cardsInTrick.stream().allMatch(Objects::isNull)) {
+            if (roundState.getPlayerHands().get(playerId).contains(new Card(Suit.CLUBS, Rank.TWO))) {
+                legalCards.add(new Card(Suit.CLUBS, Rank.TWO));
+            } else {
+                boolean heartsBroken = roundState.isHeartsBroken();
+                for (Card card : roundState.getPlayerHands().get(playerId)) {
+                    if (card.suit() != Suit.HEARTS
+                            || heartsBroken
+                            || roundState.getPlayerHands().get(playerId).stream().allMatch(c -> c.suit() == Suit.HEARTS)) {
+                        legalCards.add(card);
+                    }
+                }
+            }
+        } else {
+            Suit suit = cardsInTrick.get(roundState.trickStartingPlayerId(roundState.getCurrentTrickId())).suit();
+            for (Card card : roundState.getPlayerHands().get(playerId)) {
+                if (card.suit() == suit) {
+                    legalCards.add(card);
+                }
+            }
+            if (legalCards.isEmpty()) {
+                legalCards.addAll(roundState.getPlayerHands().get(playerId));
             }
         }
         return legalCards;
@@ -93,12 +157,18 @@ public class TrickService {
      */
     public static void playCard(Trick trick, Round round, Card card) {
         trick.getCards().add(card);
-        if (card.getSuit() == Card.Suit.HEARTS) {
+        if (card.suit() == Suit.HEARTS) {
             round.setHeartsBroken(true);
         }
         trick.setCurrentPlayer(
                 round.getPlayers()
                         .get((round.getPlayers().indexOf(trick.getCurrentPlayer()) + 1) % round.getPlayers().size()));
+    }
+
+    public static void playCard(RoundState roundState, Card card) {
+        int playerId = roundState.getCurrentPlayerId();
+        roundState.getPlayerHands().get(playerId).remove(card);
+        roundState.getPlayedCards().get(playerId).add(card);
     }
 
     /**
@@ -110,6 +180,10 @@ public class TrickService {
      */
     public static boolean trickFull(Trick trick, Round round) {
         return trick.getCards().size() == round.getPlayers().size();
+    }
+
+    public static boolean trickFull(RoundState roundState, int trickId) {
+        return roundState.getTrickById(trickId).stream().noneMatch(Objects::isNull);
     }
 
     /**
@@ -129,5 +203,13 @@ public class TrickService {
         for (Player player : round.getPlayers()) {
             player.setCardPlayed(null);
         }
+    }
+
+    public static void endTrick(RoundState roundState) {
+        int trickId = roundState.getCurrentTrickId();
+        Card winningCard = winningCard(roundState, trickId);
+        int winningPlayerId = roundState.getPlayedCards().indexOf(
+                roundState.getPlayedCards().stream().filter(cardsByPlayer -> cardsByPlayer.contains(winningCard)).findFirst().orElseThrow());
+        roundState.getWinningPlayerIds().add(winningPlayerId);
     }
 }

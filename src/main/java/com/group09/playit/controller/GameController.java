@@ -4,7 +4,6 @@ import com.group09.playit.logic.GameService;
 import com.group09.playit.logic.RoundService;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.*;
-import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +36,6 @@ public class GameController {
 
     private final Game game;
 
-    private RoundState roundState;
-
     private GameStatus gameStatus;
 
     /**
@@ -49,10 +46,6 @@ public class GameController {
     public GameController(Game game) {
         this.game = game;
         GameService.newRound(game);
-        roundState = new RoundState(
-                game.getPlayers(),
-                game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
-        roundState.setPlayableCards(legalCardsToPlay());
         gameStatus = GameStatus.WAITING_FOR_PLAYER;
     }
 
@@ -91,10 +84,6 @@ public class GameController {
 
         trick.getCurrentPlayer().playCard(card);
         TrickService.playCard(trick, round, card);
-        roundState.addCardToPlayedCardsForCurrentPlayer(card);
-        roundState.setPlayableCards(legalCardsToPlay());
-        roundState.setCurrentPlayer(trick.getCurrentPlayer());
-        // System.out.println("Played card: " + card.toString());
 
         if (TrickService.trickFull(trick, round)) {
             TrickService.endTrick(trick, round);
@@ -150,16 +139,8 @@ public class GameController {
     public void startRound() {
         GameService.newRound(game);
         gameStatus = GameStatus.WAITING_FOR_PLAYER;
-        roundState = new RoundState(
-                game.getPlayers(),
-                game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
-        roundState.setPlayableCards(legalCardsToPlay());
         log("new round started");
         notifyAllObservers();
-    }
-
-    public RoundState getRoundState() {
-        return roundState.clone();
     }
 
     /**

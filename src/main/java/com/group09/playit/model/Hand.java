@@ -20,10 +20,10 @@ public class Hand {
 
         // sort cards by suit and rank ascending
         cards.sort((card1, card2) -> {
-            if (card1.getSuit() == card2.getSuit()) {
-                return card2.getRank().compareTo(card1.getRank());
+            if (card1.suit() == card2.suit()) {
+                return card2.rank().compareTo(card1.rank());
             }
-            return card1.getSuit().compareTo(card2.getSuit());
+            return card1.suit().compareTo(card2.suit());
         });
     }
 

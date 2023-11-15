@@ -3,21 +3,7 @@ package com.group09.playit.model;
 /**
  * The type Card.
  */
-public class Card {
-
-    private Suit suit;
-    private Rank rank;
-
-    /**
-     * Instantiates a new Card.
-     *
-     * @param suit the suit
-     * @param rank the rank
-     */
-    public Card(Suit suit, Rank rank) {
-        this.suit = suit;
-        this.rank = rank;
-    }
+public record Card(Suit suit, Rank rank) {
 
     /**
      * The possible suits of the cards.
@@ -102,7 +88,7 @@ public class Card {
          * The Points.
          */
         final int points;
-        
+
         Rank(int points) {
             this.points = points;
         }
@@ -136,17 +122,9 @@ public class Card {
      *
      * @return the suit
      */
-    public Suit getSuit() {
+    @Override
+    public Suit suit() {
         return suit;
-    }
-
-    /**
-     * Sets suit.
-     *
-     * @param suit the suit
-     */
-    public void setSuit(Suit suit) {
-        this.suit = suit;
     }
 
     /**
@@ -154,17 +132,9 @@ public class Card {
      *
      * @return the rank
      */
-    public Rank getRank() {
+    @Override
+    public Rank rank() {
         return rank;
-    }
-
-    /**
-     * Sets rank.
-     *
-     * @param rank the rank
-     */
-    public void setRank(Rank rank) {
-        this.rank = rank;
     }
 
     @Override
@@ -175,6 +145,7 @@ public class Card {
     /**
      * Check if two cards are equal.
      * Two cards are equal if they have the same suit and rank.
+     *
      * @param o other card
      * @return true if the cards are equal, false otherwise
      */

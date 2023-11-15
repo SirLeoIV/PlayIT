@@ -41,6 +41,13 @@ public class Round {
         RoundService.nextTrick(this);
     }
 
+    public Round(ArrayList<Player> players, ArrayList<Trick> tricks, Player currentStartingPlayer, boolean heartsBroken) {
+        this.players = players;
+        this.tricks.addAll(new ArrayList<>(tricks.stream().filter(trick -> !trick.getCards().isEmpty()).toList()));
+        this.currentStartingPlayer = currentStartingPlayer;
+        this.heartsBroken = heartsBroken;
+    }
+
     /**
      * Determine the first starting player.
      * The player with the 2 of clubs starts.

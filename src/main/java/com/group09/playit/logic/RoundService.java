@@ -2,6 +2,9 @@ package com.group09.playit.logic;
 
 import com.group09.playit.model.Round;
 import com.group09.playit.model.Trick;
+import com.group09.playit.state.RoundState;
+
+import java.util.ArrayList;
 
 /**
  * The type Round service.
@@ -26,6 +29,10 @@ public class RoundService {
      */
     public static boolean isRoundOver(Round currentRound) {
         return currentRound.getPlayers().stream().allMatch(player -> player.getHand().getCards().isEmpty());
+    }
+
+    public static boolean isRoundOver(RoundState roundState) {
+        return roundState.getPlayerHands().stream().allMatch(ArrayList::isEmpty);
     }
 
     /**
