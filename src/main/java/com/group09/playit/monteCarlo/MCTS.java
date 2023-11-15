@@ -5,6 +5,7 @@ import com.group09.playit.model.Card;
 import com.group09.playit.simulation.RandomAgent;
 import com.group09.playit.simulation.SimpleAgent;
 import com.group09.playit.simulation.Simulation;
+import com.group09.playit.state.NodeState;
 import com.group09.playit.state.RoundState;
 
 import java.util.Comparator;
@@ -77,9 +78,26 @@ public class MCTS {
         simulation.simulate();
 
         // get round state up to the first card of player 0
-        roundState = simulation.getRoundState().getRoundStateUpToGivenCardPlayed(simulation.getRoundState().getPlayedCards().get(0).get(0), false);
+        roundState = simulation
+                .getRoundState()
+                .getRoundStateUpToGivenCardPlayed(
+                        simulation.getRoundState()
+                                .getPlayedCards()
+                                .get(0)
+                                .get(0),
+                        false);
+        RoundState roundState2 = roundState.clone();
         System.out.println("Full hand: " + roundState.getPlayerHands().get(0));
-        Node root = new Node(roundState, null, new SimpleAgent(0, null));
+        Node root = new Node(
+                NodeState.createRoundStateBasedOn(
+                        roundState.getPlayedCards(),
+                        roundState.getPlayerHands().get(0),
+                        roundState.getWinningPlayerIds(),
+                        roundState.getPlayerNames(),
+                        roundState.getStartedPlayerId()
+                ),
+                null,
+                new SimpleAgent(0, null));
         // root.rollout();
 
         System.out.println("Run for 10 seconds: ");
@@ -92,10 +110,17 @@ public class MCTS {
         System.out.println(card);
         System.out.println("--------------------");
 
-        System.out.println("Run for 2 second: ");
-        Node root2 = new Node(roundState.clone(), null, new SimpleAgent(0, null));
+        System.out.println("Run for 3 second: ");
+        Node root2 = new Node(
+                NodeState.createRoundStateBasedOn(
+                        roundState2.getPlayedCards(),
+                        roundState2.getPlayerHands().get(0),
+                        roundState2.getWinningPlayerIds(),
+                        roundState2.getPlayerNames(),
+                        roundState2.getStartedPlayerId()
+                ), null, new SimpleAgent(0, null));
         MCTS mcst2 = new MCTS(root2);
-        Card card2 = mcst2.traverse(2);
+        Card card2 = mcst2.traverse(3);
         for (Node child : root.getChildren()) {
             System.out.println(child.getCardPlayed() + " " + child.averageScore());
         }

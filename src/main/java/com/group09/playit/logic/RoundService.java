@@ -1,5 +1,7 @@
 package com.group09.playit.logic;
 
+import com.group09.playit.model.Card;
+import com.group09.playit.model.Deck;
 import com.group09.playit.model.Round;
 import com.group09.playit.model.Trick;
 import com.group09.playit.state.RoundState;
@@ -32,7 +34,12 @@ public class RoundService {
     }
 
     public static boolean isRoundOver(RoundState roundState) {
-        return roundState.getPlayerHands().stream().allMatch(ArrayList::isEmpty);
+        Deck deck = new Deck(roundState.getPlayerNames().size());
+        ArrayList<Card> availableCards = deck.getCards();
+        for (ArrayList<Card> playedCards : roundState.getPlayedCards()) {
+            availableCards.removeAll(playedCards);
+        }
+        return availableCards.isEmpty();
     }
 
     /**

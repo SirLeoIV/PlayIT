@@ -98,13 +98,13 @@ public class Node {
         numberVisits++;
         totalScore = simulation.getRoundState().getPlayerScores().get(0);
 
-        RoundState newState = simulation.getRoundState();
-        try {
-            Card nextCard = newState.getPlayedCards().get(0).get(newState.trickIdOfCard(cardPlayed) + 1);
-            state = newState.getRoundStateUpToGivenCardPlayed(nextCard, false);
-        } catch (IndexOutOfBoundsException ignored) {
-            state = newState;
-        }
+        // RoundState newState = simulation.getRoundState();
+        // try {
+        //     Card nextCard = newState.getPlayedCards().get(0).get(newState.trickIdOfCard(cardPlayed) + 1);
+        //     state = newState.getRoundStateUpToGivenCardPlayed(nextCard, false);
+        // } catch (IndexOutOfBoundsException ignored) {
+        //     state = newState;
+        // }
         return totalScore;
     }
 
@@ -137,21 +137,19 @@ public class Node {
             {
                 return child;
             }
-            else if(UCB1formula(child) > UCB1formula(minChild)){
+            else if(child.UCB1formula() > minChild.UCB1formula()){
                 minChild = child;
             }
         }
         return minChild;
     }
 
-    private double UCB1formula(Node node){
-        if (node == null) return Double.MIN_VALUE;
-        double averageScore = 26 - node.averageScore();
+    private double UCB1formula(){
+        double averageScore = 26 - averageScore();
         double explorationTerm = EXPLORATION_CONSTANT *
-                Math.sqrt(Math.log(node.getParent().getNumberVisits()) / (double) node.getNumberVisits());
+                Math.sqrt(Math.log(getParent().getNumberVisits()) / (double) getNumberVisits());
         return averageScore + explorationTerm;
     }
-
 
     @Override
     public String toString() {

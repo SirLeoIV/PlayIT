@@ -167,7 +167,9 @@ public class TrickService {
 
     public static void playCard(RoundState roundState, Card card) {
         int playerId = roundState.getCurrentPlayerId();
-        roundState.getPlayerHands().get(playerId).remove(card);
+        for (ArrayList<Card> playerHand : roundState.getPlayerHands()) {
+            playerHand.remove(card);
+        }
         roundState.getPlayedCards().get(playerId).add(card);
     }
 

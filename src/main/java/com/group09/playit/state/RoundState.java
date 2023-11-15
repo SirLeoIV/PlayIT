@@ -99,6 +99,10 @@ public class RoundState {
         }
     }
 
+    public void setStartedPlayer(Integer startedPlayer) {
+        this.startedPlayer = startedPlayer;
+    }
+
     public ArrayList<Integer> getPlayerScores() {
         ArrayList<Integer> playerScores = new ArrayList<>();
         for (int i = 0; i < playerNames.size(); i++) {
@@ -289,4 +293,7 @@ public class RoundState {
         return roundStateNew;
     }
 
+    public int getStartedPlayerId() {
+        return startedPlayer;
+    }
 }
