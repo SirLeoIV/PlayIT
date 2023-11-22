@@ -16,7 +16,7 @@ public class LowestAgent implements Agent {
     }
 
     @Override
-    public void playCard() {
+    public void playCard() throws NoCardsAvailableException {
         try {
             ArrayList<Card> legalCards = new ArrayList<>(roundController.legalCardsToPlay());
             if (!legalCards.isEmpty()) {
@@ -24,7 +24,8 @@ public class LowestAgent implements Agent {
                 roundController.playCard(cardToPlay);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // System.out.println("No cards available");
+            throw new NoCardsAvailableException();
         }
     }
 

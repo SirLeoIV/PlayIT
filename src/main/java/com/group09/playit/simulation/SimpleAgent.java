@@ -13,11 +13,12 @@ public class SimpleAgent implements Agent {
     }
 
     @Override
-    public void playCard() {
+    public void playCard() throws NoCardsAvailableException {
         try {
             roundController.playCard(roundController.legalCardsToPlay().get(0));
         } catch (Exception e) {
-            e.printStackTrace();
+            // System.out.println("No cards available");
+            throw new NoCardsAvailableException();
         }
     }
 

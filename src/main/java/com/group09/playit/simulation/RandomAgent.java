@@ -17,13 +17,14 @@ public class RandomAgent implements Agent {
     }
 
     @Override
-    public void playCard() {
+    public void playCard() throws NoCardsAvailableException {
         try {
             ArrayList<Card> legalCards = new ArrayList<>(roundController.legalCardsToPlay());
             Collections.shuffle(legalCards);
             roundController.playCard(legalCards.get(0));
         } catch (Exception e) {
-            e.printStackTrace();
+            // System.out.println("No cards available");
+            throw new NoCardsAvailableException();
         }
     }
 

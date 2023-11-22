@@ -5,6 +5,7 @@ import com.group09.playit.logic.RoundService;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.Card;
 import com.group09.playit.simulation.Agent;
+import com.group09.playit.simulation.NoCardsAvailableException;
 import com.group09.playit.simulation.SimpleAgent;
 import com.group09.playit.state.RoundState;
 
@@ -42,7 +43,7 @@ public class RoundController {
         agents.add(agent);
     }
 
-    public RoundState nextAction() {
+    public RoundState nextAction() throws NoCardsAvailableException {
         log("Next action started");
         log("Player " + getCurrentPlayerId() + " is playing");
         agents.stream().filter(a -> a.getAgentId() == getCurrentPlayerId()).findFirst().orElseThrow().playCard();
@@ -85,7 +86,7 @@ public class RoundController {
         return roundState.clone();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoCardsAvailableException {
         ArrayList<Integer> results = new ArrayList<>();
         int numberOfIterations = 10000;
         for (int i = 0; i < 4; i++) {

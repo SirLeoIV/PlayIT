@@ -2,6 +2,7 @@ package com.group09.playit.monteCarlo;
 
 import com.group09.playit.logic.DeckService;
 import com.group09.playit.model.Card;
+import com.group09.playit.simulation.NoCardsAvailableException;
 import com.group09.playit.simulation.RandomAgent;
 import com.group09.playit.simulation.SimpleAgent;
 import com.group09.playit.simulation.Simulation;
@@ -47,11 +48,11 @@ public class MCTS {
             Node current = getNextLeaf(tree);
             if (current.getNumberVisits() == 0 || current.getState().getPlayerHands().get(0).isEmpty()) {
                 int score = current.rollout();
-                current.backpropagate(score);
+                if (score >= 0) current.backpropagate(score);
             } else {
                 current.expand();
                 int score = current.getChildren().get(0).rollout();
-                current.getChildren().get(0).backpropagate(score);
+                if (score >= 0) current.getChildren().get(0).backpropagate(score);
             }
             iterations++;
         }
@@ -71,7 +72,7 @@ public class MCTS {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoCardsAvailableException {
         String[] playerNames = {"player0", "player1", "player2", "player3"};
         RoundState roundState = new RoundState(DeckService.dealCards(playerNames.length), playerNames);
         Simulation simulation = new Simulation(roundState, new RandomAgent(0, null));

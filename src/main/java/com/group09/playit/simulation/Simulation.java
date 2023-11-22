@@ -18,7 +18,7 @@ public class Simulation {
         return roundState;
     }
 
-    public void simulate() {
+    public void simulate() throws NoCardsAvailableException {
         RoundController roundController = new RoundController(roundState);
         for (int i = 0; i < roundState.getPlayerNames().size(); i++) {
             if (agentType instanceof SimpleAgent) {

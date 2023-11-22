@@ -4,6 +4,7 @@ import com.group09.playit.controller.RoundController;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.Card;
 import com.group09.playit.simulation.Agent;
+import com.group09.playit.simulation.NoCardsAvailableException;
 import com.group09.playit.simulation.Simulation;
 import com.group09.playit.state.RoundState;
 
@@ -94,18 +95,16 @@ public class Node {
 
     public int rollout() {
         Simulation simulation = new Simulation(state.clone(), agentType);
-        simulation.simulate();
-        numberVisits++;
-        totalScore = simulation.getRoundState().getPlayerScores().get(0);
-
-        // RoundState newState = simulation.getRoundState();
-        // try {
-        //     Card nextCard = newState.getPlayedCards().get(0).get(newState.trickIdOfCard(cardPlayed) + 1);
-        //     state = newState.getRoundStateUpToGivenCardPlayed(nextCard, false);
-        // } catch (IndexOutOfBoundsException ignored) {
-        //     state = newState;
-        // }
-        return totalScore;
+        try {
+            simulation.simulate();
+            numberVisits++;
+            totalScore = simulation.getRoundState().getPlayerScores().get(0);
+            return totalScore;
+        } catch (NoCardsAvailableException e) {
+            // System.out.println("No cards available exception");
+            parent.children.remove(this);
+        }
+        return -1;
     }
 
     public void backpropagate(int score) {
