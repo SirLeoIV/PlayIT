@@ -5,9 +5,9 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group09.playit.gui.MenuSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group09.playit.gui.MenuSceneController">
    <children>
-      <VBox alignment="CENTER" layoutY="145.0" prefHeight="247.0" prefWidth="600.0" spacing="15.0" style="-fx-background-image: url('background_pngs/image.png');-fx-background-size: cover" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutY="145.0" prefHeight="247.0" prefWidth="800.0" spacing="15.0" style="-fx-background-image: url('background_pngs/image.png');-fx-background-size: cover" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label style="-fx-background-color: FORESTGREEN; -fx-background-radius: 20; -fx-text-fill: #ffffff;" text="HEARTS" textAlignment="CENTER" textFill="#fcfafa">
                <font>
@@ -19,7 +19,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="127.0" prefWidth="400.0" spacing="20.0" style="-fx-background-color: #06B148; -fx-background-radius: 20;">
                <children>
-                  <ListView fx:id="listOfPlayers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="313.0" />
+                  <ListView fx:id="listOfPlayers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="313.0" />
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
                         <TextField fx:id="playerName" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="130.0" promptText="Player Name" style="-fx-background-radius: 20;" />

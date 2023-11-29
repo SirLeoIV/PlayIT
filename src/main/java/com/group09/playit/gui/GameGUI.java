@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import static javafx.scene.text.Font.font;
@@ -50,11 +51,20 @@ public class GameGUI extends Parent implements GameController.GameObserver {
      * The table shows the opponents in a half-circle around the current player.
      * The table also shows whether hearts are broken.
      *
-     * @param game the game
+     * @param pointsToLose the points to lose
+     * @param players      the players
      */
-    public GameGUI(Game game) {
-        this.game = game;
+    public GameGUI(int pointsToLose, List<NewPlayerGUI> players) {
+        String[] playerNames = players.stream().map(p -> p.player.getName()).toList().toArray(new String[0]);
+        this.game = new Game(pointsToLose, playerNames);
         controller = new GameController(game);
+
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getPlayerType().equals(NewPlayerGUI.PlayerType.COMPUTER)) {
+                game.getPlayers().get(i).setHuman(false);
+            }
+        }
+
         controller.attach(this);
 
         AnchorPane gamePane = new AnchorPane();
@@ -100,12 +110,20 @@ public class GameGUI extends Parent implements GameController.GameObserver {
     private void updateCurrentPlayer() {
         currentPlayer.getChildren().clear();
         if (controller.getGameStatus().equals(GameController.GameStatus.ACTIVE_TURN)) {
-            PlayerDetailsGUI playerDetailsGUI = new PlayerDetailsGUI(
-                    game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
-            HandGUI handGUI = new HandGUI(
-                    game.getCurrentRound().getCurrentTrick().getCurrentPlayer(),
-                    controller);
-            currentPlayer.getChildren().addAll(playerDetailsGUI, handGUI);
+            if (game.getCurrentRound().getCurrentTrick().getCurrentPlayer().isHuman()){
+                PlayerDetailsGUI playerDetailsGUI = new PlayerDetailsGUI(
+                        game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
+                HandGUI handGUI = new HandGUI(
+                        game.getCurrentRound().getCurrentTrick().getCurrentPlayer(),
+                        controller);
+                currentPlayer.getChildren().addAll(playerDetailsGUI, handGUI);
+            } else {
+                AiPlayerGUI aiPlayerGUI = new AiPlayerGUI(
+                        game.getCurrentRound().getCurrentTrick().getCurrentPlayer(),
+                        controller);
+                currentPlayer.getChildren().addAll(aiPlayerGUI);
+                System.out.println("AI player: " + game.getCurrentRound().getCurrentTrick().getCurrentPlayer().getName());
+            }
         }
     }
 
@@ -166,6 +184,10 @@ public class GameGUI extends Parent implements GameController.GameObserver {
      * When the player confirms, the game status is updated accordingly.
      */
     private void showWaitingForPlayerDialog() {
+        if (!game.getCurrentRound().getCurrentTrick().getCurrentPlayer().isHuman()) {
+            controller.confirmActivePlayer(game.getCurrentRound().getCurrentTrick().getCurrentPlayer());
+            return;
+        }
         Player player = game.getCurrentRound().getCurrentTrick().getCurrentPlayer();
         Dialog<Object> waitingForPlayer = new Dialog<>();
         waitingForPlayer.setTitle("Waiting for player: " + player.getName());

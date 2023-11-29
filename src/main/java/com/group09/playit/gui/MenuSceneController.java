@@ -1,6 +1,5 @@
 package com.group09.playit.gui;
 
-import com.group09.playit.model.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -18,7 +17,7 @@ public class MenuSceneController {
     private Button addPlayer;
 
     @FXML
-    private ListView<String> listOfPlayers;
+    private ListView<NewPlayerGUI> listOfPlayers;
 
     @FXML
     private TextField playerName;
@@ -53,6 +52,7 @@ public class MenuSceneController {
         pointsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             pointsToLose.setText("Points to lose: " + (int) pointsSlider.getValue());
         });
+        listOfPlayers.setFixedCellSize(40);
     }
 
     /**
@@ -64,7 +64,7 @@ public class MenuSceneController {
     void addPlayer(ActionEvent event) {
         String name = playerName.getText();
         if (name.isBlank()) name = "Player " + (listOfPlayers.getItems().size() + 1);
-        listOfPlayers.getItems().add(name);
+        listOfPlayers.getItems().add(new NewPlayerGUI(name));
         if (listOfPlayers.getItems().size() >= 5) {
             addPlayer.setDisable(true);
         }
@@ -132,7 +132,7 @@ public class MenuSceneController {
      */
     @FXML
     void switchToGame(ActionEvent event) {
-        Parent root = new GameGUI(new Game((int) pointsSlider.getValue(), listOfPlayers.getItems().toArray(new String[0])));
+        Parent root = new GameGUI((int) pointsSlider.getValue(), listOfPlayers.getItems().stream().toList());
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

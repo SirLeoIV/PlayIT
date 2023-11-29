@@ -10,6 +10,7 @@ public class Player {
     private final String name;
     private int currentScore;
     private ArrayList<Integer> scores;
+    private boolean isHuman = true;
 
     /**
      * Instantiates a new Player.
@@ -27,6 +28,14 @@ public class Player {
         this.currentScore = integer;
         this.hand = hand;
         this.scores = new ArrayList<>();
+    }
+
+    public void setHuman(boolean isHuman) {
+        this.isHuman = isHuman;
+    }
+
+    public boolean isHuman() {
+        return isHuman;
     }
 
     /**
