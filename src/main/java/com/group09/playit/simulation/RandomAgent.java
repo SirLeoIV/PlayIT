@@ -24,7 +24,7 @@ public class RandomAgent implements Agent {
             roundController.playCard(legalCards.get(0));
         } catch (Exception e) {
             // System.out.println("No cards available");
-            throw new NoCardsAvailableException();
+             throw new NoCardsAvailableException();
         }
     }
 

@@ -56,4 +56,13 @@ class MCTSTest {
 
     }
 
+    public double getAverageScore(){
+        String[] playerNames = {"player0", "player1", "player2", "player3"};
+//        for(int i = 0; i < 100; i++){
+//        }
+        RoundState roundState = new RoundState(DeckService.dealCards(playerNames.length), playerNames);
+
+        return 0;
+    }
+
 }

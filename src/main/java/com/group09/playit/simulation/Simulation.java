@@ -14,6 +14,7 @@ public class Simulation {
         this.agentType = agentType;
     }
 
+
     public RoundState getRoundState() {
         return roundState;
     }
@@ -21,7 +22,7 @@ public class Simulation {
     public void simulate() throws NoCardsAvailableException {
         RoundController roundController = new RoundController(roundState);
         for (int i = 0; i < roundState.getPlayerNames().size(); i++) {
-            if (agentType instanceof SimpleAgent) {
+            if(agentType instanceof SimpleAgent) {
                 roundController.addAgent(new SimpleAgent(i, roundController));
             } else if (agentType instanceof RandomAgent) {
                 roundController.addAgent(new RandomAgent(i, roundController));
@@ -29,6 +30,31 @@ public class Simulation {
                 roundController.addAgent(new HighestAgent(i, roundController));
             } else if (agentType instanceof LowestAgent) {
                 roundController.addAgent(new LowestAgent(i, roundController));
+            } else if (agentType instanceof MCTSAgent) {
+                roundController.addAgent(new MCTSAgent(i, roundController));
+            } else {
+                throw new IllegalArgumentException("Agent type not supported");
+            }
+        }
+        while (!RoundService.isRoundOver(roundState)) {
+            roundController.nextAction();
+        }
+    }
+
+    public void simulateWithMCTS() throws NoCardsAvailableException{
+        RoundController roundController = new RoundController(roundState);
+        roundController.addAgent(new MCTSAgent(0, roundController));
+        for (int i = 1; i < roundState.getPlayerNames().size(); i++) {
+            if(agentType instanceof SimpleAgent) {
+                roundController.addAgent(new SimpleAgent(i, roundController));
+            } else if (agentType instanceof RandomAgent) {
+                roundController.addAgent(new RandomAgent(i, roundController));
+            } else if (agentType instanceof HighestAgent) {
+                roundController.addAgent(new HighestAgent(i, roundController));
+            } else if (agentType instanceof LowestAgent) {
+                roundController.addAgent(new LowestAgent(i, roundController));
+            } else if (agentType instanceof MCTSAgent) {
+                roundController.addAgent(new MCTSAgent(i, roundController));
             } else {
                 throw new IllegalArgumentException("Agent type not supported");
             }
