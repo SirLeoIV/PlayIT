@@ -39,7 +39,7 @@ class MCTSTest {
                             roundState.getStartedPlayerId()
                     ),
                     null,
-                    new SimpleAgent(0, null));
+                    new SimpleAgent(0, null), 6);
             // root.rollout();
 
             int time = 6;

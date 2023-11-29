@@ -29,23 +29,27 @@ public class Node {
 
     private final int id;
 
+    private final int depthLeft;
+
     private final ArrayList<Node> children = new ArrayList<>();
 
     private final double EXPLORATION_CONSTANT = 2.0;
 
-    public Node(RoundState state, Card cardPlayed, Agent agentType) {
+    public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft) {
         this.state = state;
         this.cardPlayed = cardPlayed;
         this.agentType = agentType;
         this.id = MCTS.nodeIds++;
+        this.depthLeft = depthLeft;
     }
 
-    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType) {
+    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType, int depthLeft) {
         this.state = state;
         this.parent = parent;
         this.cardPlayed = cardPlayed;
         this.agentType = agentType;
         this.id = MCTS.nodeIds++;
+        this.depthLeft = depthLeft;
     }
 
     private void initializeChildren(RoundState state) {
@@ -60,7 +64,7 @@ public class Node {
                 TrickService.endTrick(childState);
             }
 
-            Node child = new Node(childState, this, card, agentType);
+            Node child = new Node(childState, this, card, agentType, depthLeft - 1);
             children.add(child);
         }
     }
@@ -167,5 +171,9 @@ public class Node {
 
     public void setParent(Node root) {
         this.parent = root;
+    }
+
+    public int getDepthLeft() {
+        return depthLeft;
     }
 }

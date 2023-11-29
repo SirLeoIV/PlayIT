@@ -46,7 +46,9 @@ public class MCTS {
         int iterations = 0;
         while(System.currentTimeMillis() < startTime + runtime || root.getChildren().isEmpty()) {
             Node current = getNextLeaf(tree);
-            if (current.getNumberVisits() == 0 || current.getState().getPlayerHands().get(0).isEmpty()) {
+            if (current.getNumberVisits() == 0
+                    || current.getState().getPlayerHands().get(0).isEmpty()
+                    || current.getDepthLeft() == 0) {
                 int score = current.rollout();
                 if (score >= 0) current.backpropagate(score);
             } else {
@@ -98,7 +100,8 @@ public class MCTS {
                         roundState.getStartedPlayerId()
                 ),
                 null,
-                new SimpleAgent(0, null));
+                new SimpleAgent(0, null),
+                6);
         // root.rollout();
 
         System.out.println("Run for 10 seconds: ");
@@ -119,7 +122,7 @@ public class MCTS {
                         roundState2.getWinningPlayerIds(),
                         roundState2.getPlayerNames(),
                         roundState2.getStartedPlayerId()
-                ), null, new SimpleAgent(0, null));
+                ), null, new SimpleAgent(0, null), 6);
         MCTS mcst2 = new MCTS(root2);
         Card card2 = mcst2.traverse(3);
         for (Node child : root.getChildren()) {

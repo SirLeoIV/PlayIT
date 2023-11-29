@@ -51,6 +51,6 @@ class NodeTest {
     }
 
     private Node emptyNode() {
-        return new Node(null, null, null);
+        return new Node(null, null, null, 10);
     }
 }
