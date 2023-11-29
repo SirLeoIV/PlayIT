@@ -4,11 +4,11 @@ import com.group09.playit.logic.DeckService;
 import com.group09.playit.model.Card;
 import com.group09.playit.simulation.NoCardsAvailableException;
 import com.group09.playit.simulation.RandomAgent;
-import com.group09.playit.simulation.SimpleAgent;
 import com.group09.playit.simulation.Simulation;
 import com.group09.playit.state.NodeState;
 import com.group09.playit.state.RoundState;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class MCTS {
@@ -46,9 +46,9 @@ public class MCTS {
         int iterations = 0;
         while(System.currentTimeMillis() < startTime + runtime || root.getChildren().isEmpty()) {
             Node current = getNextLeaf(tree);
-            if (current.getNumberVisits() == 0 || current.getState().getPlayerHands().get(0).isEmpty()) {
+            if (current.getNumberVisits() == 0 || current.getState().getPlayerHands().stream().allMatch(ArrayList::isEmpty)) {
                 int score = current.rollout();
-                if (score >= 0) current.backpropagate(score);
+                current.backpropagate(score);
             } else {
                 current.expand();
                 int score = current.getChildren().get(0).rollout();
