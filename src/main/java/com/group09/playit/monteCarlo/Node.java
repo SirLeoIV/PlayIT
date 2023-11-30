@@ -27,6 +27,8 @@ public class Node {
     private final Card cardPlayed;
     private final Agent agentType;
 
+    private int playerId = 0;
+
     private final int id;
 
     private final int depthLeft;
@@ -35,21 +37,23 @@ public class Node {
 
     private final double EXPLORATION_CONSTANT = 2.0;
 
-    public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft) {
+    public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft, int playerId) {
         this.state = state;
         this.cardPlayed = cardPlayed;
         this.agentType = agentType;
         this.id = MCTS.nodeIds++;
         this.depthLeft = depthLeft;
+        this.playerId = playerId;
     }
 
-    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType, int depthLeft) {
+    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType, int depthLeft, int playerId) {
         this.state = state;
         this.parent = parent;
         this.cardPlayed = cardPlayed;
         this.agentType = agentType;
         this.id = MCTS.nodeIds++;
         this.depthLeft = depthLeft;
+        this.playerId = playerId;
     }
 
     private void initializeChildren(RoundState state) {
@@ -64,7 +68,7 @@ public class Node {
                 TrickService.endTrick(childState);
             }
 
-            Node child = new Node(childState, this, card, agentType, depthLeft - 1);
+            Node child = new Node(childState, this, card, agentType, depthLeft - 1, playerId);
             children.add(child);
         }
     }
@@ -102,7 +106,7 @@ public class Node {
         try {
             simulation.simulate();
             numberVisits++;
-            totalScore = simulation.getRoundState().getPlayerScores().get(0);
+            totalScore = simulation.getRoundState().getPlayerScores().get(playerId);
             return totalScore;
         } catch (NoCardsAvailableException e) {
             // System.out.println("No cards available exception");

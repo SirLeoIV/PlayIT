@@ -3,6 +3,11 @@ package com.group09.playit.gui;
 import com.group09.playit.controller.GameController;
 import com.group09.playit.model.Card;
 import com.group09.playit.model.Player;
+import com.group09.playit.monteCarlo.MCTS;
+import com.group09.playit.monteCarlo.Node;
+import com.group09.playit.simulation.SimpleAgent;
+import com.group09.playit.state.NodeState;
+import com.group09.playit.state.RoundState;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
@@ -34,7 +39,13 @@ public class AiPlayerGUI extends Parent {
         determineCard.setLayoutY(30);
 
         determineCard.setOnAction(e -> {
-            card = controller.legalCardsToPlay().get(0);
+
+            determineCard.setDisable(true);
+            playerName.setText(player.getName() + " (AI) is deciding");
+
+            card = determineCard(player);
+
+            playerName.setText(player.getName() + " (AI) decided");
 
             Text cardText = new Text("AI plays: " + card.toString());
             cardText.setLayoutY(100);
@@ -49,6 +60,29 @@ public class AiPlayerGUI extends Parent {
         });
 
         getChildren().addAll(determineCard);
+    }
+
+    private Card determineCard(Player player) {
+        if (controller.legalCardsToPlay().size() <= 1) {
+            return controller.legalCardsToPlay().get(0);
+        }
+        RoundState roundState = controller.getCurrentRoundState().getRoundStateUpToGivenCardPlayed(controller.getLastPlayedCard(), true);
+
+        Node root = new Node(
+                NodeState.createRoundStateBasedOn(
+                        roundState.getPlayedCards(),
+                        roundState.getPlayerHands().get(roundState.getPlayerNames().indexOf(player.getName())),
+                        roundState.getWinningPlayerIds(),
+                        roundState.getPlayerNames(),
+                        roundState.getStartedPlayerId(),
+                        roundState.getPlayerNames().indexOf(player.getName())
+                ),
+                null,
+                new SimpleAgent(0, null),
+                6, roundState.getPlayerNames().indexOf(player.getName()));
+
+        MCTS mcts = new MCTS(root);
+        return mcts.traverse(3);
     }
 
     /**

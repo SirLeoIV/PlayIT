@@ -10,12 +10,13 @@ public class NodeState {
 
     private final RoundState roundState;
 
-    public NodeState(
+    public NodeState (
             ArrayList<ArrayList<Card>> playedCards,
             ArrayList<Card> player0Hand,
             ArrayList<Integer> winningPlayerIds,
             ArrayList<String> playerNames,
-            int starterPlayerId
+            int starterPlayerId,
+            int playingPlayerId
     ) {
 
         Deck deck = new Deck(playedCards.size());
@@ -28,7 +29,7 @@ public class NodeState {
         ArrayList<ArrayList<Card>> playerHands = new ArrayList<>();
         playerHands.add(player0Hand);
 
-        for (int i = 1; i < 4; i++) {
+        for (int i = playingPlayerId + 1; i != playingPlayerId; i = (i + 1) % playerNames.size()) {
 
             boolean playerMightHaveClubs = true;
             boolean playerMightHaveDiamonds = true;
@@ -73,9 +74,10 @@ public class NodeState {
             ArrayList<Card> player0Hand,
             ArrayList<Integer> winningPlayerIds,
             ArrayList<String> playerNames,
-            int startedPlayerId
+            int startedPlayerId,
+            int playingPlayerId
     ) {
-        NodeState nodeState = new NodeState(playedCards, player0Hand, winningPlayerIds, playerNames, startedPlayerId);
+        NodeState nodeState = new NodeState(playedCards, player0Hand, winningPlayerIds, playerNames, startedPlayerId, playingPlayerId);
         return nodeState.getRoundState();
     }
 

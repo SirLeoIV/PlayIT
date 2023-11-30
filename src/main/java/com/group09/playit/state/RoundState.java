@@ -71,7 +71,8 @@ public class RoundState {
      * @param winningPlayerIds
      */
     public RoundState(ArrayList<String> playerNames, ArrayList<ArrayList<Card>> playerHands, ArrayList<ArrayList<Card>> playedCards, ArrayList<Integer> winningPlayerIds) {
-        if (playerNames.size() != playerHands.size() || playerNames.size() != playedCards.size()) throw playerNumberDoesNotMatchException();
+        if (playerNames.size() != playerHands.size() || playerNames.size() != playedCards.size())
+            throw playerNumberDoesNotMatchException();
         this.playerNames = playerNames;
         this.playerHands = playerHands;
         this.playedCards = playedCards;
@@ -82,7 +83,7 @@ public class RoundState {
         return new IllegalArgumentException("Number of player names does not match number of player hands or played cards");
     }
 
-    @Deprecated // Information is lost. The player scores can only be calculated from this point on.
+    // WARNING! Information is lost. The player scores can only be calculated from this point on.
     public RoundState(Round round) {
         this.playerNames = new ArrayList<>();
         this.playerHands = new ArrayList<>();
@@ -96,6 +97,11 @@ public class RoundState {
         for (Trick trick : round.getTricks()) {
             this.playedCards.get(playerNames.indexOf(trick.getCurrentPlayer().getName())).addAll(trick.getCards());
             this.winningPlayerIds.add(playerNames.indexOf(trick.getCurrentPlayer().getName()));
+        }
+        if (this.playedCards.stream().allMatch(ArrayList::isEmpty)) {
+            this.startedPlayer = playerNames.indexOf(round.getCurrentStartingPlayer().getName());
+        } else {
+            this.startedPlayer = this.playedCards.indexOf(this.playedCards.stream().filter(cards -> cards.contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))).findFirst().orElseThrow());
         }
     }
 
@@ -258,7 +264,9 @@ public class RoundState {
         // and all the cards after the trick of the given card to the list of player hands
         for (int i = 0; i < playedCards.size(); i++) {
             playedCardsNew.add(new ArrayList<>(playedCards.get(i).subList(0, trickId)));
-            playerHandsNew.get(i).addAll(playedCards.get(i).subList(trickId + 1, playedCards.get(i).size()));
+            if (playedCards.get(i).size() > trickId) {
+                playerHandsNew.get(i).addAll(playedCards.get(i).subList(trickId + 1, playedCards.get(i).size()));
+            }
         }
 
         // get the id of the player that started the trick the card was played in
@@ -267,15 +275,17 @@ public class RoundState {
 
         // add all the cards before the given card to the current trick
         for (int i = 0; i < playedCards.size(); i++) {
-            Card cardInTrick = playedCards.get(playerId).get(trickId);
-            if (cardInTrick.equals(card)) {
-                beforeCardPlayed = false;
-            }
-            if (beforeCardPlayed) {
-                playedCardsNew.get(playerId).add(cardInTrick);
-            } else {
-                playerHandsNew.get(playerId).add(cardInTrick);
-            }
+            try {
+                Card cardInTrick = playedCards.get(playerId).get(trickId);
+                if (cardInTrick.equals(card)) {
+                    beforeCardPlayed = false;
+                }
+                if (beforeCardPlayed) {
+                    playedCardsNew.get(playerId).add(cardInTrick);
+                } else {
+                    playerHandsNew.get(playerId).add(cardInTrick);
+                }
+            } catch (IndexOutOfBoundsException ignore) {}
             playerId = (playerId + 1) % playedCards.size();
         }
 

@@ -97,11 +97,12 @@ public class MCTS {
                         roundState.getPlayerHands().get(0),
                         roundState.getWinningPlayerIds(),
                         roundState.getPlayerNames(),
-                        roundState.getStartedPlayerId()
+                        roundState.getStartedPlayerId(),
+                        0
                 ),
                 null,
                 new SimpleAgent(0, null),
-                6);
+                6, 0);
         // root.rollout();
 
         System.out.println("Run for 10 seconds: ");
@@ -121,8 +122,9 @@ public class MCTS {
                         roundState2.getPlayerHands().get(0),
                         roundState2.getWinningPlayerIds(),
                         roundState2.getPlayerNames(),
-                        roundState2.getStartedPlayerId()
-                ), null, new SimpleAgent(0, null), 6);
+                        roundState2.getStartedPlayerId(),
+                        0
+                ), null, new SimpleAgent(0, null), 6, 0);
         MCTS mcst2 = new MCTS(root2);
         Card card2 = mcst2.traverse(3);
         for (Node child : root.getChildren()) {
