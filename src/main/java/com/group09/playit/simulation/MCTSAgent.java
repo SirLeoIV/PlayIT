@@ -37,7 +37,7 @@ public class MCTSAgent implements Agent{
                     null,
                     new RandomAgent(0, null));
             System.out.println("Current trick: " + roundState.trickToString(roundState.getCurrentTrickId()));
-            int time = 1;
+            int time = 3;
             MCTS mcts = new MCTS(root);
             Card card = mcts.traverse(time);
             roundController.playCard(card);
