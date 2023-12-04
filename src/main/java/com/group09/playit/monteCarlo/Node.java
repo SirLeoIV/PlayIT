@@ -102,7 +102,19 @@ public class Node {
             return totalScore;
         } catch (NoCardsAvailableException e) {
             // System.out.println("No cards available exception");
-            parent.children.remove(this);
+            try {
+                parent.children.remove(this);
+            } catch (NullPointerException exception) {
+                System.out.println("Parent is null");
+                try {
+                    simulation.simulate();
+                    numberVisits++;
+                    totalScore = simulation.getRoundState().getPlayerScores().get(0);
+                    return totalScore;
+                } catch (NoCardsAvailableException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
         return -1;
     }

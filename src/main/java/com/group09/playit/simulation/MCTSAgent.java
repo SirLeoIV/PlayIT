@@ -1,14 +1,12 @@
 package com.group09.playit.simulation;
 
 import com.group09.playit.controller.RoundController;
+import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.Card;
 import com.group09.playit.monteCarlo.MCTS;
 import com.group09.playit.monteCarlo.Node;
 import com.group09.playit.state.NodeState;
 import com.group09.playit.state.RoundState;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class MCTSAgent implements Agent{
 
@@ -22,6 +20,10 @@ public class MCTSAgent implements Agent{
 
     @Override
     public void playCard() throws NoCardsAvailableException {
+        if (TrickService.legalCardsToPlay(roundController.getRoundState()).size() <= 1) {
+            roundController.playCard(TrickService.legalCardsToPlay(roundController.getRoundState()).get(0));
+            return;
+        }
         try {
             RoundState roundState = roundController.getRoundState();
             Node root = new Node(
@@ -35,7 +37,7 @@ public class MCTSAgent implements Agent{
                     null,
                     new RandomAgent(0, null));
             System.out.println("Current trick: " + roundState.trickToString(roundState.getCurrentTrickId()));
-            int time = 3;
+            int time = 1;
             MCTS mcts = new MCTS(root);
             Card card = mcts.traverse(time);
             roundController.playCard(card);
@@ -44,7 +46,7 @@ public class MCTSAgent implements Agent{
             System.out.println("--------------------");
         } catch (Exception e) {
             // System.out.println("No cards available");
-            throw new NoCardsAvailableException();
+            e.printStackTrace();
         }
     }
 
