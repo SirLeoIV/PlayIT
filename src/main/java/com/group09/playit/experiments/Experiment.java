@@ -24,16 +24,17 @@ public class Experiment {
     // }
 
     public static void main(String[] args) {
-        String[] playerNames = new String[]{"MCTSAgent", "XXXXAgent 1", "XXXXAgent 2", "XXXXAgent 3"}; // Change player names here
-        String fileName = "MCTSAgent-XXXXAgent"; // Change file name here
+        String[] playerNames = new String[]{"MCTSAgent", "SimpleAgent", "SimpleAgent", "SimpleAgent"}; // Change player names here
+        String fileName = "MCTSAgent-SimpleAgent"; // Change file name here
         Agent agent1 = new MCTSAgent(0,null);
         Agent agent2 = new SimpleAgent(0,null); // Change agent here
 
         ArrayList<ArrayList<Integer>> scores = new ArrayList<>();
         createFile(fileName,
                 String.join(",", playerNames));
-        for (int i = 0; i<100; i++) {
-            if (i % 1 == 0) System.out.println("Experiment " + i);
+
+        for (int i = 0; i<1000; i++) {
+            //if (i % 1 == 0) System.out.println("Experiment " + i);
             try {
                 Simulation simulation = new Simulation(
                         new RoundState(DeckService.dealCards(4), playerNames),
