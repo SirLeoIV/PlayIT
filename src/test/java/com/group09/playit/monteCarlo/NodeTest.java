@@ -1,5 +1,6 @@
 package com.group09.playit.monteCarlo;
 
+import com.group09.playit.simulation.RandomAgent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,6 +52,6 @@ class NodeTest {
     }
 
     private Node emptyNode() {
-        return new Node(null, null, null, 10);
+        return new Node(null, null, null, new RandomAgent(0, null), 12,0);
     }
 }
