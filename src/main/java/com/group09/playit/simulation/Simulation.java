@@ -52,7 +52,7 @@ public class Simulation {
     public void simulate() throws NoCardsAvailableException {
         RoundController roundController = new RoundController(roundState);
         for (int i = 0; i < roundState.getPlayerNames().size(); i++) {
-            getAgentOfType(agentType, i, roundController);
+            roundController.addAgent(getAgentOfType(agentType, i, roundController));
         }
         while (!RoundService.isRoundOver(roundState)) {
             roundController.nextAction();
