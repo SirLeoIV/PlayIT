@@ -37,14 +37,14 @@ public class MCTSAgent implements Agent{
                     ),
                     null,
                     new RandomAgent(0, null), 6, agentId);
-            System.out.println("Current trick: " + roundState.trickToString(roundState.getCurrentTrickId()));
+            // System.out.println("Current trick: " + roundState.trickToString(roundState.getCurrentTrickId()));
             int time = 3;
             MCTS mcts = new MCTS(root);
             Card card = mcts.traverse(time);
             roundController.playCard(card);
-            System.out.println("Card to play:");
-            System.out.println(card);
-            System.out.println("--------------------");
+            // System.out.println("Card to play:");
+            // System.out.println(card);
+            // System.out.println("--------------------");
         } catch (Exception e) {
             // System.out.println("No cards available");
             e.printStackTrace();

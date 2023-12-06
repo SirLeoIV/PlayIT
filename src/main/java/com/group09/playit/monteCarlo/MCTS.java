@@ -23,7 +23,7 @@ public class MCTS {
 
     public static int nodeIds = 0;
 
-    boolean debug = true;
+    boolean debug = false;
 
     Node root;
 
