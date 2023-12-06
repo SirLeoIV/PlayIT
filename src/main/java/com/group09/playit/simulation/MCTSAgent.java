@@ -32,10 +32,11 @@ public class MCTSAgent implements Agent{
                             roundState.getPlayerHands().get(0),
                             roundState.getWinningPlayerIds(),
                             roundState.getPlayerNames(),
-                            roundState.getStartedPlayerId()
+                            roundState.getStartedPlayerId(),
+                            agentId
                     ),
                     null,
-                    new RandomAgent(0, null));
+                    new RandomAgent(0, null), 6, agentId);
             System.out.println("Current trick: " + roundState.trickToString(roundState.getCurrentTrickId()));
             int time = 3;
             MCTS mcts = new MCTS(root);

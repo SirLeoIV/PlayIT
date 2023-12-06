@@ -47,7 +47,7 @@ public class MCTS {
         while(System.currentTimeMillis() < startTime + runtime || root.getChildren().isEmpty()) {
             Node current = getNextLeaf(tree);
             if (current.getNumberVisits() == 0
-                    || current.getState().getPlayerHands().stream().allMatch(ArrayList::isEmpty)) {
+                    || current.getState().getPlayerHands().stream().allMatch(ArrayList::isEmpty)
                     || current.getDepthLeft() == 0) {
                 int score = current.rollout();
                 current.backpropagate(score);

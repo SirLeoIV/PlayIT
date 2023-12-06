@@ -27,9 +27,13 @@ public class NodeState {
         }
 
         ArrayList<ArrayList<Card>> playerHands = new ArrayList<>();
-        playerHands.add(player0Hand);
+        //playerHands.add(player0Hand);
 
-        for (int i = playingPlayerId + 1; i != playingPlayerId; i = (i + 1) % playerNames.size()) {
+        for (int i = 0; i < playerNames.size(); i++) {
+            if (i == playingPlayerId) {
+                playerHands.add(player0Hand);
+                continue;
+            }
 
             boolean playerMightHaveClubs = true;
             boolean playerMightHaveDiamonds = true;

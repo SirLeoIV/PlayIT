@@ -66,7 +66,7 @@ public class AiPlayerGUI extends Parent {
         if (controller.legalCardsToPlay().size() <= 1) {
             return controller.legalCardsToPlay().get(0);
         }
-        RoundState roundState = controller.getCurrentRoundState().getRoundStateUpToGivenCardPlayed(controller.getLastPlayedCard(), true);
+        RoundState roundState = controller.getCurrentRoundState().clone(); // .getRoundStateUpToGivenCardPlayed(controller.getLastPlayedCard(), true);
 
         Node root = new Node(
                 NodeState.createRoundStateBasedOn(
