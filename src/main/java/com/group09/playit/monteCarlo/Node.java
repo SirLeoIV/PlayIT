@@ -29,27 +29,23 @@ public class Node {
 
     private final int id;
 
-    private final int depthLeft;
-
     private final ArrayList<Node> children = new ArrayList<>();
 
     private final double EXPLORATION_CONSTANT = 2.0;
 
-    public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft) {
+    public Node(RoundState state, Card cardPlayed, Agent agentType) {
         this.state = state;
         this.cardPlayed = cardPlayed;
         this.agentType = agentType;
         this.id = MCTS.nodeIds++;
-        this.depthLeft = depthLeft;
     }
 
-    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType, int depthLeft) {
+    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType) {
         this.state = state;
         this.parent = parent;
         this.cardPlayed = cardPlayed;
         this.agentType = agentType;
         this.id = MCTS.nodeIds++;
-        this.depthLeft = depthLeft;
     }
 
     private void initializeChildren(RoundState state) {
@@ -64,7 +60,7 @@ public class Node {
                 TrickService.endTrick(childState);
             }
 
-            Node child = new Node(childState, this, card, agentType, depthLeft - 1);
+            Node child = new Node(childState, this, card, agentType);
             children.add(child);
         }
     }
@@ -106,7 +102,19 @@ public class Node {
             return totalScore;
         } catch (NoCardsAvailableException e) {
             // System.out.println("No cards available exception");
-            parent.children.remove(this);
+            try {
+                parent.children.remove(this);
+            } catch (NullPointerException exception) {
+                System.out.println("Parent is null");
+                try {
+                    simulation.simulate();
+                    numberVisits++;
+                    totalScore = simulation.getRoundState().getPlayerScores().get(0);
+                    return totalScore;
+                } catch (NoCardsAvailableException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
         return -1;
     }
@@ -171,9 +179,5 @@ public class Node {
 
     public void setParent(Node root) {
         this.parent = root;
-    }
-
-    public int getDepthLeft() {
-        return depthLeft;
     }
 }
