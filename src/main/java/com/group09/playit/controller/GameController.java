@@ -4,6 +4,7 @@ import com.group09.playit.logic.GameService;
 import com.group09.playit.logic.RoundService;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.*;
+import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,18 @@ public class GameController {
         if (debug) System.out.println(message);
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+    public RoundState getCurrentRoundState() {
+        return currentRoundState;
+    }
+
+    public Card getLastPlayedCard() {
+        return lastPlayedCard;
+    }
+
     /**
      * The interface Game observer.
      * This interface is used to notify observers that the game state has changed.
@@ -36,7 +49,11 @@ public class GameController {
 
     private final Game game;
 
+    private RoundState currentRoundState;
+
     private GameStatus gameStatus;
+
+    private Card lastPlayedCard;
 
     /**
      * Instantiates a new Game controller and start the first round.
@@ -46,6 +63,10 @@ public class GameController {
     public GameController(Game game) {
         this.game = game;
         GameService.newRound(game);
+        currentRoundState = new RoundState(
+                new ArrayList<>(game.getPlayers().stream().map(p -> p.getHand().getCards()).toList()),
+                game.getPlayers().stream().map(Player::getName).toList().toArray(new String[0]));
+        currentRoundState.setStartedPlayer(currentRoundState.getPlayerNames().indexOf(game.getCurrentRound().getCurrentStartingPlayer().getName()));
         gameStatus = GameStatus.WAITING_FOR_PLAYER;
     }
 
@@ -84,6 +105,11 @@ public class GameController {
 
         trick.getCurrentPlayer().playCard(card);
         TrickService.playCard(trick, round, card);
+        TrickService.playCard(currentRoundState, card);
+        if (TrickService.trickFull(currentRoundState, currentRoundState.getCurrentTrickId())) {
+            TrickService.endTrick(currentRoundState);
+        }
+        lastPlayedCard = card;
 
         if (TrickService.trickFull(trick, round)) {
             TrickService.endTrick(trick, round);
@@ -139,6 +165,11 @@ public class GameController {
     public void startRound() {
         GameService.newRound(game);
         gameStatus = GameStatus.WAITING_FOR_PLAYER;
+        currentRoundState = new RoundState(
+                new ArrayList<>(game.getPlayers().stream().map(p -> p.getHand().getCards()).toList()),
+                game.getPlayers().stream().map(Player::getName).toList().toArray(new String[0]));
+        currentRoundState.setStartedPlayer(currentRoundState.getPlayerNames().indexOf(game.getCurrentRound().getCurrentStartingPlayer().getName()));
+        lastPlayedCard = null;
         log("new round started");
         notifyAllObservers();
     }

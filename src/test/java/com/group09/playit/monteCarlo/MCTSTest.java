@@ -36,10 +36,11 @@ class MCTSTest {
                             roundState.getPlayerHands().get(0),
                             roundState.getWinningPlayerIds(),
                             roundState.getPlayerNames(),
-                            roundState.getStartedPlayerId()
+                            roundState.getStartedPlayerId(),
+                            0
                     ),
                     null,
-                    new SimpleAgent(0, null));
+                    new SimpleAgent(0, null), 6, 0);
             // root.rollout();
 
             int time = 6;
