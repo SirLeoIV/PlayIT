@@ -32,6 +32,8 @@ public class Simulation {
                 roundController.addAgent(new LowestAgent(i, roundController));
             } else if (agentType instanceof MCTSAgent) {
                 roundController.addAgent(new MCTSAgent(i, roundController));
+            } else if (agentType instanceof SmartAgent) {
+                roundController.addAgent(new SmartAgent(i, roundController));
             } else {
                 throw new IllegalArgumentException("Agent type not supported");
             }
@@ -55,6 +57,8 @@ public class Simulation {
                 roundController.addAgent(new LowestAgent(i, roundController));
             } else if (agentType instanceof MCTSAgent) {
                 roundController.addAgent(new MCTSAgent(i, roundController));
+            } else if (agentType instanceof SmartAgent) {
+                roundController.addAgent(new SmartAgent(i, roundController));
             } else {
                 throw new IllegalArgumentException("Agent type not supported");
             }

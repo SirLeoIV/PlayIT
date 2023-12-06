@@ -4,9 +4,7 @@ import com.group09.playit.logic.DeckService;
 import com.group09.playit.logic.RoundService;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.Card;
-import com.group09.playit.simulation.Agent;
-import com.group09.playit.simulation.NoCardsAvailableException;
-import com.group09.playit.simulation.SimpleAgent;
+import com.group09.playit.simulation.*;
 import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
@@ -89,6 +87,7 @@ public class RoundController {
     public static void main(String[] args) throws NoCardsAvailableException {
         ArrayList<Integer> results = new ArrayList<>();
         int numberOfIterations = 10000;
+        String[] playerNames = {"Smart Agent", "Simple Agent", "Random Agent", "Lowest Agent"};
         for (int i = 0; i < 4; i++) {
             results.add(0);
         }
@@ -96,15 +95,16 @@ public class RoundController {
 
             if (j % 1000 == 0) System.out.println("Iteration " + j);
 
-            String[] playerNames = {"Alice", "Bob", "Charlie", "David"};
 
             ArrayList<ArrayList<Card>> playerHands = DeckService.dealCards(playerNames.length);
 
             RoundState roundState = new RoundState(playerHands, playerNames);
             RoundController roundController = new RoundController(roundState);
-            for (int i = 0; i < playerNames.length; i++) {
-                roundController.addAgent(new SimpleAgent(i, roundController));
-            }
+            roundController.addAgent(new SmartAgent(0, roundController));
+            roundController.addAgent(new SimpleAgent(1, roundController));
+            roundController.addAgent(new RandomAgent(2, roundController));
+            roundController.addAgent(new LowestAgent(3, roundController));
+
             while (!RoundService.isRoundOver(roundState)) {
                 roundController.nextAction();
             }
@@ -115,8 +115,8 @@ public class RoundController {
             }
         }
         for (int i = 0; i < results.size(); i++) {
-            System.out.println("Player " + i + " total score: " + results.get(i));
-            System.out.println("Player " + i + " average score: " + results.get(i) / numberOfIterations);
+            System.out.println("Player " + playerNames[i] + " total score: " + results.get(i));
+            System.out.println("Player " + playerNames[i] + " average score: " + results.get(i) / numberOfIterations);
         }
     }
 }

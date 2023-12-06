@@ -4,6 +4,7 @@ import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RoundState {
 
@@ -141,10 +142,13 @@ public class RoundState {
     }
 
     public Trick getTrickModel(int trickId) {
+        Player player = getPlayerModel(trickStartingPlayerId(trickId));
+        if (getTrickById(trickId).stream().allMatch(Objects::isNull) || getTrickById(trickId).isEmpty()) {
+            return new Trick(player);
+        }
         Card.Suit suit = (!winningPlayerIds.isEmpty()) ?
                 getTrickById(trickId).get(trickStartingPlayerId(trickId)).suit()
                 : Card.Suit.CLUBS;
-        Player player = getPlayerModel(trickStartingPlayerId(trickId));
         Trick trick = new Trick(
                 player,
                 getTrickById(trickId),
