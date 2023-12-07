@@ -35,7 +35,7 @@ public class Node {
 
     private final ArrayList<Node> children = new ArrayList<>();
 
-    private final double EXPLORATION_CONSTANT = 2.0;
+    public static double EXPLORATION_CONSTANT = 2.0;
 
     public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft, int playerId) {
         this.state = state;

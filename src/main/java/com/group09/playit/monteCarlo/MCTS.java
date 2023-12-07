@@ -36,11 +36,11 @@ public class MCTS {
         this.root.expand();
     }
 
-    public Card traverse(int seconds) {
+    public Card traverse(double seconds) {
         nodeIds = 0;
         Node tree = root;
-        long startTime = System.currentTimeMillis();
-        long runtime = seconds * 1000;
+        double startTime = System.currentTimeMillis();
+        double runtime = seconds * 1000;
         if (root.getChildren().size() == 1) return root.getChildren().get(0).getCardPlayed();
 
         int iterations = 0;

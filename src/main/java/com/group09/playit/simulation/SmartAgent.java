@@ -42,7 +42,6 @@ public class SmartAgent implements Agent {
 
             roundController.playCard(maxCard(maxValueCards(roundController.legalCardsToPlay())));
         } catch (Exception e) {
-            e.printStackTrace();
             // System.out.println("No cards available");
             throw new NoCardsAvailableException();
         }

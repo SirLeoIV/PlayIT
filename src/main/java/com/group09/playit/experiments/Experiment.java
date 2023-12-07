@@ -1,6 +1,7 @@
 package com.group09.playit.experiments;
 
 import com.group09.playit.logic.DeckService;
+import com.group09.playit.monteCarlo.Node;
 import com.group09.playit.simulation.*;
 import com.group09.playit.state.RoundState;
 
@@ -24,15 +25,19 @@ public class Experiment {
     // }
 
     public static void main(String[] args) {
-        String[] playerNames = new String[]{"MCTSAgent", "RandomAgent 1", "RandomAgent 2", "RandomAgent 3"}; // Change player names here
-        String fileName = "MCTSAgent-RandomAgent"; // Change file name here
+        String[] playerNames = new String[]{"MCTSAgent_Smart", "SmartAgent 1", "SmartAgent 2", "SmartAgent 3"}; // Change player names here
+        String fileName = "MCTSAgent_Smart-SmartAgent-EXP_2-MAX_DEPTH_55"; // Change file name here
         Agent agent1 = new MCTSAgent(0,null);
-        Agent agent2 = new RandomAgent(0,null); // Change agent here
+        Agent agent2 = new SmartAgent(0,null); // Change agent here
+        Node.EXPLORATION_CONSTANT = 2.0; // Change exploration constant here
+        MCTSAgent.maxDepth = 55; // Change max depth here
+        MCTSAgent.time = 3; // Change time here
+        int numberOfIterations = 1000; // Change number of iterations here
 
         ArrayList<ArrayList<Integer>> scores = new ArrayList<>();
         createFile(fileName,
                 String.join(",", playerNames));
-        for (int i = 0; i<1000; i++) {
+        for (int i = 0; i<numberOfIterations; i++) {
             if (i % 1 == 0) System.out.println("Experiment " + i);
             try {
                 Simulation simulation = new Simulation(
