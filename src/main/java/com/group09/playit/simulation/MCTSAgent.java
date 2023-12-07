@@ -12,6 +12,8 @@ public class MCTSAgent implements Agent{
 
     RoundController roundController;
     int agentId;
+    public static int maxDepth = 55;
+    public static double time = 3;
 
     public MCTSAgent(int agentId, RoundController roundController) {
         this.agentId = agentId;
@@ -36,9 +38,8 @@ public class MCTSAgent implements Agent{
                             agentId
                     ),
                     null,
-                    new SmartAgent(0, null), 55, agentId);
+                    new SmartAgent(0, null), maxDepth, agentId);
             // System.out.println("Current trick: " + roundState.trickToString(roundState.getCurrentTrickId()));
-            int time = 3;
             MCTS mcts = new MCTS(root);
             Card card = mcts.traverse(time);
             roundController.playCard(card);
