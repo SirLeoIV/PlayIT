@@ -357,7 +357,6 @@ MCTSAgent,RandomAgent 1,RandomAgent 2,RandomAgent 3
 5,0,20,1
 6,0,19,1
 5,16,5,0
-MCTSAgent,RandomAgent 1,RandomAgent 2,RandomAgent 3
 0,4,15,7
 0,9,13,4
 2,9,0,15
