@@ -26,11 +26,11 @@ public class Experiment {
 
     public static void main(String[] args) {
         String[] playerNames = new String[]{"MCTSAgent_Smart", "SmartAgent 1", "SmartAgent 2", "SmartAgent 3"}; // Change player names here
-        String fileName = "MCTSAgent_Smart-SmartAgent-EXP_2-MAX_DEPTH_55"; // Change file name here
+        String fileName = "MCTSAgent_Smart-SmartAgent-EXP_2-MAX_DEPTH_4"; // Change file name here
         Agent agent1 = new MCTSAgent(0,null);
         Agent agent2 = new SmartAgent(0,null); // Change agent here
         Node.EXPLORATION_CONSTANT = 2.0; // Change exploration constant here
-        MCTSAgent.maxDepth = 55; // Change max depth here
+        MCTSAgent.maxDepth = 4; // Change max depth here
         MCTSAgent.time = 3; // Change time here
         int numberOfIterations = 1000; // Change number of iterations here
 
