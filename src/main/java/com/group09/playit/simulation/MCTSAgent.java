@@ -42,7 +42,7 @@ public class MCTSAgent implements Agent{
                             agentId
                     ),
                     null,
-                    new SmartAgent(0, null), maxDepth, agentId);
+                    new SmartAgent(0, null), maxDepth, agentId); // Change agent that is used for rollout here
             MCTS mcts = new MCTS(root);
             Card card = mcts.traverse(time);
             roundController.playCard(card);
