@@ -10,6 +10,10 @@ import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a node in the MCTS tree
+ * It contains all the information needed to evaluate the node and run the MCTS algorithm.
+ */
 public class Node {
 
     boolean debug = false;
@@ -37,6 +41,13 @@ public class Node {
 
     public static double EXPLORATION_CONSTANT = 2.0;
 
+    /**
+     * Constructor for the root node
+     * @param state state of the node
+     * @param agentType agent type of the node
+     * @param depthLeft depth left of the node
+     * @param playerId player id of the node
+     */
     public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft, int playerId) {
         this.state = state;
         this.cardPlayed = cardPlayed;
@@ -46,6 +57,13 @@ public class Node {
         this.playerId = playerId;
     }
 
+    /**
+     * Constructor for all the children nodes
+     * @param state state of the node
+     * @param agentType agent type of the node
+     * @param depthLeft depth left of the node
+     * @param playerId player id of the node
+     */
     public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType, int depthLeft, int playerId) {
         this.state = state;
         this.parent = parent;
@@ -56,6 +74,12 @@ public class Node {
         this.playerId = playerId;
     }
 
+    /**
+     * Initializes all children of the node
+     * If the node is a leaf node, we initialize the children based on the possible cards to play
+     *
+     * @param state state of the node
+     */
     private void initializeChildren(RoundState state) {
         for (Card card : TrickService.legalCardsToPlay(state)) {
             log("Initializing child for card " + card.toString());
@@ -101,6 +125,11 @@ public class Node {
         return cardPlayed;
     }
 
+    /**
+     * Rolls out the node by simulating a game.
+     * If there are no cards available we remove the node from the tree
+     * @return score of the rollout
+     */
     public int rollout() {
         Simulation simulation = new Simulation(state.clone(), agentType);
         try {
@@ -109,10 +138,11 @@ public class Node {
             totalScore = simulation.getRoundState().getPlayerScores().get(playerId);
             return totalScore;
         } catch (NoCardsAvailableException e) {
-            // System.out.println("No cards available exception");
+            // If there are no cards available we remove the node from the tree
             try {
                 parent.children.remove(this);
             } catch (NullPointerException exception) {
+                // If there are no children to remove from the parent we try to run the simulation again
                 System.out.println("Parent is null");
                 try {
                     simulation.simulate();
@@ -127,6 +157,10 @@ public class Node {
         return -1;
     }
 
+    /**
+     * Backpropagates the score of the rollout to the root node
+     * @param score score of the rollout
+     */
     public void backpropagate(int score) {
         Node currentNode = this;
         while(currentNode.getParent() != null){
@@ -136,10 +170,17 @@ public class Node {
         }
     }
 
+    /**
+     * Calculates the average score of the node
+     * @return average score
+     */
     public double averageScore() {
         return (double) totalScore / (double) numberVisits;
     }
 
+    /**
+     * Expands the node by initializing all children
+     */
     public void expand() {
         initializeChildren(state);
     }
@@ -163,6 +204,10 @@ public class Node {
         return minChild;
     }
 
+    /**
+     * Calculates the UCB1 score of the node
+     * @return UCB1 score
+     */
     private double UCB1formula(){
         double averageScore = 26 - averageScore();
         double explorationTerm = EXPLORATION_CONSTANT *

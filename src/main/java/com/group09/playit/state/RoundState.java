@@ -1,11 +1,19 @@
 package com.group09.playit.state;
 
 import com.group09.playit.logic.TrickService;
-import com.group09.playit.model.*;
+import com.group09.playit.model.Card;
+import com.group09.playit.model.Hand;
+import com.group09.playit.model.Player;
+import com.group09.playit.model.Trick;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * The class Round state.
+ * It is used to store the state of a round and to create a new round from a given state.
+ * It stores the player names, the player hands, the played cards and the winning player ids.
+ */
 public class RoundState {
 
     private ArrayList<String> playerNames;
@@ -18,18 +26,38 @@ public class RoundState {
 
     private Integer startedPlayer;
 
+    /**
+     * Gets player names.
+     *
+     * @return the player names
+     */
     public ArrayList<String> getPlayerNames() {
         return playerNames;
     }
 
+    /**
+     * Gets player hands.
+     *
+     * @return the player hands
+     */
     public ArrayList<ArrayList<Card>> getPlayerHands() {
         return playerHands;
     }
 
+    /**
+     * Gets played cards.
+     *
+     * @return the played cards
+     */
     public ArrayList<ArrayList<Card>> getPlayedCards() {
         return playedCards;
     }
 
+    /**
+     * Gets winning player ids.
+     *
+     * @return the winning player ids
+     */
     public ArrayList<Integer> getWinningPlayerIds() {
         return winningPlayerIds;
     }
@@ -80,36 +108,24 @@ public class RoundState {
         this.winningPlayerIds = winningPlayerIds;
     }
 
+    /**
+     * Use this IllegalArgumentException if the number of player names does not match the
+     * number of player hands or played cards
+     * @return IllegalArgumentException
+     */
     private static IllegalArgumentException playerNumberDoesNotMatchException() {
         return new IllegalArgumentException("Number of player names does not match number of player hands or played cards");
-    }
-
-    // WARNING! Information is lost. The player scores can only be calculated from this point on.
-    public RoundState(Round round) {
-        this.playerNames = new ArrayList<>();
-        this.playerHands = new ArrayList<>();
-        this.playedCards = new ArrayList<>();
-        this.winningPlayerIds = new ArrayList<>();
-        for (Player player : round.getPlayers()) {
-            this.playerNames.add(player.getName());
-            this.playerHands.add(new ArrayList<>(player.getHand().getCards()));
-            this.playedCards.add(new ArrayList<>());
-        }
-        for (Trick trick : round.getTricks()) {
-            this.playedCards.get(playerNames.indexOf(trick.getCurrentPlayer().getName())).addAll(trick.getCards());
-            this.winningPlayerIds.add(playerNames.indexOf(trick.getCurrentPlayer().getName()));
-        }
-        if (this.playedCards.stream().allMatch(ArrayList::isEmpty)) {
-            this.startedPlayer = playerNames.indexOf(round.getCurrentStartingPlayer().getName());
-        } else {
-            this.startedPlayer = this.playedCards.indexOf(this.playedCards.stream().filter(cards -> cards.contains(new Card(Card.Suit.CLUBS, Card.Rank.TWO))).findFirst().orElseThrow());
-        }
     }
 
     public void setStartedPlayer(Integer startedPlayer) {
         this.startedPlayer = startedPlayer;
     }
 
+    /**
+     * Returns the scores of all players.
+     * The scores are calculated by adding up the values of the cards the player won.
+     * @return ArrayList<Integer> playerScores
+     */
     public ArrayList<Integer> getPlayerScores() {
         ArrayList<Integer> playerScores = new ArrayList<>();
         for (int i = 0; i < playerNames.size(); i++) {
@@ -123,18 +139,35 @@ public class RoundState {
         return playerScores;
     }
 
+    /**
+     * determines if hearts are broken
+     * @return boolean heartsBroken
+     */
     public boolean isHeartsBroken() {
         return playedCards.stream().flatMap(ArrayList::stream).anyMatch(card -> card.suit() == Card.Suit.HEARTS);
     }
 
+    /**
+     * get the id of the last completed trick
+     * @return int lastCompletedTrickId
+     */
     public int getLastCompletedTrickId() {
         return winningPlayerIds.size() - 1;
     }
 
+    /**
+     * get the id of the current trick
+     * @return int currentTrickId
+     */
     public int getCurrentTrickId() {
         return getLastCompletedTrickId() + 1;
     }
 
+    /**
+     * get the cards of a trick by its id
+     * @param id trickId
+     * @return ArrayList<Card> cards of the trick
+     */
     public ArrayList<Card> getTrickById(int id) {
         ArrayList<Card> trick = new ArrayList<>();
         for (ArrayList<Card> cardsByPlayer : playedCards) {
@@ -147,6 +180,11 @@ public class RoundState {
         return trick;
     }
 
+    /**
+     * get the trick-model class instance by its id
+     * @param trickId
+     * @return Trick trick-model
+     */
     public Trick getTrickModel(int trickId) {
         Player player = getPlayerModel(trickStartingPlayerId(trickId));
         if (getTrickById(trickId).stream().allMatch(Objects::isNull) || getTrickById(trickId).isEmpty()) {
@@ -162,6 +200,11 @@ public class RoundState {
         return trick;
     }
 
+    /**
+     * get the player-model class instance by its id
+     * @param playerId
+     * @return Player player-model
+     */
     public Player getPlayerModel(int playerId) {
         String name = playerNames.get(playerId);
         int score = getPlayerScores().get(playerId);
@@ -170,6 +213,11 @@ public class RoundState {
         return new Player(name, score, hand);
     }
 
+    /**
+     * determines the starting player of a trick by its id
+     * @param trickId
+     * @return int playerId
+     */
     public int trickStartingPlayerId(int trickId) {
         if (trickId == 0) {
             if (startedPlayer == null) {
@@ -180,6 +228,10 @@ public class RoundState {
         return winningPlayerIds.get(trickId - 1);
     }
 
+    /**
+     * get the id of the current player
+     * @return int currentPlayerId
+     */
     public int getCurrentPlayerId() {
         boolean newTrick = playedCards.stream().allMatch(cardsByPlayer -> cardsByPlayer.size() == getCurrentTrickId());
         if (newTrick) {
@@ -193,6 +245,12 @@ public class RoundState {
         }
     }
 
+    /**
+     * more readable toString method
+     * contains a ot of debug information
+     * @param trickId
+     * @return String trickString
+     */
     public String trickToString(int trickId) {
         StringBuilder trickString = new StringBuilder();
         trickString.append("Trick ").append(trickId).append(" {");
@@ -210,6 +268,10 @@ public class RoundState {
         return trickString.toString();
     }
 
+    /**
+     * clone the round state
+     * @return RoundState clone
+     */
     @Override
     public RoundState clone() {
         ArrayList<String> playerNamesClone = new ArrayList<>(playerNames);
@@ -241,6 +303,14 @@ public class RoundState {
         return -1;
     }
 
+    /**
+     * get the round state up to a given card
+     * if the card is not played in this round, an IllegalArgumentException is thrown
+     *
+     * @param card
+     * @param cardIncluded should the card already be played in the new round state
+     * @return RoundState round state up to the given card
+     */
     public RoundState getRoundStateUpToGivenCardPlayed(Card card, boolean cardIncluded) {
 
         // find id of trick the card was played in
@@ -307,6 +377,10 @@ public class RoundState {
         return roundStateNew;
     }
 
+    /**
+     * get the id of the player that started the round
+     * @return int startedPlayerId
+     */
     public int getStartedPlayerId() {
         return startedPlayer;
     }

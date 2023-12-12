@@ -16,6 +16,10 @@ public class RandomAgent implements Agent {
         this.roundController = roundController;
     }
 
+    /**
+     * This agent plays a random card that is legal to play.
+     * @throws NoCardsAvailableException the no cards available exception
+     */
     @Override
     public void playCard() throws NoCardsAvailableException {
         try {

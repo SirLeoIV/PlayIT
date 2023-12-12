@@ -33,6 +33,12 @@ public class RoundService {
         return currentRound.getPlayers().stream().allMatch(player -> player.getHand().getCards().isEmpty());
     }
 
+    /**
+     * Check if the round is over.
+     *
+     * @param roundState current round state
+     * @return true if the round is over, false otherwise
+     */
     public static boolean isRoundOver(RoundState roundState) {
         Deck deck = new Deck(roundState.getPlayerNames().size());
         ArrayList<Card> availableCards = deck.getCards();

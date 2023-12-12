@@ -14,7 +14,7 @@ import java.util.List;
  * The class Round controller.
  * This class is used to run a round automatically with agents attached for each player.
  * This class functions as the interface between the agents, and the game logic.
- * It can be used to simulate rounds from any given RoundStateV2.
+ * It can be used to simulate rounds from any given RoundState.
  */
 public class RoundController {
 

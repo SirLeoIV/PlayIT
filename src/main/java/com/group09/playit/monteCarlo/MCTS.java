@@ -11,31 +11,44 @@ import com.group09.playit.state.RoundState;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * This class contains the MCTS algorithm.
+ * It is used to determine the best card to play in a given situation.
+ */
 public class MCTS {
-
-    // constructer that takes in a state for the root node
-    // initialize children based on legal moves
-
-    // traversal
-    // selection
-    // rollout --> type of agent
-    // backpropagation
 
     public static int nodeIds = 0;
 
+    // set to true to print debug messages
     boolean debug = false;
 
     Node root;
 
+    /**
+     * Log a message if debug is true.
+     *
+     * @param message the message
+     */
     private void log(String message) {
         if (debug) System.out.println(message);
     }
 
+    /**
+     * Instantiates a new MCTS.
+     *
+     * @param root the root node
+     */
     public MCTS(Node root){
         this.root = root;
         this.root.expand();
     }
 
+    /**
+     * Traverse the tree for a given amount of seconds.
+     *
+     * @param seconds the seconds
+     * @return the card to play
+     */
     public Card traverse(double seconds) {
         nodeIds = 0;
         Node tree = root;

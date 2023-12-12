@@ -20,6 +20,10 @@ public class MCTSAgent implements Agent{
         this.roundController = roundController;
     }
 
+    /**
+     * This agent plays a card that is determined by the MCTS algorithm.
+     * @throws NoCardsAvailableException the no cards available exception
+     */
     @Override
     public void playCard() throws NoCardsAvailableException {
         if (TrickService.legalCardsToPlay(roundController.getRoundState()).size() <= 1) {
@@ -39,15 +43,10 @@ public class MCTSAgent implements Agent{
                     ),
                     null,
                     new SmartAgent(0, null), maxDepth, agentId);
-            // System.out.println("Current trick: " + roundState.trickToString(roundState.getCurrentTrickId()));
             MCTS mcts = new MCTS(root);
             Card card = mcts.traverse(time);
             roundController.playCard(card);
-            // System.out.println("Card to play:");
-            // System.out.println(card);
-            // System.out.println("--------------------");
         } catch (Exception e) {
-            // System.out.println("No cards available");
             e.printStackTrace();
         }
     }

@@ -48,6 +48,14 @@ public class TrickService {
         return winningCard;
     }
 
+    /**
+     * Get the winning card in the current trick.
+     * The winning card is the card with the highest rank of the same suit as the first card in the trick.
+     *
+     * @param roundState current round state
+     * @param trickId    current trick id
+     * @return winning card
+     */
     private static Card winningCard(RoundState roundState, int trickId) {
 
         Suit suit = roundState.getTrickModel(trickId).getSuit();
@@ -64,15 +72,6 @@ public class TrickService {
                     return c.rank().getPoints();
                 }))
                 .orElseThrow();
-
-        // return roundStateV2.getTrickById(trickId).stream()
-        //         .filter(card -> {
-        //             return card.getSuit() == roundStateV2.getTrickModel(trickId).getSuit();
-        //         })
-        //         .max(Comparator.comparingInt(c -> {
-        //             return c.getRank().getPoints();
-        //         }))
-        //         .orElseThrow();
     }
 
     /**
@@ -115,6 +114,15 @@ public class TrickService {
         return legalCards;
     }
 
+    /**
+     * Get the legal cards to play for the current player in the current trick.
+     * If the trick is empty, the legal cards are all cards except hearts if the hearts are not broken.
+     * If the trick is not empty, the legal cards are all cards of the same suit as the first card in the trick.
+     * If the player does not have any cards of the same suit, the legal cards are all cards.
+     *
+     * @param roundState current round state
+     * @return list of legal cards to play
+     */
     public static ArrayList<Card> legalCardsToPlay(RoundState roundState) {
         int playerId = roundState.getCurrentPlayerId();
         ArrayList<Card> cardsInTrick = roundState.getTrickById(roundState.getCurrentTrickId());

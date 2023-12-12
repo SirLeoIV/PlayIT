@@ -12,6 +12,10 @@ public class SimpleAgent implements Agent {
         this.roundController = roundController;
     }
 
+    /**
+     * This agent plays the first card that is legal to play.
+     * @throws NoCardsAvailableException the no cards available exception
+     */
     @Override
     public void playCard() throws NoCardsAvailableException {
         try {

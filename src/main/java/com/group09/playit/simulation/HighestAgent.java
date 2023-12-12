@@ -15,6 +15,10 @@ public class HighestAgent implements Agent {
         this.roundController = roundController;
     }
 
+    /**
+     * This agent plays the highest card that is legal to play.
+     * @throws NoCardsAvailableException the no cards available exception
+     */
     @Override
     public void playCard() throws NoCardsAvailableException {
         try {
@@ -34,6 +38,11 @@ public class HighestAgent implements Agent {
         return agentId;
     }
 
+    /**
+     * Returns the card with the lowest value.
+     * @param legalCards the legal cards
+     * @return the card with the lowest value
+     */
     public Card maxCard(ArrayList<Card> legalCards) {
         Card maxCard = legalCards.get(0);
         for (int i = 1; i < legalCards.size(); i++) {

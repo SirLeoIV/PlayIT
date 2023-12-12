@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class DeckService {
 
+    /**
+     * Deal cards to the players.
+     * @param playerCount the player count
+     * @return the array list of array lists of cards (player hands)
+     */
     public static ArrayList<ArrayList<Card>> dealCards(int playerCount) {
         ArrayList<ArrayList<Card>> playerHands = new ArrayList<>();
         for (int i = 0; i < playerCount; i++) {
