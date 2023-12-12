@@ -11,34 +11,38 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used to run an experiment.
+ * It runs a simulation with a given number of iterations and stores the results in a csv file.
+ * The results can be found in the results folder.
+ *
+ * Change the following variables to change the experiment:
+ * playerNames: The names of the players that will be used in the experiment.
+ * fileName: The name of the file that will be created.
+ * agent1: The agent that will be used for the first player.
+ * agent2: The agent that will be used for the other three players.
+ * Node.EXPLORATION_CONSTANT: The exploration constant that will be used for the MCTS algorithm.
+ * MCTSAgent.maxDepth: The max depth that will be used for the MCTS algorithm.
+ * MCTSAgent.time: The time that will be used for the MCTS algorithm.
+ * numberOfIterations: The number of iterations that will be run.
+ */
 public class Experiment {
-    // public static void main (String[] args)throws NoCardsAvailableException {
-
-    //     for (int i = 0; i < 1000; i++) {
-    //         System.out.println("Experiment " + i);
-    //         Experiment e = new Experiment();
-    //         ArrayList<Integer>  scores = e.getScoresAfterRound();
-    //         System.out.println(scores);
-    //         double mctsScore = scores.get(0);
-    //         storeResult(mctsScore,""); //ADD FILE PATH HERE
-    //     }
-    // }
 
     public static void main(String[] args) {
         String[] playerNames = new String[]{"MCTSAgent_Smart", "SmartAgent 1", "SmartAgent 2", "SmartAgent 3"}; // Change player names here
-        String fileName = "MCTSAgent_Smart-SmartAgent-EXP_2-MAX_DEPTH_4"; // Change file name here
+        String fileName = "FirstAgent-SmartAgent-EXP_2-MAX_DEPTH_55-Time_0_point_5"; // Change file name here
         Agent agent1 = new MCTSAgent(0,null);
         Agent agent2 = new SmartAgent(0,null); // Change agent here
-        Node.EXPLORATION_CONSTANT = 2.0; // Change exploration constant here
-        MCTSAgent.maxDepth = 4; // Change max depth here
-        MCTSAgent.time = 3; // Change time here
+        Node.EXPLORATION_CONSTANT = 2; // Change exploration constant here
+        MCTSAgent.maxDepth = 55; // Change max depth here
+        MCTSAgent.time = 0.5; // Change time here
         int numberOfIterations = 1000; // Change number of iterations here
 
         ArrayList<ArrayList<Integer>> scores = new ArrayList<>();
         createFile(fileName,
                 String.join(",", playerNames));
         for (int i = 0; i<numberOfIterations; i++) {
-            if (i % 1 == 0) System.out.println("Experiment " + i);
+            if (i % 10 == 0) System.out.println("Experiment " + i);
             try {
                 Simulation simulation = new Simulation(
                         new RoundState(DeckService.dealCards(4), playerNames),
@@ -53,30 +57,10 @@ public class Experiment {
                 noCardsAvailableException.printStackTrace();
             }
         }
-        // storeMultipleResults(scores, List.of(playerNames), "MCTSAgent-XXXXAgent");
         System.out.println("Average scores: ");
         for (int i = 0; i < playerNames.length; i++) {
             int finalI = i;
             System.out.println(playerNames[i] + ": " + scores.stream().map(scorePerRound -> scorePerRound.get(finalI)).mapToInt(Integer::intValue).average().getAsDouble());
-        }
-    }
-
-
-    public ArrayList<Integer>  getScoresAfterRound() throws NoCardsAvailableException
-    {
-        String[] playerNames = {"player0", "player1", "player2", "player3"};
-        RoundState roundState = new RoundState(DeckService.dealCards(playerNames.length), playerNames);
-        Simulation simulation = new Simulation(roundState, new RandomAgent(0,null));
-        simulation.simulate();
-
-        return simulation.getRoundState().getPlayerScores();
-    }
-
-    private static void storeResult(double result, String fileName) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
-            writer.println(result);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
