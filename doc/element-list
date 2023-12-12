@@ -1,6 +1,10 @@
 module:com.group09.playit
 com.group09.playit
 com.group09.playit.controller
+com.group09.playit.experiments
 com.group09.playit.gui
 com.group09.playit.logic
 com.group09.playit.model
+com.group09.playit.monteCarlo
+com.group09.playit.simulation
+com.group09.playit.state
