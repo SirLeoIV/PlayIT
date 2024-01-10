@@ -1,10 +1,7 @@
 package com.group09.playit.state;
 
 import com.group09.playit.logic.TrickService;
-import com.group09.playit.model.Card;
-import com.group09.playit.model.Hand;
-import com.group09.playit.model.Player;
-import com.group09.playit.model.Trick;
+import com.group09.playit.model.*;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -157,6 +154,7 @@ public class RoundState {
 
     /**
      * get the id of the current trick
+     * starts at 0
      * @return int currentTrickId
      */
     public int getCurrentTrickId() {
@@ -384,4 +382,112 @@ public class RoundState {
     public int getStartedPlayerId() {
         return startedPlayer;
     }
+
+    public int[] convertToInputLayer(int playerId) {
+        //        - Hearts broken (1)
+        //        - Number of trick being played (13)
+        //        - Cards in hand (52)
+        //        - Cards on table (52)
+        //        - Cards played per opponent (3*52)
+        //        - Suit playable per opponent (3*4)
+        //        - First suit played in trick (4)
+        //        - Order of current player/ number cards on table (4)
+
+        int[] inputLayer = new int[1 + 13 + 52 + 52 + 3*52 + 3*4 + 4 + 4];
+        int index = 0;
+        ArrayList<Card> allCards = new Deck(4).getCards();
+
+        // hearts broken
+        inputLayer[index++] = isHeartsBroken() ? 1 : -1;
+
+        // number of trick being played
+        for (int i = 0; i < 13; i++) {
+            inputLayer[index++] = i == getCurrentTrickId() ? 1 : -1;
+        }
+
+        // cards in hand
+        for (int i = 0; i < 52; i++) {
+            inputLayer[index++] = playerHands.get(playerId).contains(allCards.get(i)) ? 1 : -1;
+        }
+
+        // cards on table
+        for (int i = 0; i < 52; i++) {
+            if (getTrickById(getCurrentTrickId()).stream().allMatch(Objects::isNull)) inputLayer[index++] = 0;
+            else inputLayer[index++] = getTrickById(getCurrentTrickId()).contains(allCards.get(i)) ? 1 : -1;
+        }
+
+        // cards played per opponent
+        if (getTrickById(getCurrentTrickId()).stream().allMatch(Objects::isNull)) {
+            for (int i = 0; i < 3*52; i++) {
+                inputLayer[index++] = 0;
+            }
+        } else {
+            for (int i = playerId + 1; i != playerId; i = (i+1) % 4) {
+                for (int j = 0; j < 52; j++) {
+                    inputLayer[index++] = playedCards.get(i).contains(allCards.get(j)) ? 1 : -1;
+                }
+            }
+        }
+
+        // suit playable per opponent
+        for (int i = playerId + 1; i != playerId; i = (i+1) % 4) {
+            int[] playerMightHaveSuit = doesPlayerHaveSuit(i);
+            for (int j = 0; j < 4; j++) {
+                inputLayer[index++] = playerMightHaveSuit[j];
+            }
+        }
+
+        // first suit played in trick
+        if (getTrickById(getCurrentTrickId()).stream().allMatch(Objects::isNull)) {
+            for (int i = 0; i < 4; i++) {
+                inputLayer[index++] = 0;
+            }
+        } else {
+            Card.Suit suit = getTrickModel(getCurrentTrickId()).getSuit();
+            for (int i = 0; i < 4; i++) {
+                inputLayer[index++] = suit == Card.Suit.values()[i] ? 1 : -1;
+            }
+        }
+
+        // order of current player/ number cards on table
+        for (int i = 0; i < 4; i++) {
+            inputLayer[index++] = i == getTrickModel(getCurrentTrickId()).getCards().size() ? 1 : -1;
+        }
+
+        return inputLayer;
+    }
+
+    public int[] doesPlayerHaveSuit(int playerId) {
+        int playerMightHaveClubs = 0;
+        int playerMightHaveDiamonds = 0;
+        int playerMightHaveSpades = 0;
+        int playerMightHaveHearts = 0;
+
+        if (getTrickById(getCurrentTrickId()).stream().allMatch(Objects::isNull)) return new int[] {0, 0, 0, 0};
+
+        // go through every trick that has been played by this player so far
+        for (int trickId = 0; trickId < playedCards.get(playerId).size(); trickId++) {
+            Card.Suit playedSuit = playedCards.get(playerId).get(trickId).suit();
+            switch (playedSuit) {
+                case CLUBS -> playerMightHaveClubs = 1;
+                case DIAMONDS -> playerMightHaveDiamonds = 1;
+                case SPADES -> playerMightHaveSpades = 1;
+                case HEARTS -> playerMightHaveHearts = 1;
+            }
+
+            Trick trick = getTrickModel(trickId);
+            Card.Suit trickSuit = trick.getSuit();
+
+            if (trickSuit != playedSuit) {
+                switch (trickSuit) {
+                    case CLUBS -> playerMightHaveClubs = -1;
+                    case DIAMONDS -> playerMightHaveDiamonds = -1;
+                    case SPADES -> playerMightHaveSpades = -1;
+                    case HEARTS -> playerMightHaveHearts = -1;
+                }
+            }
+        }
+        return new int[] {playerMightHaveClubs, playerMightHaveDiamonds, playerMightHaveSpades, playerMightHaveHearts};
+    }
+
 }
