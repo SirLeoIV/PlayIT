@@ -383,6 +383,13 @@ public class RoundState {
         return startedPlayer;
     }
 
+    /**
+     * convert the round state to an input layer for the neural network
+     * every node has either the value 1 or -1 if we have information about it
+     * or 0 if we don't have information about it
+     * @param playerId
+     * @return
+     */
     public int[] convertToInputLayer(int playerId) {
         //        - Hearts broken (1)
         //        - Number of trick being played (13)
@@ -422,15 +429,17 @@ public class RoundState {
                 inputLayer[index++] = 0;
             }
         } else {
-            for (int i = playerId + 1; i != playerId; i = (i+1) % 4) {
+            for (int i = (playerId + 1) % 4; i != playerId; i = (i+1) % 4) {
                 for (int j = 0; j < 52; j++) {
-                    inputLayer[index++] = playedCards.get(i).contains(allCards.get(j)) ? 1 : -1;
+                    inputLayer[index++] = playedCards
+                            .get(i)
+                            .contains(allCards.get(j)) ? 1 : -1;
                 }
             }
         }
 
         // suit playable per opponent
-        for (int i = playerId + 1; i != playerId; i = (i+1) % 4) {
+        for (int i = (playerId + 1) % 4; i != playerId; i = (i+1) % 4) {
             int[] playerMightHaveSuit = doesPlayerHaveSuit(i);
             for (int j = 0; j < 4; j++) {
                 inputLayer[index++] = playerMightHaveSuit[j];
