@@ -13,21 +13,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * This class is used to run an experiment.
- * It runs a simulation with a given number of iterations and stores the results in a csv file.
- * The results can be found in the results folder.
- *
- * Change the following variables to change the experiment:
- * playerNames: The names of the players that will be used in the experiment.
- * fileName: The name of the file that will be created.
- * agent1: The agent that will be used for the first player.
- * agent2: The agent that will be used for the other three players.
- * Node.EXPLORATION_CONSTANT: The exploration constant that will be used for the MCTS algorithm.
- * MCTSAgent.maxDepth: The max depth that will be used for the MCTS algorithm.
- * MCTSAgent.time: The time that will be used for the MCTS algorithm.
- * numberOfIterations: The number of iterations that will be run.
- */
 public class Experiment2 {
 
     public static void main(String[] args) throws NoCardsAvailableException {
@@ -48,11 +33,11 @@ public class Experiment2 {
         }
 
         // SAVE TO CSV:
-        String[] headerNumbers = new String[294];
-        for (int i = 0; i < 293; i++) {
+        String[] headerNumbers = new String[295];
+        for (int i = 0; i < 294; i++) {
             headerNumbers[i] = "" + i;
         }
-        headerNumbers[293] = "Y";
+        headerNumbers[294] = "Y";
         String header = String.join(",", headerNumbers);
         createFile(fileName, header);
         for (ArrayList<int[]> playerLayers : layers) {
