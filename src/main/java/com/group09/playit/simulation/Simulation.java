@@ -55,6 +55,8 @@ public class Simulation {
 
         while (!RoundService.isRoundOver(roundState)) {
             roundController.nextAction();
+            int playerId = roundState.getCurrentPlayerId();
+            historyOfInputLayers.get(playerId).add(roundState.convertToInputLayer(playerId));
         }
     }
 

@@ -147,7 +147,7 @@ public class Node {
                 try {
                     simulation.simulate();
                     numberVisits++;
-                    totalScore = simulation.getRoundState().getPlayerScores().get(0);
+                    totalScore = simulation.getRoundState().getPlayerScores().get(playerId);
                     return totalScore;
                 } catch (NoCardsAvailableException ex) {
                     ex.printStackTrace();
