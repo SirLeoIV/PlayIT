@@ -24,7 +24,7 @@ public class NewPlayerGUI extends Parent {
      * Instantiates a new Player details GUI.
      * The player details GUI shows the name and points of the player.
      *
-     * @param player the player
+     * @param name the player
      */
     public NewPlayerGUI(String name) {
         this.player = new Player(name);

@@ -1,11 +1,10 @@
 package com.group09.playit.monteCarlo;
 
+import com.group09.playit.ann.ConnectionCURL;
 import com.group09.playit.controller.RoundController;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.Card;
 import com.group09.playit.simulation.Agent;
-import com.group09.playit.simulation.NoCardsAvailableException;
-import com.group09.playit.simulation.Simulation;
 import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
@@ -131,30 +130,14 @@ public class Node {
      * @return score of the rollout
      */
     public int rollout() {
-        Simulation simulation = new Simulation(state.clone(), agentType);
+        double result = 0;
         try {
-            simulation.simulate();
+            result = ConnectionCURL.predict(state.convertToInputLayer(playerId));
             numberVisits++;
-            totalScore = simulation.getRoundState().getPlayerScores().get(playerId);
-            return totalScore;
-        } catch (NoCardsAvailableException e) {
-            // If there are no cards available we remove the node from the tree
-            try {
-                parent.children.remove(this);
-            } catch (NullPointerException exception) {
-                // If there are no children to remove from the parent we try to run the simulation again
-                System.out.println("Parent is null");
-                try {
-                    simulation.simulate();
-                    numberVisits++;
-                    totalScore = simulation.getRoundState().getPlayerScores().get(playerId);
-                    return totalScore;
-                } catch (NoCardsAvailableException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return -1;
+        return (int) result;
     }
 
     /**

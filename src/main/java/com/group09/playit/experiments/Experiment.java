@@ -35,14 +35,14 @@ public class Experiment {
         Agent agent2 = new SmartAgent(0,null); // Change agent here
         Node.EXPLORATION_CONSTANT = 2; // Change exploration constant here
         MCTSAgent.maxDepth = 55; // Change max depth here
-        MCTSAgent.time = 0.5; // Change time here
-        int numberOfIterations = 1000; // Change number of iterations here
+        MCTSAgent.time = 1; // Change time here
+        int numberOfIterations = 10; // Change number of iterations here
 
         ArrayList<ArrayList<Integer>> scores = new ArrayList<>();
         createFile(fileName,
                 String.join(",", playerNames));
         for (int i = 0; i<numberOfIterations; i++) {
-            if (i % 10 == 0) System.out.println("Experiment " + i);
+            if (i % 1 == 0) System.out.println("Experiment " + i);
             try {
                 Simulation simulation = new Simulation(
                         new RoundState(DeckService.dealCards(4), playerNames),

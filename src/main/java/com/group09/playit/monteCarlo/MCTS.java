@@ -66,8 +66,12 @@ public class MCTS {
                 current.backpropagate(score);
             } else {
                 current.expand();
-                int score = current.getChildren().get(0).rollout();
-                if (score >= 0) current.getChildren().get(0).backpropagate(score);
+                try {
+                    int score = current.getChildren().get(0).rollout();
+                    if (score >= 0) current.getChildren().get(0).backpropagate(score);
+                } catch (IndexOutOfBoundsException e) {
+                    current.getParent().getChildren().remove(current);
+                }
             }
             iterations++;
         }
