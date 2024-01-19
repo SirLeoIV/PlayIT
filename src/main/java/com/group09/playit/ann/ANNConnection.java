@@ -9,6 +9,12 @@ import java.util.Arrays;
 public class ANNConnection {
 
 
+    /**
+     * This method sends an input layer to the ANN and returns the predicted value.
+     * @param inputLayer the input layer
+     * @return the predicted value
+     * @throws IOException when the connection fails
+     */
     public static double predict(int[] inputLayer) throws IOException {
         String[] inputLayerString = Arrays.stream(inputLayer).mapToObj(String::valueOf).toArray(String[]::new);
         String input = String.join(",", inputLayerString);

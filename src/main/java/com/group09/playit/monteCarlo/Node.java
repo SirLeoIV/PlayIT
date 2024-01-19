@@ -131,8 +131,7 @@ public class Node {
     }
 
     /**
-     * Rolls out the node by simulating a game.
-     * If there are no cards available we remove the node from the tree
+     * Rolls out the node by calling the ANN to predict the score of the rollout
      * @return score of the rollout
      */
     public int rolloutANN() {
@@ -145,6 +144,10 @@ public class Node {
         return result;
     }
 
+    /**
+     * calls the specific rollout method based on the useANN boolean
+     * @return score of the rollout
+     */
     public int rollout() {
         numberVisits++;
         if (useANN) totalScore = rolloutANN();

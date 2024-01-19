@@ -20,7 +20,7 @@ public class MCTSAgentANN implements Agent{
     }
 
     /**
-     * This agent plays a card that is determined by the MCTS algorithm.
+     * This agent plays a card that is determined by the MCTS algorithm with the use on an ANN instead of the rollout.
      * @throws NoCardsAvailableException the no cards available exception
      */
     @Override

@@ -15,6 +15,11 @@ import java.util.Arrays;
 
 public class GenerateTrainingData {
 
+    /**
+     * This class is used to generate training data for the ANN.
+     * It runs a simulation with a given number of iterations and stores the results in a csv file.
+     * The results can be found in the training_data folder.
+     */
     public static void main(String[] args) throws NoCardsAvailableException {
         String[] playerNames = new String[]{"MCTSAgent_Smart", "SmartAgent 1", "SmartAgent 2", "SmartAgent 3"}; // Change player names here
 
