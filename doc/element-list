@@ -1,5 +1,5 @@
-module:com.group09.playit
 com.group09.playit
+com.group09.playit.ann
 com.group09.playit.controller
 com.group09.playit.experiments
 com.group09.playit.gui
