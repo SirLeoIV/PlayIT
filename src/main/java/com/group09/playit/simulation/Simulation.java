@@ -77,8 +77,10 @@ public class Simulation {
             return new HighestAgent(agentId, roundController);
         } else if (agentType instanceof LowestAgent) {
             return new LowestAgent(agentId, roundController);
-        } else if (agentType instanceof MCTSAgent) {
-            return new MCTSAgent(agentId, roundController);
+        } else if (agentType instanceof MCTSAgentBasic) {
+            return new MCTSAgentBasic(agentId, roundController);
+        } else if (agentType instanceof MCTSAgentANN) {
+            return new MCTSAgentANN(agentId, roundController);
         } else if (agentType instanceof SmartAgent) {
             return new SmartAgent(agentId, roundController);
         } else {

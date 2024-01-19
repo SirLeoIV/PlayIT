@@ -1,10 +1,12 @@
 package com.group09.playit.monteCarlo;
 
-import com.group09.playit.ann.ConnectionCURL;
+import com.group09.playit.ann.ANNConnection;
 import com.group09.playit.controller.RoundController;
 import com.group09.playit.logic.TrickService;
 import com.group09.playit.model.Card;
 import com.group09.playit.simulation.Agent;
+import com.group09.playit.simulation.NoCardsAvailableException;
+import com.group09.playit.simulation.Simulation;
 import com.group09.playit.state.RoundState;
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class Node {
 
     public static double EXPLORATION_CONSTANT = 2.0;
 
+    private boolean useANN;
+
     /**
      * Constructor for the root node
      * @param state state of the node
@@ -47,13 +51,14 @@ public class Node {
      * @param depthLeft depth left of the node
      * @param playerId player id of the node
      */
-    public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft, int playerId) {
+    public Node(RoundState state, Card cardPlayed, Agent agentType, int depthLeft, int playerId, boolean useANN) {
         this.state = state;
         this.cardPlayed = cardPlayed;
         this.agentType = agentType;
         this.id = MCTS.nodeIds++;
         this.depthLeft = depthLeft;
         this.playerId = playerId;
+        this.useANN = useANN;
     }
 
     /**
@@ -63,7 +68,7 @@ public class Node {
      * @param depthLeft depth left of the node
      * @param playerId player id of the node
      */
-    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType, int depthLeft, int playerId) {
+    public Node(RoundState state, Node parent, Card cardPlayed, Agent agentType, int depthLeft, int playerId, boolean useANN) {
         this.state = state;
         this.parent = parent;
         this.cardPlayed = cardPlayed;
@@ -71,6 +76,7 @@ public class Node {
         this.id = MCTS.nodeIds++;
         this.depthLeft = depthLeft;
         this.playerId = playerId;
+        this.useANN = useANN;
     }
 
     /**
@@ -91,7 +97,7 @@ public class Node {
                 TrickService.endTrick(childState);
             }
 
-            Node child = new Node(childState, this, card, agentType, depthLeft - 1, playerId);
+            Node child = new Node(childState, this, card, agentType, depthLeft - 1, playerId, useANN);
             children.add(child);
         }
     }
@@ -129,16 +135,55 @@ public class Node {
      * If there are no cards available we remove the node from the tree
      * @return score of the rollout
      */
-    public int rollout() {
-        double result = 0;
+    public int rolloutANN() {
+        int result = 0;
         try {
-            result = ConnectionCURL.predict(state.convertToInputLayer(playerId));
-            numberVisits++;
+            result = (int) ANNConnection.predict(state.convertToInputLayer(state.getCurrentPlayerId()));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return (int) result;
+        return result;
     }
+
+    public int rollout() {
+        numberVisits++;
+        if (useANN) totalScore = rolloutANN();
+        else totalScore = rolloutBasic();
+        return totalScore;
+    }
+
+    /**
+     * Rolls out the node by simulating a game.
+     * If there are no cards available we remove the node from the tree
+     * @return score of the rollout
+     */
+    public int rolloutBasic() {
+        Simulation simulation = new Simulation(state.clone(), agentType);
+        int currentPlayerId = state.getCurrentPlayerId();
+        int result = 0;
+        try {
+            simulation.simulate();
+            result = simulation.getRoundState().getPlayerScores().get(currentPlayerId);
+            return result;
+        } catch (NoCardsAvailableException e) {
+            // If there are no cards available we remove the node from the tree
+            try {
+                parent.children.remove(this);
+            } catch (NullPointerException exception) {
+                // If there are no children to remove from the parent we try to run the simulation again
+                System.out.println("Parent is null");
+                try {
+                    simulation.simulate();
+                    result = simulation.getRoundState().getPlayerScores().get(currentPlayerId);
+                    return result;
+                } catch (NoCardsAvailableException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
 
     /**
      * Backpropagates the score of the rollout to the root node
@@ -148,8 +193,17 @@ public class Node {
         Node currentNode = this;
         while(currentNode.getParent() != null){
             currentNode = currentNode.getParent();
-            currentNode.setNumberVisits(currentNode.getNumberVisits() + 1);
-            currentNode.setTotalScore(currentNode.getTotalScore() + score);
+            if (useANN) {
+                if (currentNode.getState().getCurrentPlayerId() == state.getCurrentPlayerId()) {
+                    currentNode.setTotalScore(currentNode.getTotalScore() + score);
+                } else {
+                    if (currentNode.numberVisits >0) currentNode.setTotalScore(currentNode.getTotalScore() + (currentNode.totalScore / currentNode.numberVisits));
+                }
+                currentNode.setNumberVisits(currentNode.getNumberVisits() + 1);
+            } else {
+                currentNode.setNumberVisits(currentNode.getNumberVisits() + 1);
+                currentNode.setTotalScore(currentNode.getTotalScore() + score);
+            }
         }
     }
 

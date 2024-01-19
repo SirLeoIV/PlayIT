@@ -29,19 +29,21 @@ import java.util.List;
 public class Experiment {
 
     public static void main(String[] args) {
-        String[] playerNames = new String[]{"MCTSAgent_Smart", "SmartAgent 1", "SmartAgent 2", "SmartAgent 3"}; // Change player names here
-        String fileName = "FirstAgent-SmartAgent-EXP_2-MAX_DEPTH_55-Time_0_point_5"; // Change file name here
-        Agent agent1 = new MCTSAgent(0,null);
-        Agent agent2 = new SmartAgent(0,null); // Change agent here
+        String[] playerNames = new String[]{"MCTSAgent_ANN", "MCTSAgent_Basic 1", "MCTSAgent_Basic 2", "MCTSAgent_Basic 3"}; // Change player names here
+        String fileName = "MCTSAgent_ANN_2Seconds-MCTSAgent_Basic_1Second"; // Change file name here
+        Agent agent1 = new MCTSAgentANN(0,null);
+        Agent agent2 = new MCTSAgentBasic(0,null); // Change agent here
         Node.EXPLORATION_CONSTANT = 2; // Change exploration constant here
-        MCTSAgent.maxDepth = 55; // Change max depth here
-        MCTSAgent.time = 1; // Change time here
-        int numberOfIterations = 10; // Change number of iterations here
+        MCTSAgentBasic.maxDepth = 55; // Change max depth here
+        MCTSAgentBasic.time = 1; // Change time here
+        MCTSAgentANN.maxDepth = 16; // Change max depth here
+        MCTSAgentANN.time = 2; // Change time here
+        int numberOfIterations = 500; // Change number of iterations here
 
         ArrayList<ArrayList<Integer>> scores = new ArrayList<>();
         createFile(fileName,
                 String.join(",", playerNames));
-        for (int i = 0; i<numberOfIterations; i++) {
+        for (int i = 1; i<=numberOfIterations; i++) {
             if (i % 1 == 0) System.out.println("Experiment " + i);
             try {
                 Simulation simulation = new Simulation(

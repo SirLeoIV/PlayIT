@@ -8,7 +8,7 @@ from keras import *
 tf.keras.utils.disable_interactive_logging()
 
 dir = os.getcwd()
-model = keras.models.load_model(dir + "/ANN-3Layers.keras")
+model = keras.models.load_model(dir + "/ANN-3Layers-Sigmoid-Leaky-2Dropout-40.keras")
 
 def predict(input_layer):
     prediction = model.predict(input_layer)

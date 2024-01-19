@@ -79,7 +79,7 @@ public class AiPlayerGUI extends Parent {
                 ),
                 null,
                 new SimpleAgent(0, null),
-                6, roundState.getPlayerNames().indexOf(player.getName()));
+                6, roundState.getPlayerNames().indexOf(player.getName()), false);
 
         MCTS mcts = new MCTS(root);
         return mcts.traverse(3);

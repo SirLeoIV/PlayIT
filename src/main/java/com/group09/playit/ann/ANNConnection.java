@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
 
-public class ConnectionCURL {
+public class ANNConnection {
 
 
     public static double predict(int[] inputLayer) throws IOException {

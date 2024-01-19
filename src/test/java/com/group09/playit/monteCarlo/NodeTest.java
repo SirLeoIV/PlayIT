@@ -52,6 +52,6 @@ class NodeTest {
     }
 
     private Node emptyNode() {
-        return new Node(null, null, null, new RandomAgent(0, null), 12,0);
+        return new Node(null, null, null, new RandomAgent(0, null), 12,0, false);
     }
 }
