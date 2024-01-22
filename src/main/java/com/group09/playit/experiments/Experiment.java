@@ -30,14 +30,14 @@ public class Experiment {
 
     public static void main(String[] args) {
         String[] playerNames = new String[]{"MCTSAgent_ANN", "MCTSAgent_Basic 1", "MCTSAgent_Basic 2", "MCTSAgent_Basic 3"}; // Change player names here
-        String fileName = "MCTSAgent_ANN_2Seconds-MCTSAgent_Basic_1Second"; // Change file name here
+        String fileName = "MCTSAgent_ANN_6_Seconds-MCTSAgent_Basic_0_point_5_Seconds"; // Change file name here
         Agent agent1 = new MCTSAgentANN(0,null);
         Agent agent2 = new MCTSAgentBasic(0,null); // Change agent here
         Node.EXPLORATION_CONSTANT = 2; // Change exploration constant here
         MCTSAgentBasic.maxDepth = 55; // Change max depth here
-        MCTSAgentBasic.time = 1; // Change time here
-        MCTSAgentANN.maxDepth = 16; // Change max depth here
-        MCTSAgentANN.time = 2; // Change time here
+        MCTSAgentBasic.time = 0.5; // Change time here
+        MCTSAgentANN.maxDepth = 55; // Change max depth here
+        MCTSAgentANN.time = 6; // Change time here
         int numberOfIterations = 500; // Change number of iterations here
 
         ArrayList<ArrayList<Integer>> scores = new ArrayList<>();
